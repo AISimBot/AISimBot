@@ -65,7 +65,7 @@ def get_active_users():
     return {}
 
 
-def update_active_users(timeout=60):
+def update_active_users(timeout=300):
     now = time.time()
     active_users = get_active_users()
     id = get_session()
@@ -252,14 +252,6 @@ def init_session():
 
 def setup_sidebar():
     st.sidebar.header("Chat with " + st.session_state.settings["assistant_name"])
-    container1 = st.sidebar.container(border=True)
-    with container1:
-        for key, val in st.session_state.settings["sidebar"].items():
-            if re.search(r"(jpg|png|webp)$", val):
-                st.image(val)
-            else:
-                st.subheader(f"{key.replace("_", " ")}: {val}")
-
     # Button Login
     if "password_correct" in st.session_state and st.session_state.password_correct:
         st.session_state.chat_active = True
@@ -272,6 +264,21 @@ def setup_sidebar():
                 st.form_submit_button("Start Chat", on_click=password_entered)
             if "password_correct" in st.session_state:
                 st.error("😕 Invalid Code")
+
+    if st.session_state.chat_active:
+        # Update current user and display active users.
+        update_active_users()
+        if st.sidebar.button(f"🟢 Active Users: {get_active_user_count()}"):
+            st.rerun()
+
+        # Show Profile
+        container1 = st.sidebar.container(border=True)
+        with container1:
+            for key, val in st.session_state.settings["sidebar"].items():
+                if re.search(r"(jpg|png|webp)$", val):
+                    st.image(val)
+                else:
+                    st.subheader(f"{key.replace("_", " ")}: {val}")
 
 
 def show_messages():
@@ -409,10 +416,6 @@ def main():
         if st.session_state.download_transcript:
             show_download()
 
-        # Update current user and display active users.
-        update_active_users()
-        if st.sidebar.button(f"🟢 Active Users: {get_active_user_count()}"):
-            st.rerun()
 
     st.sidebar.warning(st.session_state.settings["warning"])
 
