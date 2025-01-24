@@ -66,7 +66,7 @@ In order to launch this app, you need to configure and set up the following thre
 
    - Click **Save** and then **Deploy**.
 
-> **Note:** Secrets may take a few minutes to propagate. If you see an error about a missing key, wait a few minutes and then reboot your app under **Manage app**.  
+> **Note:** Secrets may take a few minutes to propagate. If you see an error about a missing key, wait a few minutes and then [reboot](https://docs.streamlit.io/deploy/streamlit-community-cloud/manage-your-app/reboot-your-app) your app by going to **Manage app** (in the lower-right corner) and clicking the overflow menu icon and then reboot.
 
 If the issue persists, confirm that the key appears under **App settings > Secrets**.
 
@@ -95,7 +95,8 @@ The `settings.toml` file uses [TOML](https://toml.io/en/) format. For multiline 
 
 To update avatars, replace the relevant files in the `assets` folder.
 
-**IMPORTANT**: After commit changes, you need to reboot your Streamlit app from the dropdown menu under Manage App.
+**IMPORTANT**: After commit changes, you need to [reboot](https://docs.streamlit.io/deploy/streamlit-community-cloud/manage-your-app/reboot-your-app) your app by going to **Manage app** (in the lower-right corner) and clicking the overflow menu icon and then reboot.
+
 
 ### Importance of Prompt
 
