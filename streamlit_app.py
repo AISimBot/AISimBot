@@ -60,6 +60,25 @@ def get_session():
     return session_id
 
 
+@st.cache_resource
+def get_active_users():
+    return {}
+
+
+def update_active_users(timeout=60):
+    now = time.time()
+    active_users = get_active_users()
+    id = get_session()
+    active_users[id] = now
+    for user_id, last_active in list(active_users.items()):
+        if now - last_active > timeout:
+            del active_users[user_id]
+
+
+def get_active_user_count():
+    return len(get_active_users())
+
+
 def elapsed(start):
     duration = time.time() - start
     duration_td = timedelta(seconds=duration)
@@ -354,7 +373,9 @@ def main():
             user_query = st.session_state.manual_input
         else:
             if st.session_state.end_session_button_clicked:
-                user_query = st.chat_input("Questions about your feedback? Ask them here.")
+                user_query = st.chat_input(
+                    "Questions about your feedback? Ask them here."
+                )
             else:
                 user_query = st.chat_input(
                     "Click 'End Session' Button to Receive Feedback and Download Transcript."
@@ -387,6 +408,11 @@ def main():
         # Show the download button
         if st.session_state.download_transcript:
             show_download()
+
+        # Update current user and display active users.
+        update_active_users()
+        if st.sidebar.button(f"🟢 Active Users: {get_active_user_count()}"):
+            st.rerun()
 
     st.sidebar.warning(st.session_state.settings["warning"])
 
