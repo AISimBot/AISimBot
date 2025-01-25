@@ -74,6 +74,16 @@ def elapsed(start):
     return dur_str
 
 
+@st.cache_resource
+def get_openai_client():
+    return OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
+
+@st.cache_resource
+def get_anthropic_client():
+    return anthropic.Anthropic(api_key=st.secrets["ANTHROPIC_API_KEY"])
+
+
 def password_entered():
     """Checks whether a password entered by the user is correct."""
     if hmac.compare_digest(st.session_state["password"], st.secrets["password"]):
@@ -335,11 +345,11 @@ def main():
 
     init_session()
     text_client = (
-        OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+        get_openai_client()
         if st.session_state.settings["parameters"]["model"].startswith("gpt")
-        else anthropic.Anthropic(api_key=st.secrets["ANTHROPIC_API_KEY"])
+        else get_anthropic_client()
     )
-    speech_client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+    speech_client = get_openai_client()
     st.title(st.session_state.settings["title"])
     setup_sidebar()
 
@@ -393,14 +403,13 @@ def main():
         if st.session_state.download_transcript:
             show_download()
 
-
     st.sidebar.warning(st.session_state.settings["warning"])
 
 
 if "logger" not in st.session_state:
     settings = load_settings()
-    if 'timezone' in settings:
-        st.session_state.logger = get_logger(settings['timezone'])
+    if "timezone" in settings:
+        st.session_state.logger = get_logger(settings["timezone"])
     else:
         st.session_state.logger = get_logger()
 log = st.session_state.logger
