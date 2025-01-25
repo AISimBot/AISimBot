@@ -2,9 +2,11 @@ import logging
 import pytz
 from datetime import datetime
 
+
 class TimeZoneFormatter(logging.Formatter):
     """Custom logging formatter to display time in the specified time zone."""
-    def __init__(self, fmt=None,             style=None, datefmt=None, timezone='UTC'):
+
+    def __init__(self, fmt=None, style=None, datefmt=None, timezone="UTC"):
         super().__init__(fmt, datefmt, style=style)
         self.timezone = pytz.timezone(timezone)
 
@@ -20,7 +22,8 @@ class TimeZoneFormatter(logging.Formatter):
             return dt.strftime(datefmt)
         return dt.isoformat()
 
-def get_logger(timezone='UTC'):
+
+def get_logger(timezone="UTC"):
     """
     Create a custom logger with timestamps in the specified time zone.
     :param timezone: str, time zone name (e.g., 'US/Eastern')
@@ -35,7 +38,7 @@ def get_logger(timezone='UTC'):
             fmt="{asctime}\t{levelname}\t{module}\t{threadName}\t{funcName}\t{lineno}\n{message}",
             style="{",
             datefmt="%Y-%m-%d %H:%M:%S %Z",
-            timezone=timezone
+            timezone=timezone,
         )
 
         file_handler = logging.FileHandler("log.txt", mode="a", encoding="utf-8")
