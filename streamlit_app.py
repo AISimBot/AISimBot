@@ -13,33 +13,10 @@ import tomllib
 import hmac
 import warnings
 import io
-import logging
 import uuid
 import time
 from datetime import datetime, timedelta
-
-
-# Create a custom logger
-def get_logger():
-    log = logging.getLogger(__name__)
-    if not log.hasHandlers():  # Avoid adding handlers multiple times
-        log.setLevel(logging.INFO)
-        file_handler = logging.FileHandler("log.txt", mode="a", encoding="utf-8")
-        console_handler = logging.StreamHandler()
-        formatter = logging.Formatter(
-            "{asctime}\t{levelname}\t{module}\t{threadName}\t{funcName}\t{lineno}\n{message}",
-            style="{",
-        )
-        file_handler.setFormatter(formatter)
-        console_handler.setFormatter(formatter)
-        log.addHandler(file_handler)
-        log.addHandler(console_handler)
-    return log
-
-
-if "logger" not in st.session_state:
-    st.session_state.logger = get_logger()
-log = st.session_state.logger
+from Logger import get_logger
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -419,6 +396,14 @@ def main():
 
     st.sidebar.warning(st.session_state.settings["warning"])
 
+
+if "logger" not in st.session_state:
+    settings = load_settings()
+    if 'timezone' in settings:
+        st.session_state.logger = get_logger(settings['timezone'])
+    else:
+        st.session_state.logger = get_logger()
+log = st.session_state.logger
 
 if __name__ == "__main__":
     try:
