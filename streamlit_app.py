@@ -17,6 +17,7 @@ import uuid
 import time
 from datetime import datetime, timedelta
 from Logger import get_logger
+import codecs
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -104,6 +105,11 @@ def load_settings():
 def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+
+@st.cache_data
+def get_prompt():
+    return codecs.open("prompt.txt", "r", "utf-8").read()
 
 
 def speech_to_text(client, audio):
@@ -223,9 +229,7 @@ def init_session():
         defaults = {
             "show_intro": True,
             "chat_active": False,
-            "messages": [
-                {"role": "system", "content": st.session_state.settings["instruction"]}
-            ],
+            "messages": [{"role": "system", "content": get_prompt()}],
             "processed_audio": None,
             "manual_input": None,
             "end_session_button_clicked": False,
