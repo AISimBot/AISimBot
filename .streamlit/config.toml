@@ -1,0 +1,14 @@
+[theme]
+base="light" # "light" or "dark"
+primaryColor = "#3498db" # "DodgerBlue"
+backgroundColor = "#ecf0f1" # "WhiteSmoke"
+secondaryBackgroundColor = "#bdc3c7" # "Silver"
+textColor = "#2c3e50" # "DarkSlateGray"
+font = "sans serif" # "sans serif", "serif", or "monospace"
+
+[client]
+showErrorDetails = "type" # "full", "stacktrace", "type", "none"
+toolbarMode = "minimal" # "auto", "developer", "viewer", "minimal"
+
+[browser]
+gatherUsageStats = false
