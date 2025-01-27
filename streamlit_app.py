@@ -346,7 +346,6 @@ def process_user_query(text_client, speech_client, user_query):
 def main():
     # Inject CSS for custom styles
     local_css("style.css")
-
     init_session()
     text_client = (
         get_openai_client()
@@ -409,7 +408,15 @@ def main():
 
     st.sidebar.warning(st.session_state.settings["warning"])
 
+# Configure page
+st.set_page_config(
+    page_title="AI SimBot",
+    page_icon="💬",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
 
+# Setup Log
 if "logger" not in st.session_state:
     settings = load_settings()
     if "timezone" in settings:
