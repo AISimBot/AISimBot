@@ -95,6 +95,8 @@ The `settings.toml` file uses [TOML](https://toml.io/en/) format. For multiline 
 
 To update avatars, replace the relevant files in the `assets` folder.
 
+To customize basic theme settings such as colors and fonts, edit the .streamlit/config.toml file. For advanced styling, modify the style.css file.
+
 **IMPORTANT**: After commit changes, you need to [reboot](https://docs.streamlit.io/deploy/streamlit-community-cloud/manage-your-app/reboot-your-app) your app by going to **Manage app** (in the lower-right corner) and clicking the overflow menu icon and then reboot.
 
 
