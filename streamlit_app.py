@@ -315,24 +315,24 @@ def process_user_query(text_client, speech_client, user_query):
     # Store the user's query into the history
     st.session_state.messages.append({"role": "user", "content": user_query.strip()})
 
-    # Stream the assistant's reply
+    stream = (
+        stream_response_openai(text_client, st.session_state.messages)
+        if st.session_state.settings["parameters"]["model"].startswith("gpt")
+        else stream_response_anthropic(text_client, st.session_state.messages)
+    )
+    response = "".join(stream).strip()
+    if not st.session_state.end_session_button_clicked:
+        text_to_speech(speech_client, response)
+
     with st.chat_message(
         st.session_state.settings["assistant_name"],
         avatar=st.session_state.settings["assistant_avatar"],
     ):
-        stream = (
-            stream_response_openai(text_client, st.session_state.messages)
-            if st.session_state.settings["parameters"]["model"].startswith("gpt")
-            else stream_response_anthropic(text_client, st.session_state.messages)
-        )
-        response = st.write_stream(stream)
+        st.markdown(response)
 
-        # Once the stream is over, update chat history
         st.session_state.messages.append(
-            {"role": "assistant", "content": response.strip()}
+            {"role": "assistant", "content": response}
         )
-        if not st.session_state.end_session_button_clicked:
-            text_to_speech(speech_client, response)
 
 
 def main():
