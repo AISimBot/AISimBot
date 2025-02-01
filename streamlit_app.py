@@ -320,27 +320,19 @@ def process_user_query(text_client, speech_client, user_query):
         st.session_state.settings["assistant_name"],
         avatar=st.session_state.settings["assistant_avatar"],
     ):
-        # Empty container to display the assistant's reply
-        assistant_reply_box = st.empty()
-
-        # A blank string to store the assistant's reply
-        assistant_reply = ""
-
-        # Iterate through the stream
-        for chunk in (
+        stream = (
             stream_response_openai(text_client, st.session_state.messages)
             if st.session_state.settings["parameters"]["model"].startswith("gpt")
             else stream_response_anthropic(text_client, st.session_state.messages)
-        ):
-            assistant_reply += chunk
-            assistant_reply_box.markdown(assistant_reply)
+        )
+        response = st.write_stream(stream)
 
         # Once the stream is over, update chat history
         st.session_state.messages.append(
-            {"role": "assistant", "content": assistant_reply.strip()}
+            {"role": "assistant", "content": response.strip()}
         )
         if not st.session_state.end_session_button_clicked:
-            text_to_speech(speech_client, assistant_reply)
+            text_to_speech(speech_client, response)
 
 
 def main():
@@ -407,6 +399,7 @@ def main():
             show_download()
 
     st.sidebar.warning(st.session_state.settings["warning"])
+
 
 # Configure page
 st.set_page_config(
