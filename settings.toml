@@ -34,7 +34,7 @@ I’ll be Jordan, a 17-year-old, non-binary student visiting your outpatient cli
 - When you’re ready to begin, enter your password and click **‘Start Chat’**.
 '''
 
-warning = "Please be advised that this patient simulation includes themes and discussions of substance use. This simulation might evoke strong emotions or may be distressing for individuals with personal experiences related to substance use or addiction. If you feel overwhelmed by the content, please discontinue the simulation and reach out to your course faculty, or schedule an appointment with [Northeastern University Health & Counseling Services](https://uhcs.northeastern.edu/). If you or someone you know is struggling with substance use or addiction, support is available."
+warning = "This simulation might evoke strong emotions or may be distressing for individuals with personal experiences related to substance use or addiction. If you feel overwhelmed by the content, please discontinue the simulation and reach out to your course faculty, or schedule an appointment with [Northeastern University Health & Counseling Services](https://uhcs.northeastern.edu/). If you or someone you know is struggling with substance use or addiction, support is available."
 
 
 #--------------------
