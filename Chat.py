@@ -32,18 +32,15 @@ def get_prompt():
     return codecs.open("prompt.txt", "r", "utf-8").read()
 
 
-def show_download():
+def show_download(container):
     document = create_transcript_document()
-    col1, col2 = st.columns([1, 1])
-    # Button to download the full conversation transcript
-    with col1:
-        st.download_button(
-            label="Download Transcript",
-            icon=":material/download:",
-            data=document,
-            file_name="Transcript.docx",
-            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        )
+    container.download_button(
+        label="Download Transcript",
+        icon=":material/download:",
+        data=document,
+        file_name="Transcript.docx",
+        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    )
 
 
 def create_transcript_document():
@@ -187,13 +184,14 @@ else:
 
 # Check if there's a manual input and process it
 if st.session_state.manual_input:
+    col3.button("🤔 Generating Feedback...", icon=":material/feedback:", disabled=True)
     user_query = st.session_state.manual_input
 else:
     if st.session_state.end_session_button_clicked:
         user_query = st.chat_input("Questions about your feedback? Ask them here.")
     else:
         user_query = st.chat_input(
-            "Click 'End Session' Button to Receive Feedback and Download Transcript.",
+            "Click 'End Session' Button in the Left Panel to Receive Feedback and Download Transcript.",
             disabled=not st.session_state.text_chat_enabled,
         )
         if transcript := handle_audio_input(col1):
@@ -206,20 +204,25 @@ if user_query:
         st.rerun()
 
 # Handle end session
-if (
-    not st.session_state.end_session_button_clicked
-    and len(st.session_state.messages) > 1
-):
-    if col3.button("End Session", icon=":material/call_end:"):
-        st.session_state.end_session_button_clicked = True
-        st.session_state.text_chat_enabled = True
-        log.info(f"Session end: {elapsed(st.session_state.start_time)} {get_session()}")
-        st.session_state.download_transcript = True
-        st.session_state["manual_input"] = "Goodbye. Thank you for coming."
-        # Trigger the manual input immediately
-        st.rerun()
-else:
-    col3.button("End Session", icon=":material/call_end:", disabled=True)
+if not st.session_state.end_session_button_clicked:
+    if len(st.session_state.messages) > 1:
+        if col3.button(
+            "End Session",
+            icon=":material/call_end:",
+            disabled=st.session_state.end_session_button_clicked,
+        ):
+            st.session_state.end_session_button_clicked = True
+            st.session_state.text_chat_enabled = True
+            log.info(
+                f"Session end: {elapsed(st.session_state.start_time)} {get_session()}"
+            )
+            st.session_state.download_transcript = True
+            st.session_state["manual_input"] = "Goodbye. Thank you for coming."
+            # Trigger the manual input immediately
+            st.rerun()
+    else:
+        col3.button("End Session", icon=":material/call_end:", disabled=True)
+
 # Show the download button
 if st.session_state.download_transcript:
-    show_download()
+    show_download(col3)
