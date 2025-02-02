@@ -1,0 +1,36 @@
+import streamlit as st
+import hmac
+from Settings import settings
+
+
+def check_password():
+    if hmac.compare_digest(st.session_state.password, st.secrets["password"]):
+        st.session_state.role = "student"
+    elif hmac.compare_digest(st.session_state.password, st.secrets["admin_password"]):
+        st.session_state.role = "admin"
+    else:
+        return False
+
+    del st.session_state["password"]
+    return True
+
+
+st.set_page_config(
+    page_title="AI SimBot | Login",
+    page_icon=":material/login:",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
+st.sidebar.header("Access Code")
+with st.sidebar.container(border=True):
+    with st.form("Credentials"):
+        st.text_input("Access Code", type="password", key="password")
+        if st.form_submit_button("Start Chat"):
+            if check_password():
+                st.switch_page("Chat.py")
+            else:
+                st.error("😕 Invalid Code")
+
+with st.container(border=True):
+    st.markdown(settings["intro"])
