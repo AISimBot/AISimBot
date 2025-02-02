@@ -38,7 +38,8 @@ def show_download():
     # Button to download the full conversation transcript
     with col1:
         st.download_button(
-            label="📥 Download Transcript",
+            label="Download Transcript",
+            icon=":material/download:",
             data=document,
             file_name="Transcript.docx",
             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -72,6 +73,7 @@ def init_session():
         "messages": [{"role": "system", "content": get_prompt()}],
         "processed_audio": None,
         "manual_input": None,
+        "text_chat_enabled": False,
         "end_session_button_clicked": False,
         "download_transcript": False,
         "start_time": time.time(),
@@ -93,6 +95,17 @@ def setup_sidebar():
                 st.image(val)
             else:
                 st.subheader(f"{key.replace("_", " ")}: {val}")
+    col1, col2, col3 = st.sidebar.columns(3, gap="medium", border=True)
+
+    def toggle_text_chat():
+        st.session_state.text_chat_enabled = not st.session_state.text_chat_enabled
+
+    col2.toggle(
+        ":material/keyboard: Enable Text Chat",
+        value=st.session_state.text_chat_enabled,
+        on_change=toggle_text_chat,
+    )
+    return col1, col3
 
 
 def show_messages():
@@ -111,8 +124,8 @@ def show_messages():
             st.markdown(message["content"])
 
 
-def handle_audio_input():
-    with st.sidebar.container(border=True):
+def handle_audio_input(container):
+    with container:
         audio = mic_recorder(
             start_prompt="🎙 Record",
             stop_prompt="📤 Stop",
@@ -127,29 +140,29 @@ def handle_audio_input():
 
 
 def process_user_query(user_query):
-    # Display the user's query
-    with st.chat_message(
-        settings["user_name"],
-        avatar=settings["user_avatar"],
-    ):
-        st.markdown(user_query)
-
     # Store the user's query into the history
     st.session_state.messages.append({"role": "user", "content": user_query.strip()})
+    # Display the user's query
+    if st.session_state.text_chat_enabled:
+        with st.chat_message(
+            settings["user_name"],
+            avatar=settings["user_avatar"],
+        ):
+            st.markdown(user_query)
 
     response = get_response(st.session_state.messages)
     response = response.strip()
+    st.session_state.messages.append({"role": "assistant", "content": response})
     if not st.session_state.end_session_button_clicked:
         if audio := text_to_speech(response):
             autoplay_audio(audio)
 
-    with st.chat_message(
-        settings["assistant_name"],
-        avatar=settings["assistant_avatar"],
-    ):
-        st.markdown(response)
-
-        st.session_state.messages.append({"role": "assistant", "content": response})
+    if st.session_state.text_chat_enabled:
+        with st.chat_message(
+            settings["assistant_name"],
+            avatar=settings["assistant_avatar"],
+        ):
+            st.markdown(response)
 
 
 st.set_page_config(
@@ -164,8 +177,13 @@ local_css("style.css")
 if "chat_active" not in st.session_state:
     init_session()
 st.title(settings["title"])
-setup_sidebar()
-show_messages()
+col1, col3 = setup_sidebar()
+if st.session_state.text_chat_enabled:
+    show_messages()
+else:
+    st.markdown(
+        "You are in voice chat-only mode, which disables text input and hides the conversation history. If you're experiencing issues with voice chat, you can enable text chat by clicking **Enable Text Chat** next to the record button in the left panel."
+    )
 
 # Check if there's a manual input and process it
 if st.session_state.manual_input:
@@ -175,9 +193,10 @@ else:
         user_query = st.chat_input("Questions about your feedback? Ask them here.")
     else:
         user_query = st.chat_input(
-            "Click 'End Session' Button to Receive Feedback and Download Transcript."
+            "Click 'End Session' Button to Receive Feedback and Download Transcript.",
+            disabled=not st.session_state.text_chat_enabled,
         )
-        if transcript := handle_audio_input():
+        if transcript := handle_audio_input(col1):
             user_query = transcript
 
 if user_query:
@@ -191,14 +210,16 @@ if (
     not st.session_state.end_session_button_clicked
     and len(st.session_state.messages) > 1
 ):
-    if st.button("End Session"):
+    if col3.button("End Session", icon=":material/call_end:"):
         st.session_state.end_session_button_clicked = True
+        st.session_state.text_chat_enabled = True
         log.info(f"Session end: {elapsed(st.session_state.start_time)} {get_session()}")
         st.session_state.download_transcript = True
         st.session_state["manual_input"] = "Goodbye. Thank you for coming."
         # Trigger the manual input immediately
         st.rerun()
-
+else:
+    col3.button("End Session", icon=":material/call_end:", disabled=True)
 # Show the download button
 if st.session_state.download_transcript:
     show_download()
