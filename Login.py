@@ -16,11 +16,12 @@ def check_password():
 
 
 st.set_page_config(
-    page_title="AI SimBot | Login",
+    page_title="Login | " + settings["title"],
     page_icon=":material/login:",
     layout="wide",
     initial_sidebar_state="expanded",
 )
+st.title("Login | " + settings["title"])
 
 st.sidebar.header("Access Code")
 with st.sidebar.container(border=True):

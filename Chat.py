@@ -92,6 +92,7 @@ def setup_sidebar():
                 st.image(val)
             else:
                 st.subheader(f"{key.replace("_", " ")}: {val}")
+
     def toggle_text_chat():
         st.session_state.text_chat_enabled = not st.session_state.text_chat_enabled
 
@@ -165,17 +166,17 @@ def process_user_query(user_query):
 
 
 st.set_page_config(
-    page_title="AI SimBot | Chat",
+    page_title="Chat | " + settings["title"],
     page_icon=":material/chat:",
     layout="wide",
     initial_sidebar_state="expanded",
 )
+st.title("Chat | " + settings["title"])
 
 # Inject CSS for custom styles
 local_css("style.css")
 if "chat_active" not in st.session_state:
     init_session()
-st.title(settings["title"])
 container1, container3 = setup_sidebar()
 if st.session_state.text_chat_enabled:
     show_messages()
@@ -186,7 +187,9 @@ else:
 
 # Check if there's a manual input and process it
 if st.session_state.manual_input:
-    container3.button("🤔 Generating Feedback...", icon=":material/feedback:", disabled=True)
+    container3.button(
+        "🤔 Generating Feedback...", icon=":material/feedback:", disabled=True
+    )
     user_query = st.session_state.manual_input
 else:
     if st.session_state.end_session_button_clicked:
