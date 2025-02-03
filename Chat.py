@@ -92,17 +92,19 @@ def setup_sidebar():
                 st.image(val)
             else:
                 st.subheader(f"{key.replace("_", " ")}: {val}")
-    col1, col2, col3 = st.sidebar.columns(3, gap="medium", border=True)
-
     def toggle_text_chat():
         st.session_state.text_chat_enabled = not st.session_state.text_chat_enabled
 
-    col2.toggle(
+    container = st.sidebar.container(border=True)
+    con1 = container.container()
+    con2 = container.container(border=True)
+    con3 = container.container()
+    con2.toggle(
         ":material/keyboard: Enable Text Chat",
         value=st.session_state.text_chat_enabled,
         on_change=toggle_text_chat,
     )
-    return col1, col3
+    return con1, con3
 
 
 def show_messages():
@@ -174,7 +176,7 @@ local_css("style.css")
 if "chat_active" not in st.session_state:
     init_session()
 st.title(settings["title"])
-col1, col3 = setup_sidebar()
+container1, container3 = setup_sidebar()
 if st.session_state.text_chat_enabled:
     show_messages()
 else:
@@ -184,7 +186,7 @@ else:
 
 # Check if there's a manual input and process it
 if st.session_state.manual_input:
-    col3.button("🤔 Generating Feedback...", icon=":material/feedback:", disabled=True)
+    container3.button("🤔 Generating Feedback...", icon=":material/feedback:", disabled=True)
     user_query = st.session_state.manual_input
 else:
     if st.session_state.end_session_button_clicked:
@@ -194,7 +196,7 @@ else:
             "Click 'End Session' Button in the Left Panel to Receive Feedback and Download Transcript.",
             disabled=not st.session_state.text_chat_enabled,
         )
-        if transcript := handle_audio_input(col1):
+        if transcript := handle_audio_input(container1):
             user_query = transcript
 
 if user_query:
@@ -206,7 +208,7 @@ if user_query:
 # Handle end session
 if not st.session_state.end_session_button_clicked:
     if len(st.session_state.messages) > 1:
-        if col3.button(
+        if container3.button(
             "End Session",
             icon=":material/call_end:",
             disabled=st.session_state.end_session_button_clicked,
@@ -221,8 +223,8 @@ if not st.session_state.end_session_button_clicked:
             # Trigger the manual input immediately
             st.rerun()
     else:
-        col3.button("End Session", icon=":material/call_end:", disabled=True)
+        container3.button("End Session", icon=":material/call_end:", disabled=True)
 
 # Show the download button
 if st.session_state.download_transcript:
-    show_download(col3)
+    show_download(container3)
