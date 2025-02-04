@@ -66,9 +66,7 @@ def create_transcript_document():
 # Session Initialization
 def init_session():
     defaults = {
-        "chat_active": True,
         "messages": [{"role": "system", "content": get_prompt()}],
-        "processed_audio": None,
         "manual_input": None,
         "text_chat_enabled": False,
         "end_session_button_clicked": False,
@@ -126,17 +124,15 @@ def show_messages():
 
 def handle_audio_input(container):
     with container:
-        audio = mic_recorder(
+        if audio := mic_recorder(
             start_prompt="🎙 Record",
             stop_prompt="📤 Stop",
-            just_once=False,
+            just_once=True,
             use_container_width=True,
             format="wav",
             key="recorder",
-        )
-    # Check if there is a new audio recording and it has not been processed yet
-    if audio and audio["id"] != st.session_state.processed_audio:
-        return speech_to_text(audio)
+        ):
+            return speech_to_text(audio)
 
 
 def process_user_query(user_query):
@@ -175,7 +171,7 @@ st.title("Chat | " + settings["title"])
 
 # Inject CSS for custom styles
 local_css("style.css")
-if "chat_active" not in st.session_state:
+if "messages" not in st.session_state:
     init_session()
 container1, container3 = setup_sidebar()
 if st.session_state.text_chat_enabled:
