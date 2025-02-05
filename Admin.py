@@ -11,6 +11,8 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 st.title("Admin | " + settings["title"])
+if "role" not in st.session_state:
+    st.switch_page("Login.py")
 
 if st.sidebar.button(f"🟢 Active Users: {get_active_user_count()}"):
     st.rerun()

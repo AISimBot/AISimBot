@@ -168,6 +168,8 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 st.title("Chat | " + settings["title"])
+if "role" not in st.session_state:
+    st.switch_page("Login.py")
 
 # Inject CSS for custom styles
 local_css("style.css")
