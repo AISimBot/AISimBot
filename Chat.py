@@ -182,6 +182,7 @@ else:
     st.markdown(
         "You are in voice chat-only mode, which disables text input and hides the conversation history. If you're experiencing issues with voice chat, you can enable text chat by clicking **Enable Text Chat** next to the record button in the left panel."
     )
+    show_messages()
 
 # Check if there's a manual input and process it
 if st.session_state.manual_input:
