@@ -33,9 +33,9 @@ def elapsed(start):
 
 def autoplay_audio(audio_data):
     b64 = base64.b64encode(audio_data).decode("utf-8")
-    md = f"""
-    <audio autoplay>
+    html_str = f"""
+    <audio id="audio_player" autoplay>
     <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
     </audio>
     """
-    st.markdown(md, unsafe_allow_html=True)
+    st.html(html_str)
