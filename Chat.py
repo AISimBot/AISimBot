@@ -177,12 +177,9 @@ else:
         """
         You are in voice chat-only mode, which disables text input and hides the conversation history.
 
-        1. Click **🎙 Record** in the left panel.
-        2. If prompted, grant your browser access to your microphone.
-        3. When the button changes to **📤 Stop**, begin speaking.
-        4. Click **📤 Stop** when you're finished.
+        When you are ready, click **🎙 Record**, allow microphone access if prompted, speak when the button changes to **📤 Stop**, then click **📤 Stop**.
 
-        If you encounter issues with voice chat, click **Test Sound** below. Optionally, to enable text chat, select **Enable Text Chat** in the left panel.
+        If you experience issues with voice chat, click **Test Sound** below. Optionally, to enable text chat, select **Enable Text Chat** in the left panel.
     """
     )
     if st.button("Test Sound"):
