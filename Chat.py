@@ -173,7 +173,8 @@ container1, container3 = setup_sidebar()
 if st.session_state.text_chat_enabled:
     show_messages()
 else:
-    st.markdown("""
+    st.markdown(
+        """
         You are in voice chat-only mode, which disables text input and hides the conversation history.
 
         1. Click **🎙 Record** in the left panel.
@@ -181,8 +182,11 @@ else:
         3. When the button changes to **📤 Stop**, begin speaking.
         4. Click **📤 Stop** when you're finished.
 
-        If you encounter issues with voice chat, click **Test Sound** at the top of the left panel. Optionally, to enable text chat, select **Enable Text Chat** in the left panel.
-    """)
+        If you encounter issues with voice chat, click **Test Sound** below. Optionally, to enable text chat, select **Enable Text Chat** in the left panel.
+    """
+    )
+    if st.button("Test Sound"):
+        st.switch_page("Test-Sound.py")
 
 # Check if there's a manual input and process it
 if st.session_state.manual_input:
