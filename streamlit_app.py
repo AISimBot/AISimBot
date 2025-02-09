@@ -104,7 +104,7 @@ def load_settings():
 @st.cache_data
 def local_css(file_name):
     with open(file_name) as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+        st.html(f"<style>{f.read()}</style>")
 
 
 @st.cache_data
@@ -142,12 +142,12 @@ def text_to_speech(client, text):
 
 def autoplay_audio(audio_data):
     b64 = base64.b64encode(audio_data).decode("utf-8")
-    md = f"""
+    html_str = f"""
     <audio autoplay>
     <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
     </audio>
     """
-    st.markdown(md, unsafe_allow_html=True)
+    st.html(html_str)
 
 
 # Send prompt to Anthropic and get response
