@@ -8,7 +8,7 @@ import io
 import time
 import codecs
 from Logger import log
-from Utils import get_uuid, elapsed, autoplay_audio
+from Utils import get_uuid, elapsed, autoplay_audio, local_css
 from Session import get_session, update_active_users
 from OpenAIClient import speech_to_text, text_to_speech
 from Settings import settings
@@ -19,12 +19,6 @@ else:
     from OpenAIClient import get_response
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-
-@st.cache_data
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
 @st.cache_data

@@ -39,3 +39,9 @@ def autoplay_audio(audio_data):
     </audio>
     """
     st.html(html_str)
+
+
+@st.cache_data
+def local_css(file_name):
+    with open(file_name) as f:
+        st.html(f"<style>{f.read()}</style>")
