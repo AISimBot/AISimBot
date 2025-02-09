@@ -173,9 +173,16 @@ container1, container3 = setup_sidebar()
 if st.session_state.text_chat_enabled:
     show_messages()
 else:
-    st.markdown(
-        "You are in voice chat-only mode, which disables text input and hides the conversation history. If you're experiencing issues with voice chat, you can enable text chat by clicking **Enable Text Chat** next to the record button in the left panel."
-    )
+    st.markdown("""
+        You are in voice chat-only mode, which disables text input and hides the conversation history.
+
+        1. Click **🎙 Record** in the left panel.
+        2. If prompted, grant your browser access to your microphone.
+        3. When the button changes to **📤 Stop**, begin speaking.
+        4. Click **📤 Stop** when you're finished.
+
+        If you encounter issues with voice chat, click **Test Sound** at the top of the left panel. Optionally, to enable text chat, select **Enable Text Chat** in the left panel.
+    """)
 
 # Check if there's a manual input and process it
 if st.session_state.manual_input:

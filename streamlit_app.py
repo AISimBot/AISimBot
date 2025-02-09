@@ -7,15 +7,16 @@ from Logger import log
 def main():
     login_page = st.Page("Login.py", title="Login", icon=":material/login:")
     chat_page = st.Page("Chat.py", title="Chat", icon=":material/chat:")
+    test_page = st.Page("Test-Sound.py", title="Test Sound", icon="👂")
     admin_page = st.Page(
         "Admin.py", title="Admin", icon=":material/admin_panel_settings:"
     )
     if "role" not in st.session_state:
         pg = st.navigation([login_page, chat_page], position="hidden")
     elif st.session_state.role == "student":
-        pg = st.navigation([chat_page], position="hidden")
+        pg = st.navigation([chat_page, test_page])
     elif st.session_state.role == "admin":
-        pg = st.navigation([chat_page, admin_page])
+        pg = st.navigation([chat_page, test_page, admin_page])
     pg.run()
     st.sidebar.header("Content Warning")
     st.sidebar.markdown(f":material/warning: :orange[{settings["warning"]}]")
