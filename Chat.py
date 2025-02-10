@@ -177,7 +177,7 @@ else:
         """
         You are in voice chat-only mode, which disables text input and hides the conversation history.
 
-        When you are ready, click **🎙 Record**, allow microphone access if prompted, speak when the button changes to **📤 Stop**, then click **📤 Stop**.
+        When you are ready, click **🎙 Record**, allow microphone access if prompted, speak when the button changes to **📤 Stop**, then click **📤 Stop** when you are done speaking.
 
         If you experience issues with voice chat, click **Test Sound** below. Optionally, to enable text chat, select **Enable Text Chat** in the left panel.
     """
