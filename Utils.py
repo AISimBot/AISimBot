@@ -31,14 +31,17 @@ def elapsed(start):
     return dur_str
 
 
-def autoplay_audio(audio_data):
+def autoplay_audio(audio_data, container=None):
     b64 = base64.b64encode(audio_data).decode("utf-8")
     html_str = f"""
     <audio id="audio_player" autoplay>
     <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
     </audio>
     """
-    st.html(html_str)
+    if container==None:
+        container = st.empty()
+    with container:
+        st.html(html_str)
 
 
 @st.cache_data

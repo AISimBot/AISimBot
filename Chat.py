@@ -92,12 +92,13 @@ def setup_sidebar():
     con1 = container.container()
     con2 = container.container(border=True)
     con3 = container.container()
+    con4 = container.empty()
     con2.toggle(
         ":material/keyboard: Enable Text Chat",
         value=st.session_state.text_chat_enabled,
         on_change=toggle_text_chat,
     )
-    return con1, con3
+    return con1, con3, con4
 
 
 def show_messages():
@@ -129,7 +130,7 @@ def handle_audio_input(container):
             return speech_to_text(audio)
 
 
-def process_user_query(user_query):
+def process_user_query(user_query, container):
     # Store the user's query into the history
     st.session_state.messages.append({"role": "user", "content": user_query.strip()})
     # Display the user's query
@@ -145,7 +146,7 @@ def process_user_query(user_query):
     st.session_state.messages.append({"role": "assistant", "content": response})
     if not st.session_state.end_session_button_clicked:
         if audio := text_to_speech(response):
-            autoplay_audio(audio)
+            autoplay_audio(audio, container)
 
     if st.session_state.text_chat_enabled:
         with st.chat_message(
@@ -169,7 +170,7 @@ if "role" not in st.session_state:
 local_css("style.css")
 if "messages" not in st.session_state:
     init_session()
-container1, container3 = setup_sidebar()
+container1, container3, container4 = setup_sidebar()
 if st.session_state.text_chat_enabled:
     show_messages()
 else:
@@ -203,7 +204,7 @@ else:
             user_query = transcript
 
 if user_query:
-    process_user_query(user_query)
+    process_user_query(user_query, container4)
     if st.session_state.manual_input:
         st.session_state.manual_input = None
         st.rerun()
