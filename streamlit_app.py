@@ -12,7 +12,7 @@ def main():
         "Admin.py", title="Admin", icon=":material/admin_panel_settings:"
     )
     if "role" not in st.session_state:
-        pg = st.navigation([login_page, chat_page], position="hidden")
+        pg = st.navigation([login_page, test_page], position="hidden")
     elif st.session_state.role == "student":
         pg = st.navigation([chat_page, test_page], position="hidden")
     elif st.session_state.role == "admin":
