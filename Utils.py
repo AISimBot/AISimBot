@@ -36,7 +36,7 @@ def autoplay_audio(audio_data, container=None, controls=False):
     if controls:
         html_str = '<audio id="audio_player" autoplay controls>'
     else:
-        html_str = '"<audio id="audio_player" autoplay>'
+        html_str = '<audio id="audio_player" autoplay>'
     html_str += f"""
     <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
     </audio>
