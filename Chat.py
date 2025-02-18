@@ -180,11 +180,9 @@ else:
 
         When you are ready, click **🎙 Record**, allow microphone access if prompted, speak when the button changes to **📤 Stop**, then click **📤 Stop** when you are done speaking.
 
-        If you experience issues with voice chat, click **Test Sound** below. Optionally, to enable text chat, select **Enable Text Chat** in the left panel.
+        If you experience issues with voice chat, click **Enable Text Chat** in the left panel.
     """
     )
-    if st.button("Test Sound"):
-        st.switch_page("Test-Sound.py")
 
 # Check if there's a manual input and process it
 if st.session_state.manual_input:
