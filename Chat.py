@@ -98,6 +98,11 @@ def setup_sidebar():
         value=st.session_state.text_chat_enabled,
         on_change=toggle_text_chat,
     )
+    with container.container():
+        if st.button("Start Over", icon=":material/restart_alt:"):
+            del st.session_state["messages"]
+            del st.session_state["text_chat_enabled"]
+            st.rerun()
     return con1, con3, con4
 
 
