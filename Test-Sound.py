@@ -41,6 +41,7 @@ if st.button("Start Chat"):
     st.switch_page("Chat.py")
 st.sidebar.header("Test Microphone and Speaker")
 with st.sidebar:
+    player_container = st.empty()
     if audio := mic_recorder(
         start_prompt="🎙 Record",
         stop_prompt="📤 Stop",
@@ -49,4 +50,4 @@ with st.sidebar:
         format="wav",
         key="recorder",
     ):
-        autoplay_audio(audio["bytes"], controls=True)
+        autoplay_audio(audio["bytes"], player_container, controls=True)
