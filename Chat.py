@@ -197,7 +197,9 @@ if st.session_state.manual_input:
     user_query = st.session_state.manual_input
 else:
     if st.session_state.end_session_button_clicked:
-        user_query = st.chat_input("Questions about your feedback? Ask them here.")
+        user_query = st.chat_input(
+            "Ask questions about your feedback below or click 'Start Over' in the left panel."
+        )
     else:
         user_query = st.chat_input(
             "Click 'End Session' Button in the Left Panel to Receive Feedback and Download Transcript.",
