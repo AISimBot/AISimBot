@@ -68,8 +68,7 @@ def init_session():
         "start_time": time.time(),
     }
     for key, val in defaults.items():
-        if key not in st.session_state:
-            st.session_state[key] = val
+        st.session_state[key] = val
     autoplay_audio(open("assets/unlock.mp3", "rb").read())
     log.info(f"Session Start: {get_session()}")
     update_active_users()
@@ -101,7 +100,6 @@ def setup_sidebar():
     with container.container():
         if st.button("Start Over", icon=":material/restart_alt:"):
             del st.session_state["messages"]
-            del st.session_state["text_chat_enabled"]
             st.rerun()
     return con1, con3, con4
 
