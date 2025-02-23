@@ -160,6 +160,8 @@ def process_user_query(user_query, container):
         ):
             st.markdown(response)
 
+    update_active_users
+
 
 st.set_page_config(
     page_title="Chat | " + settings["title"],
