@@ -26,11 +26,11 @@ Always keep these details in mind while answering all the questions. Further on,
 
 ### Part A
 
-During the **PAST 12 MONTHS**, on how many days did you:
+During the past 12 months, on how many days did you:
 1. Drink more than a few sips of beer, wine, or any drink containing alcohol? Say “0” if none.
 2. Use any marijuana (cannabis, weed, oil, wax, or hash by smoking, vaping, dabbing, or in edibles) or “synthetic marijuana” (like “K2,” “Spice”)? Say “0” if none.
 3. Use anything else to get high (like other illegal drugs, pills, prescription or over-the-counter medications, and things that you sniff, huff, vape, or inject)? Say “0” if none.
-4. Use a vaping device* containing nicotine and/or flavors, or use any tobacco products†? Say “0” if none.
+4. Use a vaping device containing nicotine and/or flavors, or use any tobacco products? Say “0” if none.
     * Such as e-cigs, mods, pod devices like JUUL, disposable vapes like Puff Bar, vape pens, or e-hookahs. Cigarettes, cigars, cigarillos, hookahs, chewing tobacco, snuff, snus, dissolvables, or nicotine pouches.
 
 - If the patient answered “0” for all questions in Part A, ask 1st question only in Part B below, then STOP.
