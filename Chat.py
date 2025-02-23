@@ -143,8 +143,10 @@ def process_user_query(user_query, container):
             avatar=settings["user_avatar"],
         ):
             st.markdown(user_query)
-
-    response = get_response(st.session_state.messages)
+    if st.session_state.end_session_button_clicked:
+        response = get_response(st.session_state.messages, temperature=0.1)
+    else:
+        response = get_response(st.session_state.messages)
     response = response.strip()
     st.session_state.messages.append({"role": "assistant", "content": response})
     if not st.session_state.end_session_button_clicked:

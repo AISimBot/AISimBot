@@ -39,13 +39,17 @@ def text_to_speech(text):
 
 
 # Send prompt to OpenAI and get response
-def get_response(messages):
+def get_response(
+    messages,
+    model=settings["parameters"]["model"],
+    temperature=settings["parameters"]["temperature"],
+):
     try:
         log.debug(f"Sending text request to OpenAI: {messages[-1]['content']}")
         response = get_client().chat.completions.create(
-            model=settings["parameters"]["model"],
+            model=model,
             messages=messages,
-            temperature=settings["parameters"]["temperature"],
+            temperature=temperature,
         )
         completion_text = response.choices[0].message.content.strip()
         return completion_text
@@ -53,13 +57,17 @@ def get_response(messages):
         log.exception("")
 
 
-def stream_response(messages):
+def stream_response(
+    messages,
+    model=settings["parameters"]["model"],
+    temperature=settings["parameters"]["temperature"],
+):
     try:
         log.debug(f"Sending text request to OpenAI: {messages[-1]['content']}")
         stream = get_client().chat.completions.create(
-            model=settings["parameters"]["model"],
+            model=model,
             messages=messages,
-            temperature=settings["parameters"]["temperature"],
+            temperature=temperature,
             stream=True,
             stream_options={"include_usage": True},
         )
