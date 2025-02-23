@@ -144,7 +144,7 @@ def process_user_query(user_query, container):
         ):
             st.markdown(user_query)
     if st.session_state.end_session_button_clicked:
-        response = get_response(st.session_state.messages, temperature=0.1)
+        response = get_response(st.session_state.messages, temperature=0.2)
     else:
         response = get_response(st.session_state.messages)
     response = response.strip()
