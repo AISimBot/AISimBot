@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_mic_recorder import mic_recorder
 from Settings import settings
 from Utils import autoplay_audio, local_css
+from Session import get_active_user_count
 
 st.set_page_config(
     page_title="Test Microphone and Speaker | " + settings["title"],
@@ -39,8 +40,12 @@ if st.button("Start Chat"):
     if "messages" in st.session_state:
         st.session_state.messages = st.session_state.messages[:1]
     st.switch_page("Chat.py")
+
 st.sidebar.header("Test Microphone and Speaker")
 with st.sidebar:
+    if st.session_state.role == "admin" and st.button(f"🟢 Active Users: {get_active_user_count()}"):
+        st.rerun()
+
     player_container = st.empty()
     if audio := mic_recorder(
         start_prompt="🎙 Record",

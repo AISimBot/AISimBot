@@ -3,6 +3,7 @@ from Session import get_active_user_count
 from Settings import settings
 from Logger import log
 import json
+from Chat import get_prompt
 
 st.set_page_config(
     page_title="Admin | " + settings["title"],
@@ -16,6 +17,9 @@ if "role" not in st.session_state:
 
 if st.sidebar.button(f"🟢 Active Users: {get_active_user_count()}"):
     st.rerun()
+
+if "messages" not in st.session_state:
+    st.session_state["messages"] = [{"role": "system", "content": get_prompt()}],
 
 st.sidebar.download_button(
     label="Download Prompt",
