@@ -17,15 +17,18 @@ def get_active_users():
     return {}
 
 
-def update_active_users(timeout=300):
+def update_active_users():
     now = time.time()
     active_users = get_active_users()
     id = get_session()
     active_users[id] = now
+
+
+def get_active_user_count(timeout=300):
+    active_users = get_active_users()
+    now = time.time()
     for user_id, last_active in list(active_users.items()):
         if now - last_active > timeout:
             del active_users[user_id]
 
-
-def get_active_user_count():
     return len(get_active_users())
