@@ -97,10 +97,6 @@ def setup_sidebar():
         value=st.session_state.text_chat_enabled,
         on_change=toggle_text_chat,
     )
-    with container.container():
-        if st.button("Start Over", icon=":material/restart_alt:"):
-            del st.session_state["messages"]
-            st.rerun()
     return con1, con3, con4
 
 
@@ -160,7 +156,7 @@ def process_user_query(user_query, container):
         ):
             st.markdown(response)
 
-    update_active_users
+    update_active_users()
 
 
 st.set_page_config(
@@ -233,8 +229,10 @@ if not st.session_state.end_session_button_clicked:
             st.session_state["manual_input"] = "Goodbye. Thank you for coming."
             # Trigger the manual input immediately
             st.rerun()
-    else:
-        container3.button("End Session", icon=":material/call_end:", disabled=True)
+else:
+    if container3.button("Start Over", icon=":material/restart_alt:"):
+        del st.session_state["messages"]
+        st.rerun()
 
 # Show the download button
 if st.session_state.download_transcript:
