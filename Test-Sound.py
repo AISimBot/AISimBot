@@ -43,7 +43,9 @@ if st.button("Start Chat"):
 
 st.sidebar.header("Test Microphone and Speaker")
 with st.sidebar:
-    if st.session_state.role == "admin" and st.button(f"🟢 Active Users: {get_active_user_count()}"):
+    if st.session_state.role == "admin" and st.button(
+        f"🟢 Active Users: {get_active_user_count()}"
+    ):
         st.rerun()
 
     player_container = st.empty()

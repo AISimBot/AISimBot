@@ -8,7 +8,7 @@ import io
 import time
 import codecs
 from Logger import log
-from Utils import get_uuid, elapsed, autoplay_audio, local_css
+from Utils import get_uuid, elapsed, autoplay_audio, local_css, get_prompt
 from Session import get_session, update_active_users
 from OpenAIClient import speech_to_text, text_to_speech
 from Settings import settings
@@ -19,11 +19,6 @@ else:
     from OpenAIClient import get_response
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-
-@st.cache_data
-def get_prompt():
-    return codecs.open("prompt.txt", "r", "utf-8").read()
 
 
 def show_download(container):
@@ -171,7 +166,7 @@ if "role" not in st.session_state:
 
 # Inject CSS for custom styles
 local_css("style.css")
-if "messages" not in st.session_state:
+if "messages" not in st.session_state or "text_chat_enabled" not in st.session_state:
     init_session()
 container1, container3, container4 = setup_sidebar()
 if st.session_state.text_chat_enabled:

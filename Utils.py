@@ -3,6 +3,7 @@ import uuid
 import time
 from datetime import datetime, timedelta
 import base64
+import codecs
 
 
 def get_uuid():
@@ -51,3 +52,8 @@ def autoplay_audio(audio_data, container=None, controls=False):
 def local_css(file_name):
     with open(file_name) as f:
         st.html(f"<style>{f.read()}</style>")
+
+
+@st.cache_data
+def get_prompt():
+    return codecs.open("prompt.txt", "r", "utf-8").read()
