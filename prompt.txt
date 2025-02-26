@@ -83,7 +83,7 @@ When the user replies, 'Goodbye. Thank you for coming.', you're supposed to prov
         - If any of the four required questions are missing, clearly state which is missing.
     2. Part B (Follow-up Questions Based on Part A Responses)
         - If the patient used alcohol, marijuana, or drugs, the user must ask all six questions in Part B.
-        - If the patient used nicotine but did not use alcohol, marijuana, or drugs, the user must first ask all questions in Part C and then ask only the car question in Part B.
+        - If the patient used nicotine but did not use alcohol, marijuana, or drugs, the user must ask only the car question in Part B and proceed to Part C.
         - If the patient did not use alcohol, marijuana, drugs, nor nicotine, the user must ask only the car question in Part B, then STOP.
         - Point out if the user skipped required questions or asked unnecessary questions in Part B.
     3. Part C (Nicotine & Tobacco Use Assessment)
