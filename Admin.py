@@ -1,9 +1,10 @@
 import streamlit as st
-from Session import get_active_user_count
+from Session import get_active_user_count, push_session_log
 from Settings import settings
 from Logger import log
 import json
 from Utils import get_prompt
+import codecs
 
 st.set_page_config(
     page_title="Admin | " + settings["title"],
@@ -58,4 +59,12 @@ with st.form("Prompt"):
     prompt = st.text_area("Temporary Prompt", st.session_state.messages[0]["content"])
     if st.form_submit_button("Temporarily Change"):
         st.session_state.messages[0]["content"] = prompt
-        st.rerun()
+        st.switch_page("Chat.py")
+
+    if st.form_submit_button("Commit"):
+        st.session_state.messages[0]["content"] = prompt
+        codecs.open("prompt.txt", "w", "utf-8").write(
+            st.session_state.messages[0]["content"]
+        )
+        push_session_log()
+        st.switch_page("Chat.py")

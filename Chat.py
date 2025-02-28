@@ -9,7 +9,7 @@ import time
 import codecs
 from Logger import log
 from Utils import get_uuid, elapsed, autoplay_audio, local_css, get_prompt, run_command
-from Session import get_session, update_active_users
+from Session import get_session, update_active_users, log_session, push_session_log
 from OpenAIClient import speech_to_text, text_to_speech
 from Settings import settings
 
@@ -63,10 +63,7 @@ def init_session():
     st.session_state["start_time"] = time.time()
     autoplay_audio(open("assets/unlock.mp3", "rb").read())
     log.info(f"Session Start: {get_session()}")
-    stdout, stderr = run_command("git status")
-    log.info(f"Out: {stdout}")
-    log.info(f"Error: {stderr}")
-
+    run_command("git status")
     update_active_users()
 
 
@@ -152,7 +149,7 @@ def process_user_query(user_query, container):
         ):
             st.markdown(response)
 
-    update_active_users()
+    log_session()
 
 
 st.set_page_config(
@@ -206,6 +203,7 @@ if user_query:
     process_user_query(user_query, container4)
     if st.session_state.manual_input:
         st.session_state.manual_input = None
+        push_session_log()
         st.rerun()
 
 # Handle end session

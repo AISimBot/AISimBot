@@ -2,7 +2,7 @@ import streamlit as st
 from streamlit_mic_recorder import mic_recorder
 from Settings import settings
 from Utils import autoplay_audio, local_css
-from Session import get_active_user_count
+from Session import get_active_user_count, setup_session_log
 
 st.set_page_config(
     page_title="Test Microphone and Speaker | " + settings["title"],
@@ -15,6 +15,7 @@ st.title("Test Sound | " + settings["title"])
 if "role" not in st.session_state:
     st.switch_page("Login.py")
 
+setup_session_log()
 # Inject CSS for custom styles
 local_css("style.css")
 st.markdown(

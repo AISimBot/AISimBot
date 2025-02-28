@@ -6,14 +6,19 @@ import base64
 import codecs
 import shlex
 import subprocess
+from Logger import log
 
 
 def run_command(command, cwd="."):
+    log.info(f"Command: {command}")
     command_args = shlex.split(command)
     process = subprocess.Popen(
         command_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, cwd=cwd
     )
     stdout, stderr = process.communicate()
+    log.info(f"Out: {stdout}")
+    if stderr:
+        log.info(f"Error: {stderr}")
     return stdout, stderr
 
 
