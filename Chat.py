@@ -54,16 +54,13 @@ def create_transcript_document():
 
 # Session Initialization
 def init_session():
-    defaults = {
-        "messages": [{"role": "system", "content": get_prompt()}],
-        "manual_input": None,
-        "text_chat_enabled": False,
-        "end_session_button_clicked": False,
-        "download_transcript": False,
-        "start_time": time.time(),
-    }
-    for key, val in defaults.items():
-        st.session_state[key] = val
+    if "messages" not in st.session_state:
+        st.session_state["messages"] = [{"role": "system", "content": get_prompt()}]
+    st.session_state["manual_input"] = None
+    st.session_state["text_chat_enabled"] = False
+    st.session_state["end_session_button_clicked"] = False
+    st.session_state["download_transcript"] = False
+    st.session_state["start_time"] = time.time()
     autoplay_audio(open("assets/unlock.mp3", "rb").read())
     log.info(f"Session Start: {get_session()}")
     update_active_users()
@@ -166,7 +163,7 @@ if "role" not in st.session_state:
 
 # Inject CSS for custom styles
 local_css("style.css")
-if "messages" not in st.session_state or "text_chat_enabled" not in st.session_state:
+if "text_chat_enabled" not in st.session_state:
     init_session()
 container1, container3, container4 = setup_sidebar()
 if st.session_state.text_chat_enabled:
@@ -226,7 +223,8 @@ if not st.session_state.end_session_button_clicked:
             st.rerun()
 else:
     if container3.button("Start Over", icon=":material/restart_alt:"):
-        del st.session_state["messages"]
+        del st.session_state["text_chat_enabled"]
+        st.session_state.messages = [st.session_state.messages[0]]
         st.rerun()
 
 # Show the download button

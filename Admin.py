@@ -31,7 +31,8 @@ st.sidebar.download_button(
 prompt_file = st.sidebar.file_uploader("Load Prompt", type="txt")
 if prompt_file:
     try:
-        st.session_state.messages[0]["content"] = prompt_file.getvalue().decode("utf-8")
+        prompt = prompt_file.getvalue().decode("utf-8")
+        st.session_state.messages[0]["content"] = prompt
     except Exception as e:
         log.exception(f"{e}")
 
