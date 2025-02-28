@@ -8,7 +8,7 @@ import io
 import time
 import codecs
 from Logger import log
-from Utils import get_uuid, elapsed, autoplay_audio, local_css, get_prompt
+from Utils import get_uuid, elapsed, autoplay_audio, local_css, get_prompt, run_command
 from Session import get_session, update_active_users
 from OpenAIClient import speech_to_text, text_to_speech
 from Settings import settings
@@ -63,6 +63,10 @@ def init_session():
     st.session_state["start_time"] = time.time()
     autoplay_audio(open("assets/unlock.mp3", "rb").read())
     log.info(f"Session Start: {get_session()}")
+    stdout, stderr = run_command("git status")
+    log.info(f"Out: {stdout}")
+    log.info(f"Error: {stderr}")
+
     update_active_users()
 
 

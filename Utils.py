@@ -4,6 +4,17 @@ import time
 from datetime import datetime, timedelta
 import base64
 import codecs
+import shlex
+import subprocess
+
+
+def run_command(command, cwd="."):
+    command_args = shlex.split(command)
+    process = subprocess.Popen(
+        command_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, cwd=cwd
+    )
+    stdout, stderr = process.communicate()
+    return stdout, stderr
 
 
 def get_uuid():
