@@ -8,7 +8,7 @@ import io
 import time
 import codecs
 from Logger import log
-from Utils import get_uuid, elapsed, autoplay_audio, local_css, get_prompt, run_command
+from Utils import get_uuid, elapsed, autoplay_audio, local_css, get_prompt
 from Session import get_session, update_active_users, log_session, push_session_log
 from OpenAIClient import speech_to_text, text_to_speech
 from Settings import settings
@@ -63,7 +63,6 @@ def init_session():
     st.session_state["start_time"] = time.time()
     autoplay_audio(open("assets/unlock.mp3", "rb").read())
     log.info(f"Session Start: {get_session()}")
-    run_command("git status")
     update_active_users()
 
 
@@ -132,7 +131,11 @@ def process_user_query(user_query, container):
             avatar=settings["user_avatar"],
         ):
             st.markdown(user_query)
-    if st.session_state.end_session_button_clicked:
+    if st.session_state.manual_input:
+        response = get_response(
+            st.session_state.messages, model="o3-mini", temperature=None
+        )
+    elif st.session_state.end_session_button_clicked:
         response = get_response(st.session_state.messages, temperature=0.2)
     else:
         response = get_response(st.session_state.messages)

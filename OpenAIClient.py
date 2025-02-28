@@ -46,11 +46,17 @@ def get_response(
 ):
     try:
         log.debug(f"Sending text request to OpenAI: {messages[-1]['content']}")
-        response = get_client().chat.completions.create(
-            model=model,
-            messages=messages,
-            temperature=temperature,
-        )
+        if temperature:
+            response = get_client().chat.completions.create(
+                model=model,
+                messages=messages,
+                temperature=temperature,
+            )
+        else:
+            response = get_client().chat.completions.create(
+                model=model,
+                messages=messages,
+            )
         completion_text = response.choices[0].message.content.strip()
         return completion_text
     except Exception as e:
@@ -64,13 +70,22 @@ def stream_response(
 ):
     try:
         log.debug(f"Sending text request to OpenAI: {messages[-1]['content']}")
-        stream = get_client().chat.completions.create(
-            model=model,
-            messages=messages,
-            temperature=temperature,
-            stream=True,
-            stream_options={"include_usage": True},
-        )
+        if temperature:
+            stream = get_client().chat.completions.create(
+                model=model,
+                messages=messages,
+                temperature=temperature,
+                stream=True,
+                stream_options={"include_usage": True},
+            )
+        else:
+            stream = get_client().chat.completions.create(
+                model=model,
+                messages=messages,
+                stream=True,
+                stream_options={"include_usage": True},
+            )
+
         for chunk in stream:
             if chunk.choices and chunk.choices[0].delta.content:
                 yield chunk.choices[0].delta.content
