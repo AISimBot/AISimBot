@@ -9,7 +9,13 @@ import time
 import codecs
 from Logger import log
 from Utils import get_uuid, elapsed, autoplay_audio, local_css, get_prompt
-from Session import get_session, update_active_users, log_session, push_session_log
+from Session import (
+    get_session,
+    update_active_users,
+    get_active_user_count,
+    log_session,
+    push_session_log,
+)
 from OpenAIClient import speech_to_text, text_to_speech
 from Settings import settings
 
@@ -54,16 +60,20 @@ def create_transcript_document():
 
 # Session Initialization
 def init_session():
+    st.session_state["start_time"] = time.time()
     if "messages" not in st.session_state:
         st.session_state["messages"] = [{"role": "system", "content": get_prompt()}]
+    # Cache large prompt to cut down first response time.
+    get_response(st.session_state.messages)
     st.session_state["manual_input"] = None
     st.session_state["text_chat_enabled"] = False
     st.session_state["end_session_button_clicked"] = False
     st.session_state["download_transcript"] = False
-    st.session_state["start_time"] = time.time()
     autoplay_audio(open("assets/unlock.mp3", "rb").read())
-    log.info(f"Session Start: {get_session()}")
     update_active_users()
+    log.info(
+        f"Session Start: {time.time()-st.session_state.start_time:.2f} seconds, {get_session()}"
+    )
 
 
 def setup_sidebar():
