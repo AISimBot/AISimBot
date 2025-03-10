@@ -1,6 +1,8 @@
 import logging
 import pytz
 from datetime import datetime
+import streamlit as st
+from Settings import settings
 
 
 class TimeZoneFormatter(logging.Formatter):
@@ -51,3 +53,11 @@ def get_logger(timezone="UTC"):
         log.addHandler(console_handler)
 
     return log
+
+
+if "logger" not in st.session_state:
+    if "timezone" in settings:
+        st.session_state.logger = get_logger(settings["timezone"])
+    else:
+        st.session_state.logger = get_logger()
+log = st.session_state.logger

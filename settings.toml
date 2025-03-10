@@ -25,16 +25,16 @@ This AI-powered simulation helps you practice advanced communication skills for 
 
 ## Scenario
 
-I’ll be Jordan, a 17-year-old, non-binary student visiting your outpatient clinic for a physical exam needed for school sports participation. You’ll act as the nurse, administering the CRAFFT tool and providing brief counseling and referral to treatment if necessary. You can speak directly to me using the **Record** button or type into the text box.
+I’ll be Jordan, a 17-year-old, non-binary student visiting your outpatient clinic for a physical exam needed for school sports participation. You’ll act as the nurse, administering the CRAFFT tool and providing brief counseling and referral to treatment if necessary.
 
 ## Instructions
 
 - When we’re finished talking, click the **‘End Session’** button, and I’ll provide you with expert feedback on your therapeutic communication style and use of the CRAFFT tool.
 - Be sure to click the **‘Download Transcript’** button to get a copy of our conversation, as you’ll need it to complete the assignment in Canvas.
-- When you’re ready to begin, enter your password and click **‘Start Chat’**.
+- When you’re ready to begin, enter your password and click **‘Login’** to test your microphone and speaker.
 '''
 
-warning = "Please be advised that this patient simulation includes themes and discussions of substance use. This simulation might evoke strong emotions or may be distressing for individuals with personal experiences related to substance use or addiction. If you feel overwhelmed by the content, please discontinue the simulation and reach out to your course faculty, or schedule an appointment with [Northeastern University Health & Counseling Services](https://uhcs.northeastern.edu/). If you or someone you know is struggling with substance use or addiction, support is available."
+warning = "This simulation might evoke strong emotions or may be distressing for individuals with personal experiences related to substance use or addiction. If you feel overwhelmed by the content, please discontinue the simulation and reach out to your course faculty, or schedule an appointment with [Northeastern University Health & Counseling Services](https://uhcs.northeastern.edu/). If you or someone you know is struggling with substance use or addiction, support is available."
 
 
 #--------------------
@@ -63,3 +63,5 @@ voice = "nova"
 model = "gpt-4o"
 # Specify between 0 and 2. Higher values like 0.8 will make the output more random (or creative), while lower values like 0.2 will make it more focused and deterministic.
 temperature = 0.7
+feedback_model = "gpt-4o"
+feedback_temperature = 0.1
