@@ -61,7 +61,11 @@ with st.form("Prompt"):
         st.session_state.messages[0]["content"] = prompt
         st.switch_page("Chat.py")
 
-    if st.form_submit_button("Commit"):
+    if (
+        "GITHUB_TOKEN" in st.secrets
+        and "GITHUB_REPOSITORY" in st.secrets
+        and st.form_submit_button("Commit")
+    ):
         st.session_state.messages[0]["content"] = prompt
         codecs.open("prompt.txt", "w", "utf-8").write(
             st.session_state.messages[0]["content"]

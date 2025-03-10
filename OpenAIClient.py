@@ -46,6 +46,8 @@ def get_response(
 ):
     try:
         log.debug(f"Sending text request to OpenAI: {messages[-1]['content']}")
+        if model.startswith("o"):
+            temperature = None
         if temperature:
             response = get_client().chat.completions.create(
                 model=model,
@@ -70,6 +72,8 @@ def stream_response(
 ):
     try:
         log.debug(f"Sending text request to OpenAI: {messages[-1]['content']}")
+        if model.startswith("o"):
+            temperature = None
         if temperature:
             stream = get_client().chat.completions.create(
                 model=model,

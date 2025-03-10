@@ -143,10 +143,15 @@ def process_user_query(user_query, container):
             st.markdown(user_query)
     if st.session_state.manual_input:
         response = get_response(
-            st.session_state.messages, model="o3-mini", temperature=None
+            st.session_state.messages,
+            settings["parameters"]["feedback_model"],
+            settings["parameters"]["feedback_temperature"],
         )
     elif st.session_state.end_session_button_clicked:
-        response = get_response(st.session_state.messages, temperature=0.2)
+        response = get_response(
+            st.session_state.messages,
+            temperature=settings["parameters"]["feedback_temperature"],
+        )
     else:
         response = get_response(st.session_state.messages)
     response = response.strip()
