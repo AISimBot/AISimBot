@@ -33,7 +33,10 @@ def get_logger(timezone="UTC"):
     """
     log = logging.getLogger(__name__)
     if not log.hasHandlers():  # Avoid adding handlers multiple times
-        log.setLevel(logging.INFO)
+        if "log_level" in st.secrets and st.secrets["log_level"] == "debug":
+            log.setLevel(logging.DEBUG)
+        else:
+            log.setLevel(logging.INFO)
 
         # Define a formatter with time in the specified time zone
         formatter = TimeZoneFormatter(
