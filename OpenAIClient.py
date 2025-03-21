@@ -17,7 +17,7 @@ def speech_to_text(audio):
         audio_bio = io.BytesIO(audio["bytes"])
         audio_bio.name = "audio.wav"
         transcript = get_client().audio.transcriptions.create(
-            model="whisper-1", response_format="text", file=audio_bio
+            model="gpt-4o-mini-transcribe", response_format="text", file=audio_bio
         )
         st.session_state.processed_audio = id
         return transcript
@@ -25,13 +25,14 @@ def speech_to_text(audio):
         log.exception("")
 
 
-def text_to_speech(text):
+def text_to_speech(text, instructions):
     try:
         log.debug(f"TTS: {text}")
         response = get_client().audio.speech.create(
-            model="tts-1",
+            model="gpt-4o-mini-tts",
             voice=settings["parameters"]["voice"],
             input=text,
+            instructions=instructions,
         )
         return response.content
     except Exception as e:

@@ -157,7 +157,7 @@ def process_user_query(user_query, container):
     response = response.strip()
     st.session_state.messages.append({"role": "assistant", "content": response})
     if not st.session_state.end_session_button_clicked:
-        if audio := text_to_speech(response):
+        if audio := text_to_speech(response, instructions="Speak like a nervous and guarded teenager."):
             autoplay_audio(audio, container)
 
     if st.session_state.text_chat_enabled:
