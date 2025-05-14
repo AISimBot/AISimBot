@@ -36,6 +36,17 @@ I’ll be Jordan, a 17-year-old, non-binary student visiting your outpatient cli
 
 warning = "This simulation might evoke strong emotions or may be distressing for individuals with personal experiences related to substance use or addiction. If you feel overwhelmed by the content, please discontinue the simulation and reach out to your course faculty, or schedule an appointment with [Northeastern University Health & Counseling Services](https://uhcs.northeastern.edu/). If you or someone you know is struggling with substance use or addiction, support is available."
 
+unavailable = '''
+**🛠️ AISimBot is Getting a Tune-Up!**
+
+We’re making some upgrades under the hood to make your next simulation even smoother, smarter, and more realistic.
+
+AISimBot will be back shortly—fresher than ever.
+
+💡 In the meantime, take a break, grab a coffee, or imagine the perfect patient encounter. We’ll be ready when you are.
+
+Thanks for your patience! 🩺🤖
+'''
 
 #--------------------
 

@@ -23,15 +23,19 @@ st.set_page_config(
 )
 st.title("Login | " + settings["title"])
 
-st.sidebar.header("Access Code")
-with st.sidebar.container(border=True):
-    with st.form("Credentials"):
-        st.text_input("Access Code", type="password", key="password")
-        if st.form_submit_button("Login"):
-            if check_password():
-                st.switch_page("Test-Sound.py")
-            else:
-                st.error("😕 Invalid Code")
+if "password" in st.secrets:
+    st.sidebar.header("Access Code")
+    with st.sidebar.container(border=True):
+        with st.form("Credentials"):
+            st.text_input("Access Code", type="password", key="password")
+            if st.form_submit_button("Login"):
+                if check_password():
+                    st.switch_page("Test-Sound.py")
+                else:
+                    st.error("😕 Invalid Code")
 
-with st.container(border=True):
-    st.markdown(settings["intro"])
+    with st.container(border=True):
+        st.markdown(settings["intro"])
+else:
+    with st.container(border=True):
+        st.markdown(settings["unavailable"])

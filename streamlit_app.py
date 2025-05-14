@@ -18,8 +18,9 @@ def main():
     elif st.session_state.role == "admin":
         pg = st.navigation([chat_page, test_page, admin_page])
     pg.run()
-    st.sidebar.header("Content Warning")
-    st.sidebar.markdown(f":material/warning: :orange[{settings["warning"]}]")
+    if "password" in st.secrets:
+        st.sidebar.header("Content Warning")
+        st.sidebar.markdown(f":material/warning: :orange[{settings["warning"]}]")
 
 
 if __name__ == "__main__":
