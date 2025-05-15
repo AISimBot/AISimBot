@@ -120,7 +120,7 @@ def process_user_query(user_query, container):
             "Use the following to conduct debrief session. It is important to focus on only **one** concept or question at a time, and keep your response as natural spoken response not written response.\n\n"
             + response
         )
-        st.session_state.messages[-1] = {"role": "system", "content": response}
+        st.session_state.messages.append({"role": "system", "content": response})
         st.session_state.messages.append(
             {"role": "user", "content": "Time for debriefing!"}
         )

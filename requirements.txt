@@ -3,3 +3,5 @@ openai
 anthropic
 python-docx
 streamlit-mic-recorder
+fpdf2
+mistletoe

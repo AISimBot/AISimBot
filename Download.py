@@ -4,6 +4,38 @@ from io import BytesIO
 from Session import push_session_log
 from Utils import local_css
 from Settings import settings
+from mistletoe import markdown
+from fpdf import FPDF, HTMLMixin
+
+
+class MyFPDF(FPDF, HTMLMixin):
+    pass
+
+
+def create_transcript_pdf():
+    md_lines = ["# Conversation Transcript", ""]
+    for msg in st.session_state.messages[1:]:
+        speaker = (
+            settings["user_name"]
+            if msg["role"] == "user"
+            else settings["assistant_name"]
+        )
+        md_lines.append(f"**{speaker}:** {msg['content']}")
+        md_lines.append("")  # blank line -> new paragraph
+
+    md_text = "\n".join(md_lines)
+    html = markdown(md_text)
+    pdf = MyFPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_font("DejaVuSans", fname="assets/fonts/DejaVuSans.ttf")
+    pdf.add_font("DejaVuSans", fname="assets/fonts/DejaVuSans-Bold.ttf", style="B")
+    pdf.set_font("DejaVuSans", size=16)
+    pdf.add_page()
+    pdf.write_html(html)
+    buf = BytesIO()
+    pdf.output(buf)
+    buf.seek(0)
+    return buf
 
 
 def create_transcript_document():
@@ -41,11 +73,11 @@ st.markdown(settings["agreement"])
 if st.checkbox("I agree to participate in the research."):
     push_session_log()
 
-document = create_transcript_document()
+document = create_transcript_pdf()
 st.download_button(
     label="Download Transcript",
     icon=":material/download:",
     data=document,
-    file_name="Transcript.docx",
-    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    file_name="Transcript.pdf",
+    mime="application/pdf",
 )
