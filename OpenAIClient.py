@@ -25,12 +25,12 @@ def speech_to_text(audio):
         log.exception("")
 
 
-def text_to_speech(text, instructions):
+def text_to_speech(text, voice, instructions):
     try:
-        log.debug(f"TTS: {text}")
+        log.debug(f"TTS: {voice}, {instructions}\n{text}")
         response = get_client().audio.speech.create(
             model="gpt-4o-mini-tts",
-            voice=settings["parameters"]["voice"],
+            voice=voice,
             input=text,
             instructions=instructions,
         )
@@ -46,7 +46,7 @@ def get_response(
     temperature=settings["parameters"]["temperature"],
 ):
     try:
-        log.debug(f"Sending text request to OpenAI: {messages[-1]['content']}")
+        log.debug(f"Sending text to {model}: {messages[-1]['content']}")
         if model.startswith("o"):
             temperature = None
         if temperature:
@@ -72,7 +72,7 @@ def stream_response(
     temperature=settings["parameters"]["temperature"],
 ):
     try:
-        log.debug(f"Sending text request to OpenAI: {messages[-1]['content']}")
+        log.debug(f"Sending text to {model}: {messages[-1]['content']}")
         if model.startswith("o"):
             temperature = None
         if temperature:

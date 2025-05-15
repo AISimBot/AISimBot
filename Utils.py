@@ -64,10 +64,14 @@ def autoplay_audio(audio_data, container=None, controls=False):
         st.html(html_str)
 
 
-@st.cache_data
-def local_css(file_name):
-    with open(file_name) as f:
-        st.html(f"<style>{f.read()}</style>")
+@st.cache_data(show_spinner=False)
+def _load_css(file_name: str) -> str:
+    with open(file_name, encoding="utf-8") as f:
+        return f.read()
+
+def local_css(file_name: str):
+    css = _load_css(file_name)
+    st.html(f"<style>{css}</style>")
 
 
 @st.cache_data

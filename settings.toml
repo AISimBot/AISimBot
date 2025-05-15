@@ -55,7 +55,8 @@ Thanks for your patience! 🩺🤖
 # Add or remove fields as needed.
 # Key names should not contain spaces. Use the _ symbol, which will be replaced with spaces when displayed in the sidebar.
 
-Avatar = "assets/Jordan.jpg"
+Avatar_patient = "assets/Jordan.jpg"
+Avatar_Debrief = "assets/Debriefer.jpg"
 Name = "Jordan Taylor"
 Age = "17"
 Gender = "Non-binary"
@@ -67,12 +68,14 @@ Visit_Reason = "Routine physical exam required for school sports participation."
 
 [parameters]
 # Use one of the followings: alloy, ash, coral, echo, fable, onyx, nova, sage and shimmer.
-# Previews of the voices are available in the Text to speech guide: https://platform.openai.com/docs/guides/text-to-speech#voice-options
-
+# Previews of the voices are available: https://www.openai.fm/
 voice = "nova"
+voice_instruction = "a 17-year-old, non-binary student who plays  sports. Tone: reserved, withdrawn."
 # gpt-4o-mini: fast and cheaper model but with less quality
-model = "gpt-4o"
+model = "gpt-4.1"
 # Specify between 0 and 2. Higher values like 0.8 will make the output more random (or creative), while lower values like 0.2 will make it more focused and deterministic.
 temperature = 0.7
-feedback_model = "gpt-4o"
-feedback_temperature = 0.1
+feedback_model = "o4-mini"
+feedback_temperature = 0.0
+feedback_voice = "shimmer"
+feedback_voice_instruction = "Calm, encouraging teacher reviewing simulation."

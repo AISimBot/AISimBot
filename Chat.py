@@ -103,7 +103,9 @@ def setup_sidebar():
 
 
 def show_messages():
-    for message in st.session_state.messages[1:]:
+    for message in st.session_state.messages:
+        if message["role"] == "system":
+            continue
         name = (
             settings["user_name"]
             if message["role"] == "user"
@@ -147,6 +149,14 @@ def process_user_query(user_query, container):
             settings["parameters"]["feedback_model"],
             settings["parameters"]["feedback_temperature"],
         )
+        response = "Use the following to conduct debrief session. It is important to focus on only **one** concept or question at a time, and keep your response as natural spoken response not written response.\n\n"+response
+        st.session_state.messages[-1] = {"role": "system", "content": response}
+        response = get_response(
+            st.session_state.messages,
+            settings["parameters"]["feedback_model"],
+            settings["parameters"]["feedback_temperature"],
+        )
+        st.session_state.manual_input = None
     elif st.session_state.end_session_button_clicked:
         response = get_response(
             st.session_state.messages,
@@ -156,9 +166,13 @@ def process_user_query(user_query, container):
         response = get_response(st.session_state.messages)
     response = response.strip()
     st.session_state.messages.append({"role": "assistant", "content": response})
-    if not st.session_state.end_session_button_clicked:
+    if not st.session_state.manual_input:
+        voice = settings["parameters"]['voice']if not st.session_state.end_session_button_clicked else settings["parameters"]['feedback_voice']
+        instruction = settings["parameters"]['voice_instruction']if not st.session_state.end_session_button_clicked else settings["parameters"]['feedback_voice_instruction']
         if audio := text_to_speech(
-            response, instructions="Speak like a nervous and guarded teenager."
+            response,
+            voice=voice,
+            instructions=instruction
         ):
             autoplay_audio(audio, container)
 
