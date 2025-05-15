@@ -154,8 +154,7 @@ def process_user_query(user_query, container):
         st.session_state.messages.append({"role": "user", "content": "Hi, I'm ready for my briefing session."})
         response = get_response(
             st.session_state.messages,
-            settings["parameters"]["feedback_model"],
-            settings["parameters"]["feedback_temperature"],
+            temperature=settings["parameters"]["feedback_temperature"],
         )
         st.session_state.manual_input = None
     elif st.session_state.end_session_button_clicked:
@@ -224,15 +223,17 @@ if st.session_state.manual_input:
 else:
     if st.session_state.end_session_button_clicked:
         user_query = st.chat_input(
-            "Ask questions about your feedback below or click 'Start Over' in the left panel."
+            "Ask questions about your feedback below or click 'Start Over' in the left panel.",
+            disabled=not st.session_state.text_chat_enabled,
         )
     else:
         user_query = st.chat_input(
             "Click 'End Session' Button in the Left Panel to Receive Feedback and Download Transcript.",
             disabled=not st.session_state.text_chat_enabled,
         )
-        if transcript := handle_audio_input(container1):
-            user_query = transcript
+
+if transcript := handle_audio_input(container1):
+    user_query = transcript
 
 if user_query:
     process_user_query(user_query, container4)
@@ -250,7 +251,7 @@ if not st.session_state.end_session_button_clicked:
             disabled=st.session_state.end_session_button_clicked,
         ):
             st.session_state.end_session_button_clicked = True
-            st.session_state.text_chat_enabled = True
+            #st.session_state.text_chat_enabled = True
             log.info(
                 f"Session end: {elapsed(st.session_state.start_time)} {get_session()}"
             )
