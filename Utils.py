@@ -69,6 +69,7 @@ def _load_css(file_name: str) -> str:
     with open(file_name, encoding="utf-8") as f:
         return f.read()
 
+
 def local_css(file_name: str):
     css = _load_css(file_name)
     st.html(f"<style>{css}</style>")

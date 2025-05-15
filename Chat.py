@@ -2,7 +2,6 @@ import streamlit as st
 from io import BytesIO
 from streamlit_mic_recorder import mic_recorder
 import re
-from docx import Document
 import warnings
 import io
 import time
@@ -27,37 +26,6 @@ else:
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
-def show_download(container):
-    document = create_transcript_document()
-    container.download_button(
-        label="Download Transcript",
-        icon=":material/download:",
-        data=document,
-        file_name="Transcript.docx",
-        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    )
-
-
-def create_transcript_document():
-    doc = Document()
-    doc.add_heading("Conversation Transcript\n", level=1)
-
-    for message in st.session_state.messages[1:]:
-        if message["role"] == "user":
-            p = doc.add_paragraph()
-            p.add_run(settings["user_name"] + ": ").bold = True
-            p.add_run(message["content"])
-        else:
-            p = doc.add_paragraph()
-            p.add_run(settings["assistant_name"] + ": ").bold = True
-            p.add_run(message["content"])
-
-    buffer = BytesIO()
-    doc.save(buffer)
-    buffer.seek(0)
-    return buffer
-
-
 # Session Initialization
 def init_session():
     st.session_state["start_time"] = time.time()
@@ -67,8 +35,7 @@ def init_session():
     get_response(st.session_state.messages)
     st.session_state["manual_input"] = None
     st.session_state["text_chat_enabled"] = False
-    st.session_state["end_session_button_clicked"] = False
-    st.session_state["download_transcript"] = False
+    st.session_state.session_type = 1
     autoplay_audio(open("assets/unlock.mp3", "rb").read())
     update_active_users()
     log.info(
@@ -149,15 +116,20 @@ def process_user_query(user_query, container):
             settings["parameters"]["feedback_model"],
             settings["parameters"]["feedback_temperature"],
         )
-        response = "Use the following to conduct debrief session. It is important to focus on only **one** concept or question at a time, and keep your response as natural spoken response not written response.\n\n"+response
+        response = (
+            "Use the following to conduct debrief session. It is important to focus on only **one** concept or question at a time, and keep your response as natural spoken response not written response.\n\n"
+            + response
+        )
         st.session_state.messages[-1] = {"role": "system", "content": response}
-        st.session_state.messages.append({"role": "user", "content": "Hi, I'm ready for my briefing session."})
+        st.session_state.messages.append(
+            {"role": "user", "content": "Time for debriefing!"}
+        )
         response = get_response(
             st.session_state.messages,
             temperature=settings["parameters"]["feedback_temperature"],
         )
         st.session_state.manual_input = None
-    elif st.session_state.end_session_button_clicked:
+    elif st.session_state.session_type == 2:
         response = get_response(
             st.session_state.messages,
             temperature=settings["parameters"]["feedback_temperature"],
@@ -167,13 +139,17 @@ def process_user_query(user_query, container):
     response = response.strip()
     st.session_state.messages.append({"role": "assistant", "content": response})
     if not st.session_state.manual_input:
-        voice = settings["parameters"]['voice']if not st.session_state.end_session_button_clicked else settings["parameters"]['feedback_voice']
-        instruction = settings["parameters"]['voice_instruction']if not st.session_state.end_session_button_clicked else settings["parameters"]['feedback_voice_instruction']
-        if audio := text_to_speech(
-            response,
-            voice=voice,
-            instructions=instruction
-        ):
+        voice = (
+            settings["parameters"]["voice"]
+            if st.session_state.session_type == 1
+            else settings["parameters"]["feedback_voice"]
+        )
+        instruction = (
+            settings["parameters"]["voice_instruction"]
+            if st.session_state.session_type == 1
+            else settings["parameters"]["feedback_voice_instruction"]
+        )
+        if audio := text_to_speech(response, voice=voice, instructions=instruction):
             autoplay_audio(audio, container)
 
     if st.session_state.text_chat_enabled:
@@ -217,18 +193,20 @@ else:
 # Check if there's a manual input and process it
 if st.session_state.manual_input:
     container3.button(
-        "🤔 Generating Feedback...", icon=":material/feedback:", disabled=True
+        "🤔 Preparing for Your Debriefing Session...",
+        icon=":material/feedback:",
+        disabled=True,
     )
     user_query = st.session_state.manual_input
 else:
-    if st.session_state.end_session_button_clicked:
+    if st.session_state.session_type == 1:
         user_query = st.chat_input(
-            "Ask questions about your feedback below or click 'Start Over' in the left panel.",
+            "Click 'Next' Button in the Left Panel to move onto a debriefing session.",
             disabled=not st.session_state.text_chat_enabled,
         )
-    else:
+    elif st.session_state.session_type == 2:
         user_query = st.chat_input(
-            "Click 'End Session' Button in the Left Panel to Receive Feedback and Download Transcript.",
+            "Ask questions about your feedback below or click 'Start Over' in the left panel.",
             disabled=not st.session_state.text_chat_enabled,
         )
 
@@ -238,24 +216,21 @@ if transcript := handle_audio_input(container1):
 if user_query:
     process_user_query(user_query, container4)
     if st.session_state.manual_input:
-        st.session_state.manual_input = None
-        push_session_log()
         st.rerun()
 
 # Handle end session
-if not st.session_state.end_session_button_clicked:
+if st.session_state.session_type == 1:
     if len(st.session_state.messages) > 1:
         if container3.button(
-            "End Session",
-            icon=":material/call_end:",
-            disabled=st.session_state.end_session_button_clicked,
+            "Next",
+            icon=":material/navigate_next:",
+            disabled=(st.session_state.session_type == 2),
         ):
-            st.session_state.end_session_button_clicked = True
-            #st.session_state.text_chat_enabled = True
+            st.session_state.session_type = 2
+            # st.session_state.text_chat_enabled = True
             log.info(
                 f"Session end: {elapsed(st.session_state.start_time)} {get_session()}"
             )
-            st.session_state.download_transcript = True
             st.session_state["manual_input"] = "Goodbye. Thank you for coming."
             # Trigger the manual input immediately
             st.rerun()
@@ -265,6 +240,8 @@ else:
         st.session_state.messages = [st.session_state.messages[0]]
         st.rerun()
 
-# Show the download button
-if st.session_state.download_transcript:
-    show_download(container3)
+if st.session_state.session_type == 2 and container3.button(
+    "Next",
+    icon=":material/navigate_next:",
+):
+    st.switch_page("Download.py")

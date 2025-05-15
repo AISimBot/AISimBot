@@ -6,17 +6,18 @@ from Logger import log
 
 def main():
     login_page = st.Page("Login.py", title="Login", icon=":material/login:")
-    chat_page = st.Page("Chat.py", title="Chat", icon=":material/chat:")
     test_page = st.Page("Test-Sound.py", title="Test Sound", icon="👂")
+    chat_page = st.Page("Chat.py", title="Chat", icon=":material/chat:")
+    download_page = st.Page("Download.py", title="Download", icon=":material/download:")
     admin_page = st.Page(
         "Admin.py", title="Admin", icon=":material/admin_panel_settings:"
     )
     if "role" not in st.session_state:
         pg = st.navigation([login_page, test_page], position="hidden")
     elif st.session_state.role == "student":
-        pg = st.navigation([chat_page, test_page], position="hidden")
+        pg = st.navigation([test_page, chat_page, download_page], position="hidden")
     elif st.session_state.role == "admin":
-        pg = st.navigation([chat_page, test_page, admin_page])
+        pg = st.navigation([test_page, chat_page, download_page, admin_page])
     pg.run()
     if "password" in st.secrets:
         st.sidebar.header("Content Warning")

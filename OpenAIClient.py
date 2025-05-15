@@ -61,6 +61,13 @@ def get_response(
                 messages=messages,
             )
         completion_text = response.choices[0].message.content.strip()
+        tokens = [
+            response.usage.prompt_tokens,
+            response.usage.prompt_tokens_details.cached_tokens,
+            response.usage.completion_tokens,
+            response.usage.completion_tokens_details.reasoning_tokens,
+        ]
+        log.debug(f"Usage: {tokens}")
         return completion_text
     except Exception as e:
         log.exception("")
@@ -94,5 +101,12 @@ def stream_response(
         for chunk in stream:
             if chunk.choices and chunk.choices[0].delta.content:
                 yield chunk.choices[0].delta.content
+        tokens = [
+            chunk.usage.prompt_tokens,
+            chunk.usage.prompt_tokens_details.cached_tokens,
+            chunk.usage.completion_tokens,
+            chunk.usage.completion_tokens_details.reasoning_tokens,
+        ]
+        log.debug(f"Usage: {tokens}")
     except Exception as e:
         log.exception("")
