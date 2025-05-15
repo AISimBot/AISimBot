@@ -14,12 +14,19 @@ class MyFPDF(FPDF, HTMLMixin):
 
 def create_transcript_pdf():
     md_lines = ["# Conversation Transcript", ""]
+    debrief = False
     for msg in st.session_state.messages[1:]:
         speaker = (
             settings["user_name"]
             if msg["role"] == "user"
             else settings["assistant_name"]
         )
+        if msg["role"] == "system":
+            md_lines.append(f"---\n\n# Debrief\n\n")
+            debrief=True
+            speaker = "Instructor"
+        if debrief and msg["role"] == "assistant":
+            speaker = "Instructor"
         md_lines.append(f"**{speaker}:** {msg['content']}")
         md_lines.append("")  # blank line -> new paragraph
 

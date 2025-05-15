@@ -226,10 +226,6 @@ if st.session_state.session_type == 1:
             disabled=(st.session_state.session_type == 2),
         ):
             st.session_state.session_type = 2
-            # st.session_state.text_chat_enabled = True
-            log.info(
-                f"Session end: {elapsed(st.session_state.start_time)} {get_session()}"
-            )
             st.session_state["manual_input"] = "Goodbye. Thank you for coming."
             # Trigger the manual input immediately
             st.rerun()
@@ -243,4 +239,7 @@ if st.session_state.session_type == 2 and container3.button(
     "Next",
     icon=":material/navigate_next:",
 ):
+    log.info(
+        f"Session end: {elapsed(st.session_state.start_time)} {get_session()}"
+    )
     st.switch_page("Download.py")
