@@ -171,7 +171,12 @@ local_css("style.css")
 if "text_chat_enabled" not in st.session_state:
     init_session()
 container1, container3, container4 = setup_sidebar()
-with st.container(border=True):
+col1, col2 = st.columns([0.7, 0.3])
+with col2:
+    img = settings["assistant_interview"] if st.session_state.session_type == 1 else settings["assistant_feedback"]
+    st.image(img)
+
+with col1:
     chatbox = st.container(border=True)
     if st.session_state.text_chat_enabled:
         show_messages(chatbox)
@@ -185,9 +190,6 @@ with st.container(border=True):
             If you experience issues with voice chat, click **Enable Text Chat** in the left panel.
         """
         )
-
-    img = settings["assistant_interview"] if st.session_state.session_type == 1 else settings["assistant_feedback"]
-    st.image(img)
 
     # Check if there's a manual input and process it
     if st.session_state.manual_input:
