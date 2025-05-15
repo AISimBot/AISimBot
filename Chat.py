@@ -171,12 +171,12 @@ local_css("style.css")
 if "text_chat_enabled" not in st.session_state:
     init_session()
 container1, container3, container4 = setup_sidebar()
-col1, col2 = st.columns([0.7, 0.3])
-with col2:
+col1, col2 = st.columns([0.3, 0.7])
+with col1.container(height=800, border=False):
     img = settings["assistant_interview"] if st.session_state.session_type == 1 else settings["assistant_feedback"]
     st.image(img)
 
-with col1:
+with col2.container(height=800, border=True):
     chatbox = st.container(border=True)
     if st.session_state.text_chat_enabled:
         show_messages(chatbox)
