@@ -151,6 +151,7 @@ def process_user_query(user_query, container):
         )
         response = "Use the following to conduct debrief session. It is important to focus on only **one** concept or question at a time, and keep your response as natural spoken response not written response.\n\n"+response
         st.session_state.messages[-1] = {"role": "system", "content": response}
+        st.session_state.messages.append({"role": "user", "content": "Hi, I'm ready for my briefing session."})
         response = get_response(
             st.session_state.messages,
             settings["parameters"]["feedback_model"],
