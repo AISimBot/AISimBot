@@ -48,10 +48,7 @@ def setup_sidebar():
     # Show Profile
     with st.sidebar.container(border=True):
         for key, val in settings["sidebar"].items():
-            if re.search(r"(jpg|png|webp)$", val):
-                st.image(val)
-            else:
-                st.subheader(f"{key.replace("_", " ")}: {val}")
+            st.subheader(f"{key.replace("_", " ")}: {val}")
 
     def toggle_text_chat():
         st.session_state.text_chat_enabled = not st.session_state.text_chat_enabled
@@ -116,13 +113,10 @@ def process_user_query(user_query, container):
             settings["parameters"]["feedback_model"],
             settings["parameters"]["feedback_temperature"],
         )
-        response = (
-            "Use the following to conduct debrief session. It is important to focus on only **one** concept or question at a time, and keep your response as natural spoken response not written response.\n\n"
-            + response
-        )
+        response = "Use the following feedback for debriefing.\n"+response
         st.session_state.messages.append({"role": "system", "content": response})
         st.session_state.messages.append(
-            {"role": "user", "content": "Time for debriefing!"}
+            {"role": "user", "content": "Now proceed to debriefing!"}
         )
         response = get_response(
             st.session_state.messages,
@@ -189,6 +183,9 @@ else:
         If you experience issues with voice chat, click **Enable Text Chat** in the left panel.
     """
     )
+
+img = settings["assistant_interview"] if st.session_state.session_type == 1 else settings["assistant_feedback"]
+st.image(img)
 
 # Check if there's a manual input and process it
 if st.session_state.manual_input:
