@@ -122,7 +122,6 @@ def process_user_query(user_query, container, chatbox):
             st.session_state.messages,
             temperature=settings["parameters"]["feedback_temperature"],
         )
-        st.session_state.manual_input = None
     elif st.session_state.session_type == 2:
         response = get_response(
             st.session_state.messages,
@@ -132,19 +131,19 @@ def process_user_query(user_query, container, chatbox):
         response = get_response(st.session_state.messages)
     response = response.strip()
     st.session_state.messages.append({"role": "assistant", "content": response})
-    if not st.session_state.manual_input:
-        voice = (
-            settings["parameters"]["voice"]
-            if st.session_state.session_type == 1
-            else settings["parameters"]["feedback_voice"]
-        )
-        instruction = (
-            settings["parameters"]["voice_instruction"]
-            if st.session_state.session_type == 1
-            else settings["parameters"]["feedback_voice_instruction"]
-        )
-        if audio := text_to_speech(response, voice=voice, instructions=instruction):
-            autoplay_audio(audio, container)
+
+    voice = (
+        settings["parameters"]["voice"]
+        if st.session_state.session_type == 1
+        else settings["parameters"]["feedback_voice"]
+    )
+    instruction = (
+        settings["parameters"]["voice_instruction"]
+        if st.session_state.session_type == 1
+        else settings["parameters"]["feedback_voice_instruction"]
+    )
+    if audio := text_to_speech(response, voice=voice, instructions=instruction):
+        autoplay_audio(audio, container)
 
     if st.session_state.text_chat_enabled:
         with chatbox.chat_message(
@@ -198,26 +197,25 @@ with col2.container(height=600, border=True):
             icon=":material/feedback:",
             disabled=True,
         )
-        user_query = st.session_state.manual_input
-    else:
-        if st.session_state.session_type == 1:
-            user_query = st.chat_input(
-                "Click 'Next' Button in the Left Panel to move onto a debriefing session.",
-                disabled=not st.session_state.text_chat_enabled,
-            )
-        elif st.session_state.session_type == 2:
-            user_query = st.chat_input(
-                "Ask questions about your feedback below or click 'Start Over' in the left panel.",
-                disabled=not st.session_state.text_chat_enabled,
-            )
+        process_user_query(st.session_state.manual_input, container4, chatbox)
+        st.session_state.manual_input = None
+        container3.empty()
+    if st.session_state.session_type == 1:
+        user_query = st.chat_input(
+            "Click 'Next' Button in the Left Panel to move onto a debriefing session.",
+            disabled=not st.session_state.text_chat_enabled,
+        )
+    elif st.session_state.session_type == 2:
+        user_query = st.chat_input(
+            "Ask questions about your feedback below or click 'Start Over' in the left panel.",
+            disabled=not st.session_state.text_chat_enabled,
+        )
 
     if transcript := handle_audio_input(container1):
         user_query = transcript
 
     if user_query:
         process_user_query(user_query, container4, chatbox)
-        if st.session_state.manual_input:
-            st.rerun()
 
 # Handle end session
 if st.session_state.session_type == 1:
