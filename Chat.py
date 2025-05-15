@@ -66,7 +66,7 @@ def setup_sidebar():
     return con1, con3, con4
 
 
-def show_messages():
+def show_messages(chatbox):
     for message in st.session_state.messages:
         if message["role"] == "system":
             continue
@@ -80,7 +80,7 @@ def show_messages():
             if message["role"] == "user"
             else settings["assistant_avatar"]
         )
-        with st.chat_message(name, avatar=avatar):
+        with chatbox.chat_message(name, avatar=avatar):
             st.markdown(message["content"])
 
 
@@ -97,12 +97,12 @@ def handle_audio_input(container):
             return speech_to_text(audio)
 
 
-def process_user_query(user_query, container):
+def process_user_query(user_query, container, chatbox):
     # Store the user's query into the history
     st.session_state.messages.append({"role": "user", "content": user_query.strip()})
     # Display the user's query
     if st.session_state.text_chat_enabled:
-        with st.chat_message(
+        with chatbox.chat_message(
             settings["user_name"],
             avatar=settings["user_avatar"],
         ):
@@ -147,7 +147,7 @@ def process_user_query(user_query, container):
             autoplay_audio(audio, container)
 
     if st.session_state.text_chat_enabled:
-        with st.chat_message(
+        with chatbox.chat_message(
             settings["assistant_name"],
             avatar=settings["assistant_avatar"],
         ):
@@ -171,49 +171,51 @@ local_css("style.css")
 if "text_chat_enabled" not in st.session_state:
     init_session()
 container1, container3, container4 = setup_sidebar()
-if st.session_state.text_chat_enabled:
-    show_messages()
-else:
-    st.markdown(
+with st.container(border=True):
+    chatbox = st.container(border=True)
+    if st.session_state.text_chat_enabled:
+        show_messages(chatbox)
+    else:
+        st.markdown(
+            """
+            You are in voice chat-only mode, which disables text input and hides the conversation history.
+
+            When you are ready, click **🎙 Record**, allow microphone access if prompted, speak when the button changes to **📤 Stop**, then click **📤 Stop** when you are done speaking.
+
+            If you experience issues with voice chat, click **Enable Text Chat** in the left panel.
         """
-        You are in voice chat-only mode, which disables text input and hides the conversation history.
-
-        When you are ready, click **🎙 Record**, allow microphone access if prompted, speak when the button changes to **📤 Stop**, then click **📤 Stop** when you are done speaking.
-
-        If you experience issues with voice chat, click **Enable Text Chat** in the left panel.
-    """
-    )
-
-img = settings["assistant_interview"] if st.session_state.session_type == 1 else settings["assistant_feedback"]
-st.image(img)
-
-# Check if there's a manual input and process it
-if st.session_state.manual_input:
-    container3.button(
-        "🤔 Preparing for Your Debriefing Session...",
-        icon=":material/feedback:",
-        disabled=True,
-    )
-    user_query = st.session_state.manual_input
-else:
-    if st.session_state.session_type == 1:
-        user_query = st.chat_input(
-            "Click 'Next' Button in the Left Panel to move onto a debriefing session.",
-            disabled=not st.session_state.text_chat_enabled,
-        )
-    elif st.session_state.session_type == 2:
-        user_query = st.chat_input(
-            "Ask questions about your feedback below or click 'Start Over' in the left panel.",
-            disabled=not st.session_state.text_chat_enabled,
         )
 
-if transcript := handle_audio_input(container1):
-    user_query = transcript
+    img = settings["assistant_interview"] if st.session_state.session_type == 1 else settings["assistant_feedback"]
+    st.image(img)
 
-if user_query:
-    process_user_query(user_query, container4)
+    # Check if there's a manual input and process it
     if st.session_state.manual_input:
-        st.rerun()
+        container3.button(
+            "🤔 Preparing for Your Debriefing Session...",
+            icon=":material/feedback:",
+            disabled=True,
+        )
+        user_query = st.session_state.manual_input
+    else:
+        if st.session_state.session_type == 1:
+            user_query = st.chat_input(
+                "Click 'Next' Button in the Left Panel to move onto a debriefing session.",
+                disabled=not st.session_state.text_chat_enabled,
+            )
+        elif st.session_state.session_type == 2:
+            user_query = st.chat_input(
+                "Ask questions about your feedback below or click 'Start Over' in the left panel.",
+                disabled=not st.session_state.text_chat_enabled,
+            )
+
+    if transcript := handle_audio_input(container1):
+        user_query = transcript
+
+    if user_query:
+        process_user_query(user_query, container4, chatbox)
+        if st.session_state.manual_input:
+            st.rerun()
 
 # Handle end session
 if st.session_state.session_type == 1:
