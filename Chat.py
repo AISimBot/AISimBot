@@ -187,7 +187,8 @@ with col2.container(height=600, border=True):
             If you experience issues with voice chat, click **Enable Text Chat** in the left panel.
         """
         )
-
+    user_query = ""
+    input_placeholder = st.empty()
     # Check if there's a manual input and process it
     if st.session_state.manual_input:
         container3.button(
@@ -195,24 +196,31 @@ with col2.container(height=600, border=True):
             icon=":material/feedback:",
             disabled=True,
         )
-        process_user_query(chatbox)
+        input_placeholder.empty()
+        with st.spinner("🤔 Preparing for Your Debriefing Session. Please wait…"):
+            process_user_query(chatbox)
 
-    if st.session_state.stage == 1:
-        user_query = st.chat_input(
-            "Click 'Next' Button in the Left Panel to move onto a debriefing session.",
-            disabled=not st.session_state.text_chat_enabled,
-        )
-    elif st.session_state.stage == 2:
-        user_query = st.chat_input(
-            "Ask questions about your feedback below or click 'Start Over' in the left panel.",
-            disabled=not st.session_state.text_chat_enabled,
-        )
+    elif st.session_state.text_chat_enabled:
+        if st.session_state.stage == 1:
+            user_query = input_placeholder.chat_input(
+                "Click 'Next' Button in the Left Panel to move onto a debriefing session.",
+                disabled=not st.session_state.text_chat_enabled,
+                key="chat_input_stage1",
+            )
+        elif st.session_state.stage == 2:
+            user_query = input_placeholder.chat_input(
+                "Ask questions about your feedback below or click 'Start Over' in the left panel.",
+                disabled=not st.session_state.text_chat_enabled,
+                key="chat_input_stage1",
+            )
 
     if transcript := handle_audio_input(container1):
         user_query = transcript
 
     if user_query:
-        st.session_state.messages.append({"role": "user", "content": user_query.strip()})
+        st.session_state.messages.append(
+            {"role": "user", "content": user_query.strip()}
+        )
         process_user_query(chatbox)
 
 # Handle end session
@@ -223,7 +231,9 @@ if st.session_state.stage == 1:
         disabled=(st.session_state.stage == 2),
     ):
         st.session_state.stage = 2
-        st.session_state.messages.append({"role": "system", "content": "Please provide a feedback."})
+        st.session_state.messages.append(
+            {"role": "system", "content": "Please provide a feedback."}
+        )
         st.session_state.manual_input = "Feedback"
         st.rerun()
 elif st.session_state.stage == 2:
