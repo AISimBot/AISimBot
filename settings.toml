@@ -83,9 +83,7 @@ feedback_model = "o4-mini"
 feedback_temperature = 0.0
 feedback_voice = "shimmer"
 feedback_voice_instruction = '''
-Voice Affect: Very soft whisper; ASMR; soothing; embody tranquility.
-Tone: Calm, peaceful; convey genuine warmth and serenity.
-Pacing: Slow, deliberate, and unhurried; pause gently after instructions to allow the listener time to relax and follow along.
-Emotion: Deeply soothing and comforting; express genuine kindness and care.
-Pronunciation: Smooth, soft articulation, slightly elongating vowels to create a sense of ease.
+Voice Affect: encouraging, assuring, and calm.
+Delivery: Natural conversational
+Emotion: express genuine warmth and care.
 '''

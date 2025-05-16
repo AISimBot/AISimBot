@@ -225,7 +225,7 @@ if st.session_state.stage == 1:
         st.session_state.stage = 2
         st.session_state.messages.append({"role": "system", "content": "Please provide a feedback."})
         st.session_state.manual_input = "Feedback"
-        process_user_query(chatbox)
+        st.rerun()
 elif st.session_state.stage == 2:
     if container3.button("Start Over", icon=":material/restart_alt:"):
         del st.session_state["text_chat_enabled"]
