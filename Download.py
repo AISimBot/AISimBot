@@ -22,8 +22,9 @@ def create_transcript_pdf():
             else settings["assistant_name"]
         )
         if msg["role"] == "system":
-            md_lines.append(f"---\n\n# Debrief\n\n")
-            debrief=True
+            if not debrief:
+                md_lines.append(f"---\n\n# Debrief\n\n")
+            debrief = True
             speaker = "Instructor"
         if debrief and msg["role"] == "assistant":
             speaker = "Instructor"
