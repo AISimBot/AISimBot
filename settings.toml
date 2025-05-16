@@ -82,4 +82,4 @@ temperature = 0.7
 feedback_model = "o4-mini"
 feedback_temperature = 0.0
 feedback_voice = "shimmer"
-feedback_voice_instruction = "Calm, encouraging teacher reviewing simulation."
+feedback_voice_instruction = "Voice Affect: soft whisper ASMR, soothing; embody tranquility."
