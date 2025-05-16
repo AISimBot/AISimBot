@@ -6,7 +6,7 @@ from Utils import local_css
 from Settings import settings
 from mistletoe import markdown
 from fpdf import FPDF, HTMLMixin
-
+from fpdf.enums import AccessPermission
 
 class MyFPDF(FPDF, HTMLMixin):
     pass
@@ -39,6 +39,10 @@ def create_transcript_pdf():
     pdf.add_font("DejaVuSans", fname="assets/fonts/DejaVuSans-Bold.ttf", style="B")
     pdf.set_font("DejaVuSans", size=16)
     pdf.add_page()
+    pdf.set_encryption(
+        owner_password="drkim@32",
+        permissions=AccessPermission.none()
+    )
     pdf.write_html(html)
     buf = BytesIO()
     pdf.output(buf)

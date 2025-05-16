@@ -7,7 +7,7 @@ import codecs
 import shlex
 import subprocess
 from Logger import log
-
+import tomllib
 
 def run_command(command, cwd="."):
     log.info(f"Command: {command}")
@@ -77,4 +77,4 @@ def local_css(file_name: str):
 
 @st.cache_data
 def get_prompt():
-    return codecs.open("prompt.txt", "r", "utf-8").read()
+    return tomllib.load(open("prompts.toml", "rb"))

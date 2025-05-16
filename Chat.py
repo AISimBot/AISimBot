@@ -30,14 +30,20 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 def init_session():
     st.session_state["start_time"] = time.time()
     if "messages" not in st.session_state:
-        st.session_state["messages"] = [{"role": "system", "content": get_prompt()}]
+        st.session_state.prompts = get_prompt()
+        st.session_state["messages"] = [
+            {
+                "role": "system",
+                "content": st.session_state.prompts[0],
+            }
+        ]
     # Cache large prompt to cut down first response time.
     get_response(st.session_state.messages)
     st.session_state["manual_input"] = None
     st.session_state["text_chat_enabled"] = False
     st.session_state.stage = 1
     st.session_state.audio = None
-    autoplay_audio(open("assets/unlock.mp3", "rb").read())
+    autoplay_audio(open("assets/sounds/unlock.mp3", "rb").read())
     update_active_users()
     log.info(
         f"Session Start: {time.time()-st.session_state.start_time:.2f} seconds, {get_session()}"
@@ -113,6 +119,10 @@ def process_user_query(chatbox):
             settings["parameters"]["feedback_model"],
             settings["parameters"]["feedback_temperature"],
         )
+        st.session_state.messages[0] = {
+            "role": "system",
+            "content": st.session_state.prompts[2],
+        }
         response = "Use the following feedback for debriefing.\n" + response
         st.session_state.messages.append({"role": "system", "content": response})
         response = get_response(
@@ -231,8 +241,15 @@ if st.session_state.stage == 1:
         disabled=(st.session_state.stage == 2),
     ):
         st.session_state.stage = 2
+        st.session_state.messages[0] = {
+            "role": "system",
+            "content": st.session_state.prompts[1],
+        }
         st.session_state.messages.append(
-            {"role": "system", "content": "Please provide a feedback."}
+            {
+                "role": "system",
+                "content": "Carefully analyze the conversation above between patient and nurse and provide feedback on their performance as a nurse.",
+            }
         )
         st.session_state.manual_input = "Feedback"
         st.rerun()

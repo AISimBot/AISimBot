@@ -10,13 +10,13 @@ title = "AI SimBot"
 timezone = "UTC"
 error_message = "😞 Oops! An unexpected error occurred. Please try again. If the error persists, please contact the administrator."
 user_name = "Nurse"
-user_avatar = "assets/imgs/User.png"
+user_avatar = "assets/images/User.png"
 assistant_name = "Jordan"
-assistant_avatar = "assets/imgs/Assistant.jpg"
+assistant_avatar = "assets/images/Assistant.jpg"
 
 # Pictures on the sidebar
-assistant_interview = "assets/imgs/Jordan.jpg"
-assistant_feedback = "assets/imgs/Debriefer.jpg"
+assistant_interview = "assets/images/Jordan.jpg"
+assistant_feedback = "assets/images/Debriefer.jpg"
 
 #--------------------
 # Intro message will be displayed before users start chatting.
