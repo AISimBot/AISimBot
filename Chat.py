@@ -183,7 +183,7 @@ with col1.container(height=600, border=False):
 with col2.container(height=600, border=True):
     chatbox = st.container(border=True)
     if len(st.session_state.messages) == 1:
-        with st.spinner("🧑‍⚕️ Preparing Jordan for the interview… Pleas wait."):
+        with st.spinner("🧑‍⚕️ Preparing Jordan for the interview… Please wait."):
             process_user_query(chatbox)
     if st.session_state.text_chat_enabled:
         show_messages(chatbox)
