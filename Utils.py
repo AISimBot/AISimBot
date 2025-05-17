@@ -9,6 +9,7 @@ import subprocess
 from Logger import log
 import tomllib
 
+
 def run_command(command, cwd="."):
     log.info(f"Command: {command}")
     command_args = shlex.split(command)

@@ -34,16 +34,13 @@ def init_session():
         st.session_state["messages"] = [
             {
                 "role": "system",
-                "content": st.session_state.prompts[0],
+                "content": st.session_state.prompts["prompt1"],
             }
         ]
-    # Cache large prompt to cut down first response time.
-    get_response(st.session_state.messages)
     st.session_state["manual_input"] = None
     st.session_state["text_chat_enabled"] = False
     st.session_state.stage = 1
     st.session_state.audio = None
-    autoplay_audio(open("assets/sounds/unlock.mp3", "rb").read())
     update_active_users()
     log.info(
         f"Session Start: {time.time()-st.session_state.start_time:.2f} seconds, {get_session()}"
@@ -121,7 +118,7 @@ def process_user_query(chatbox):
         )
         st.session_state.messages[0] = {
             "role": "system",
-            "content": st.session_state.prompts[2],
+            "content": st.session_state.prompts["prompt3"],
         }
         response = "Use the following feedback for debriefing.\n" + response
         st.session_state.messages.append({"role": "system", "content": response})
@@ -185,6 +182,9 @@ with col1.container(height=600, border=False):
 
 with col2.container(height=600, border=True):
     chatbox = st.container(border=True)
+    if len(st.session_state.messages) == 1:
+        with st.spinner("🧑‍⚕️ Preparing Jordan for the interview… Pleas wait."):
+            process_user_query(chatbox)
     if st.session_state.text_chat_enabled:
         show_messages(chatbox)
     else:
@@ -207,7 +207,9 @@ with col2.container(height=600, border=True):
             disabled=True,
         )
         input_placeholder.empty()
-        with st.spinner("🤔 Preparing for Your Debriefing Session. Please wait…"):
+        with st.spinner(
+            "📋 Reviewing your interaction and compiling insights for debriefing… Please wait."
+        ):
             process_user_query(chatbox)
 
     elif st.session_state.text_chat_enabled:
@@ -243,7 +245,7 @@ if st.session_state.stage == 1:
         st.session_state.stage = 2
         st.session_state.messages[0] = {
             "role": "system",
-            "content": st.session_state.prompts[1],
+            "content": st.session_state.prompts["prompt2"],
         }
         st.session_state.messages.append(
             {
