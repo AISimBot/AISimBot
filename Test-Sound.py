@@ -3,6 +3,9 @@ from streamlit_mic_recorder import mic_recorder
 from Settings import settings
 from Utils import autoplay_audio, local_css
 from Session import get_active_user_count, setup_session_log
+from Utils import get_browser
+from Logger import log
+import re
 
 st.set_page_config(
     page_title="Test Microphone and Speaker | " + settings["title"],
@@ -18,6 +21,17 @@ if "role" not in st.session_state:
 setup_session_log()
 # Inject CSS for custom styles
 local_css("style.css")
+st.session_state.browser = get_browser()
+log.debug(st.session_state.browser)
+if "Safari" in st.session_state.browser:
+    version = re.search(r"\d+\.\d+", st.session_state.browser)[0]
+    version = float(version)
+    if version >= 18.4:
+        st.error(
+            "Safari 18.4, 18.5 is not supported. Please use [Google Chrome](https://www.google.com/chrome/) on your laptop or desktop.",
+            icon=":material/stop:",
+        )
+
 st.markdown(
     """
 To test your microphone and speaker:

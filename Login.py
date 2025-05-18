@@ -1,8 +1,6 @@
 import streamlit as st
 import hmac
 from Settings import settings
-from Utils import get_browser
-from Logger import log
 
 
 def check_password():
@@ -36,7 +34,6 @@ if "password" in st.secrets:
                 else:
                     st.error("😕 Invalid Code")
     with st.container(border=True):
-        log.debug(get_browser())
         st.markdown(settings["intro"])
 else:
     with st.container(border=True):
