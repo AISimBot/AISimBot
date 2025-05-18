@@ -8,6 +8,38 @@ import shlex
 import subprocess
 from Logger import log
 import tomllib
+from browser_detection import browser_detection_engine
+
+
+def get_browser():
+    browser = browser_detection_engine()
+    info = f"{browser['name']} {browser['version']} on {browser['platform']}"
+    tags = []
+    if browser['isAndroid']:
+        tags.append("Android")
+    if browser['isTablet']:
+        tags.append("Tablet")
+    if browser['isMobile']:
+        tags.append("Mobile")
+    if browser['isDesktop']:
+        tags.append("Desktop")
+    if browser['isWebkit']:
+        tags.append("Webkit")
+    if browser['isIE']:
+        tags.append("IE")
+    if browser['isChrome']:
+        tags.append("Chrome")
+    if browser['isFireFox']:
+        tags.append("FireFox")
+    if browser['isSafari']:
+        tags.append("Safari")
+    if browser['isOpera']:
+        tags.append("Opera")
+    if browser['isEdge']:
+        tags.append("Edge")
+    tags = ", ".join(tags)
+    info = info+", "+tags
+    return info
 
 
 def run_command(command, cwd="."):
