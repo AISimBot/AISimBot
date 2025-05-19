@@ -172,7 +172,12 @@ container1, container3, container4 = setup_sidebar()
 if st.session_state.audio:
     autoplay_audio(st.session_state.audio, container4)
     st.session_state.audio = None
-col1, col2 = st.columns([0.3, 0.7])
+
+if settings["enable_text_chat"]:
+    col1, col2 = st.columns([0.3, 0.7])
+else:
+    col1, col2 = st.columns([0.7, 0.3])
+
 with col1.container(height=600, border=False):
     img = (
         settings["assistant_interview"]
