@@ -62,11 +62,12 @@ def setup_sidebar():
     con2 = container.container(border=True)
     con3 = container.container()
     con4 = container.empty()
-    con2.toggle(
-        ":material/keyboard: Enable Text Chat",
-        value=st.session_state.text_chat_enabled,
-        on_change=toggle_text_chat,
-    )
+    if settings["enable_text_chat"]:
+        con2.toggle(
+            ":material/keyboard: Enable Text Chat",
+            value=st.session_state.text_chat_enabled,
+            on_change=toggle_text_chat,
+        )
     return con1, con3, con4
 
 
@@ -187,7 +188,7 @@ with col2.container(height=600, border=True):
             process_user_query(chatbox)
     if st.session_state.text_chat_enabled:
         show_messages(chatbox)
-    else:
+    elif settings["enable_text_chat"] and not st.session_state.text_chat_enabled:
         st.markdown(
             """
             You are in voice chat-only mode, which disables text input and hides the conversation history.
@@ -197,6 +198,13 @@ with col2.container(height=600, border=True):
             If you experience issues with voice chat, click **Enable Text Chat** in the left panel.
         """
         )
+    elif not settings["enable_text_chat"]:
+        st.markdown(
+            """
+            When you are ready, click **🎙 Record**, allow microphone access if prompted, speak when the button changes to **📤 Stop**, then click **📤 Stop** when you are done speaking.
+        """
+        )
+
     user_query = ""
     input_placeholder = st.empty()
     # Check if there's a manual input and process it
