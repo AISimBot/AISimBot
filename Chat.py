@@ -62,7 +62,7 @@ def setup_sidebar():
     con2 = container.container(border=True)
     con3 = container.container()
     con4 = container.empty()
-    if settings["enable_text_chat"]:
+    if settings["allow_text_chat"]:
         con2.toggle(
             ":material/keyboard: Enable Text Chat",
             value=st.session_state.text_chat_enabled,
@@ -173,7 +173,7 @@ if st.session_state.audio:
     autoplay_audio(st.session_state.audio, container4)
     st.session_state.audio = None
 
-if settings["enable_text_chat"]:
+if settings["allow_text_chat"]:
     col1, col2 = st.columns([0.3, 0.7])
 else:
     col1, col2 = st.columns([0.7, 0.3])
@@ -188,27 +188,28 @@ with col1.container(height=600, border=False):
 
 with col2.container(height=600, border=True):
     chatbox = st.container(border=True)
+
+    if not settings["allow_text_chat"]:
+        if st.session_state.stage == 1:
+            st.markdown(
+                "Click 'Next' Button in the Left Panel to move onto a debriefing session."
+            )
+        elif st.session_state.stage == 2:
+            st.markdown(
+                "Click **Next** to download the transcript or click **Start Over** in the left panel."
+            )
+
+    if settings["allow_text_chat"] and not st.session_state.text_chat_enabled:
+        st.markdown(
+            "If you experience issues with voice chat, click **Enable Text Chat** in the left panel."
+        )
+
     if len(st.session_state.messages) == 1:
         with st.spinner("🧑‍⚕️ Preparing Jordan for the interview… Please wait."):
             process_user_query(chatbox)
+
     if st.session_state.text_chat_enabled:
         show_messages(chatbox)
-    elif settings["enable_text_chat"] and not st.session_state.text_chat_enabled:
-        st.markdown(
-            """
-            You are in voice chat-only mode, which disables text input and hides the conversation history.
-
-            When you are ready, click **🎙 Record**, allow microphone access if prompted, speak when the button changes to **📤 Stop**, then click **📤 Stop** when you are done speaking.
-
-            If you experience issues with voice chat, click **Enable Text Chat** in the left panel.
-        """
-        )
-    elif not settings["enable_text_chat"]:
-        st.markdown(
-            """
-            When you are ready, click **🎙 Record**, allow microphone access if prompted, speak when the button changes to **📤 Stop**, then click **📤 Stop** when you are done speaking.
-        """
-        )
 
     user_query = ""
     input_placeholder = st.empty()
@@ -219,22 +220,21 @@ with col2.container(height=600, border=True):
             icon=":material/feedback:",
             disabled=True,
         )
-        input_placeholder.empty()
+
         with st.spinner(
             "📋 Reviewing your interaction and compiling insights for debriefing… Please wait."
         ):
             process_user_query(chatbox)
-
     elif st.session_state.text_chat_enabled:
         if st.session_state.stage == 1:
             user_query = input_placeholder.chat_input(
-                "Click 'Next' Button in the Left Panel to move onto a debriefing session.",
+                "Click 'Next' in the Left Panel to move onto a debriefing session.",
                 disabled=not st.session_state.text_chat_enabled,
                 key="chat_input_stage1",
             )
         elif st.session_state.stage == 2:
             user_query = input_placeholder.chat_input(
-                "Ask questions about your feedback below or click 'Start Over' in the left panel.",
+                "Click 'Next' to download the transcript or click 'Start Over' in the left panel.",
                 disabled=not st.session_state.text_chat_enabled,
                 key="chat_input_stage1",
             )
