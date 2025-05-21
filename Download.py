@@ -4,20 +4,16 @@ from Session import get_session, push_session_log
 from Utils import local_css
 from Settings import settings
 from mistletoe import markdown
-from fpdf import FPDF, HTMLMixin
+from fpdf import FPDF
 from fpdf.enums import AccessPermission
 from html2docx import html2docx
 from pathlib import Path
 
 
-class MyFPDF(FPDF, HTMLMixin):
-    pass
-
-
-def create_transcript_html():
+def create_transcript_html(messages):
     md_lines = ["# Conversation Transcript", ""]
     debrief = False
-    for msg in st.session_state.messages[1:]:
+    for msg in messages[1:]:
         speaker = (
             settings["user_name"]
             if msg["role"] == "user"
@@ -39,8 +35,8 @@ def create_transcript_html():
 
 
 def create_transcript_pdf():
-    html = create_transcript_html()
-    pdf = MyFPDF()
+    html = create_transcript_html(st.session_state.messages)
+    pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_font("DejaVuSans", fname="assets/fonts/DejaVuSans.ttf")
     pdf.add_font("DejaVuSans", fname="assets/fonts/DejaVuSans-Bold.ttf", style="B")
@@ -55,7 +51,7 @@ def create_transcript_pdf():
 
 
 def create_transcript_document():
-    html = create_transcript_html()
+    html = create_transcript_html(st.session_state.messages)
     buf = html2docx(html, title="Transcript")
     with open("sessions/" + get_session() + ".docx", "wb") as file:
         file.write(buf.getvalue())
