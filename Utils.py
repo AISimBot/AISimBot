@@ -7,6 +7,43 @@ import codecs
 import shlex
 import subprocess
 from Logger import log
+import tomllib
+from browser_detection import browser_detection_engine
+
+
+def get_browser():
+    info = "Unknown Browser"
+    try:
+        browser = browser_detection_engine()
+        info = f"{browser['name']} {browser['version']} on {browser['platform']}"
+        tags = []
+        if browser["isAndroid"]:
+            tags.append("Android")
+        if browser["isTablet"]:
+            tags.append("Tablet")
+        if browser["isMobile"]:
+            tags.append("Mobile")
+        if browser["isDesktop"]:
+            tags.append("Desktop")
+        if browser["isWebkit"]:
+            tags.append("Webkit")
+        if browser["isIE"]:
+            tags.append("IE")
+        if browser["isChrome"]:
+            tags.append("Chrome")
+        if browser["isFireFox"]:
+            tags.append("FireFox")
+        if browser["isSafari"]:
+            tags.append("Safari")
+        if browser["isOpera"]:
+            tags.append("Opera")
+        if browser["isEdge"]:
+            tags.append("Edge")
+        tags = ", ".join(tags)
+        info = info + ", " + tags
+    except Exception as e:
+        log.exception(e)
+    return info
 
 
 def run_command(command, cwd="."):
@@ -64,12 +101,17 @@ def autoplay_audio(audio_data, container=None, controls=False):
         st.html(html_str)
 
 
-@st.cache_data
-def local_css(file_name):
-    with open(file_name) as f:
-        st.html(f"<style>{f.read()}</style>")
+@st.cache_data(show_spinner=False)
+def _load_css(file_name: str) -> str:
+    with open(file_name, encoding="utf-8") as f:
+        return f.read()
+
+
+def local_css(file_name: str):
+    css = _load_css(file_name)
+    st.html(f"<style>{css}</style>")
 
 
 @st.cache_data
 def get_prompt():
-    return codecs.open("prompt.txt", "r", "utf-8").read()
+    return tomllib.load(open("prompts.toml", "rb"))

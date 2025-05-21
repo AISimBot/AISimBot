@@ -17,7 +17,10 @@ def speech_to_text(audio):
         audio_bio = io.BytesIO(audio["bytes"])
         audio_bio.name = "audio.wav"
         transcript = get_client().audio.transcriptions.create(
-            model="whisper-1", response_format="text", file=audio_bio
+            model="gpt-4o-transcribe",
+            language="en",
+            response_format="text",
+            file=audio_bio,
         )
         st.session_state.processed_audio = id
         return transcript
@@ -25,13 +28,14 @@ def speech_to_text(audio):
         log.exception("")
 
 
-def text_to_speech(text):
+def text_to_speech(text, voice, instructions):
     try:
-        log.debug(f"TTS: {text}")
+        log.debug(f"TTS: {voice}, {instructions}\n{text}")
         response = get_client().audio.speech.create(
-            model="tts-1",
-            voice=settings["parameters"]["voice"],
+            model="gpt-4o-mini-tts",
+            voice=voice,
             input=text,
+            instructions=instructions,
         )
         return response.content
     except Exception as e:
@@ -45,7 +49,7 @@ def get_response(
     temperature=settings["parameters"]["temperature"],
 ):
     try:
-        log.debug(f"Sending text request to OpenAI: {messages[-1]['content']}")
+        log.debug(f"Sending text to {model}: {messages[-1]['content']}")
         if model.startswith("o"):
             temperature = None
         if temperature:
@@ -60,6 +64,13 @@ def get_response(
                 messages=messages,
             )
         completion_text = response.choices[0].message.content.strip()
+        tokens = [
+            response.usage.prompt_tokens,
+            response.usage.prompt_tokens_details.cached_tokens,
+            response.usage.completion_tokens,
+            response.usage.completion_tokens_details.reasoning_tokens,
+        ]
+        log.debug(f"Usage: {tokens}")
         return completion_text
     except Exception as e:
         log.exception("")
@@ -71,7 +82,7 @@ def stream_response(
     temperature=settings["parameters"]["temperature"],
 ):
     try:
-        log.debug(f"Sending text request to OpenAI: {messages[-1]['content']}")
+        log.debug(f"Sending text to {model}: {messages[-1]['content']}")
         if model.startswith("o"):
             temperature = None
         if temperature:
@@ -93,5 +104,12 @@ def stream_response(
         for chunk in stream:
             if chunk.choices and chunk.choices[0].delta.content:
                 yield chunk.choices[0].delta.content
+        tokens = [
+            chunk.usage.prompt_tokens,
+            chunk.usage.prompt_tokens_details.cached_tokens,
+            chunk.usage.completion_tokens,
+            chunk.usage.completion_tokens_details.reasoning_tokens,
+        ]
+        log.debug(f"Usage: {tokens}")
     except Exception as e:
         log.exception("")

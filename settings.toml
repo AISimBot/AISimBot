@@ -8,12 +8,16 @@
 title = "AI SimBot"
 # See all timezones for log: https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568
 timezone = "UTC"
+allow_text_chat = false
 error_message = "😞 Oops! An unexpected error occurred. Please try again. If the error persists, please contact the administrator."
 user_name = "Nurse"
-user_avatar = "assets/User.png"
+user_avatar = "assets/images/User.png"
 assistant_name = "Jordan"
-assistant_avatar = "assets/Assistant.jpg"
+assistant_avatar = "assets/images/Assistant.jpg"
 
+# Pictures on the sidebar
+assistant_interview = "assets/images/Jordan.jpg"
+assistant_feedback = "assets/images/Debriefer.jpg"
 
 #--------------------
 # Intro message will be displayed before users start chatting.
@@ -36,15 +40,28 @@ I’ll be Jordan, a 17-year-old, non-binary student visiting your outpatient cli
 
 warning = "This simulation might evoke strong emotions or may be distressing for individuals with personal experiences related to substance use or addiction. If you feel overwhelmed by the content, please discontinue the simulation and reach out to your course faculty, or schedule an appointment with [Northeastern University Health & Counseling Services](https://uhcs.northeastern.edu/). If you or someone you know is struggling with substance use or addiction, support is available."
 
+unavailable = '''
+**🛠️ AISimBot is Getting a Tune-Up!**
+
+We’re making some upgrades under the hood to make your next simulation even smoother, smarter, and more realistic.
+
+AISimBot will be back shortly—fresher than ever.
+
+💡 In the meantime, take a break, grab a coffee, or imagine the perfect patient encounter. We’ll be ready when you are.
+
+Thanks for your patience! 🩺🤖
+'''
+
+agreement = '''
+This is an amazing research! You should definitely participate!
+'''
 
 #--------------------
-
 
 [sidebar]
 # Add or remove fields as needed.
 # Key names should not contain spaces. Use the _ symbol, which will be replaced with spaces when displayed in the sidebar.
 
-Avatar = "assets/Jordan.jpg"
 Name = "Jordan Taylor"
 Age = "17"
 Gender = "Non-binary"
@@ -56,12 +73,18 @@ Visit_Reason = "Routine physical exam required for school sports participation."
 
 [parameters]
 # Use one of the followings: alloy, ash, coral, echo, fable, onyx, nova, sage and shimmer.
-# Previews of the voices are available in the Text to speech guide: https://platform.openai.com/docs/guides/text-to-speech#voice-options
-
+# Previews of the voices are available: https://www.openai.fm/
 voice = "nova"
+voice_instruction = "a 17-year-old, non-binary student who plays  sports. Tone: reserved, withdrawn."
 # gpt-4o-mini: fast and cheaper model but with less quality
-model = "gpt-4o"
+model = "gpt-4.1"
 # Specify between 0 and 2. Higher values like 0.8 will make the output more random (or creative), while lower values like 0.2 will make it more focused and deterministic.
 temperature = 0.7
-feedback_model = "gpt-4o"
-feedback_temperature = 0.1
+feedback_model = "o4-mini"
+feedback_temperature = 0.0
+feedback_voice = "shimmer"
+feedback_voice_instruction = '''
+Voice Affect: encouraging, assuring, and calm.
+Delivery: Natural conversational
+Emotion: express genuine warmth and care.
+'''

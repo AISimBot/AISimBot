@@ -20,7 +20,9 @@ if st.sidebar.button(f"🟢 Active Users: {get_active_user_count()}"):
     st.rerun()
 
 if "messages" not in st.session_state:
-    st.session_state["messages"] = [{"role": "system", "content": get_prompt()}]
+    st.session_state["messages"] = [
+        {"role": "system", "content": get_prompt()["prompt1"]}
+    ]
 
 st.sidebar.download_button(
     label="Download Prompt",

@@ -3,6 +3,9 @@ from streamlit_mic_recorder import mic_recorder
 from Settings import settings
 from Utils import autoplay_audio, local_css
 from Session import get_active_user_count, setup_session_log
+from Utils import get_browser
+from Logger import log
+import re
 
 st.set_page_config(
     page_title="Test Microphone and Speaker | " + settings["title"],
@@ -18,29 +21,38 @@ if "role" not in st.session_state:
 setup_session_log()
 # Inject CSS for custom styles
 local_css("style.css")
+st.session_state.browser = get_browser()
+log.debug(st.session_state.browser)
+if "Safari" in st.session_state.browser:
+    version = re.search(r"\d+\.\d+", st.session_state.browser)[0]
+    version = float(version)
+    if version >= 18.4:
+        st.error(
+            "Safari 18.4, 18.5 is not supported. Please use [Google Chrome](https://www.google.com/chrome/) on your laptop or desktop.",
+            icon=":material/stop:",
+        )
+
 st.markdown(
     """
 To test your microphone and speaker:
 
-1. Click **🎙 Record** in the left panel.
-2. If prompted, allow your browser to access your microphone.
-    - When granting microphone permission, Chrome allows you to select a microphone source when multiple options are available. ⚠ On macOS, it defaults to the iPhone microphone if accessible via the Continuity feature.
-3. When the button changes to **📤 Stop**, begin speaking.
-4. Click **📤 Stop** when you're finished.
-5. Ensure you can clearly hear your recording.
+1. Ensure you are in a quiet room with minimal background noise.
+2. Click **🎙 Record** in the left panel.
+3. If prompted, allow your browser to access your microphone.
+    - When granting microphone permission, Chrome allows you to select a microphone source when multiple options are available.
+    - ⚠ Avoid using the iPhone microphone via the Continuity feature, which may be selected by default in Chrome on macOS.
+4. When the button changes to **📤 Stop**, begin speaking.
+5. Click **📤 Stop** when you're finished.
+6. Ensure you can clearly hear your recording.
 
 If you can't hear yourself, refer to the following guides:
 
 - **Windows**: [How to set up and test microphones in Windows](https://support.microsoft.com/en-us/windows/how-to-set-up-and-test-microphones-in-windows-ba9a4aab-35d1-12ee-5835-cccac7ee87a4)  
 - **Mac**: [Change the sound input settings on Mac](https://support.apple.com/guide/mac-help/change-the-sound-input-settings-mchlp2567/mac)  
 
-When you're done testing, click **Start Chat** below.
+When you're done testing, click the **Next** button in the left panel to begin the session.
 """
 )
-if st.button("Start Chat"):
-    if "messages" in st.session_state:
-        st.session_state.messages = st.session_state.messages[:1]
-    st.switch_page("Chat.py")
 
 st.sidebar.header("Test Microphone and Speaker")
 with st.sidebar:
@@ -59,3 +71,7 @@ with st.sidebar:
         key="recorder",
     ):
         autoplay_audio(audio["bytes"], player_container, controls=True)
+    if st.button("Next", icon=":material/navigate_next:"):
+        if "messages" in st.session_state:
+            st.session_state.messages = st.session_state.messages[:1]
+        st.switch_page("Chat.py")

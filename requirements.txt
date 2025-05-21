@@ -1,5 +1,8 @@
 streamlit
 openai
 anthropic
-python-docx
 streamlit-mic-recorder
+fpdf2
+mistletoe
+html2docx
+streamlit-browser-engine
