@@ -39,8 +39,6 @@ To test your microphone and speaker:
 1. Ensure you are in a quiet room with minimal background noise.
 2. Click **🎙 Record** in the left panel.
 3. If prompted, allow your browser to access your microphone.
-    - When granting microphone permission, Chrome allows you to select a microphone source when multiple options are available.
-    - ⚠ Avoid using the iPhone microphone via the Continuity feature, which may be selected by default in Chrome on macOS.
 4. When the button changes to **📤 Stop**, begin speaking.
 5. Click **📤 Stop** when you're finished.
 6. Ensure you can clearly hear your recording.
