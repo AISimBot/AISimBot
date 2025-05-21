@@ -2,7 +2,7 @@ streamlit
 openai
 anthropic
 streamlit-mic-recorder
-git+https://github.com/py-pdf/fpdf2.git@fix-1358
+git+https://github.com/py-pdf/fpdf2.git
 mistletoe
 html2docx
 streamlit-browser-engine
