@@ -53,8 +53,9 @@ def create_transcript_pdf():
 def create_transcript_document():
     html = create_transcript_html(st.session_state.messages)
     buf = html2docx(html, title="Transcript")
-    with open("sessions/" + get_session() + ".docx", "wb") as file:
-        file.write(buf.getvalue())
+    file = Path("sessions/" + get_session() + ".docx")
+    file.parent.mkdir(parents=True, exist_ok=True)
+    file.open("wb").write(buf.getvalue())
 
 
 st.set_page_config(
