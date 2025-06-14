@@ -33,7 +33,6 @@ def create_transcript_html(messages):
 
     md_text = "\n".join(md_lines)
     md_text = unidecode(normalize("NFC", md_text))
-    md_text = md_text.replace("\u0095", "*")
     html = markdown(md_text)
     return html
 
@@ -47,7 +46,7 @@ def create_transcript_pdf():
     pdf.set_font("DejaVuSans", size=16)
     pdf.add_page()
     pdf.set_encryption(owner_password="drkim@32", permissions=AccessPermission.none())
-    pdf.write_html(html)
+    pdf.write_html(html, ul_bullet_char="\u2022")
     buf = BytesIO()
     pdf.output(buf)
     buf.seek(0)
