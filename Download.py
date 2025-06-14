@@ -33,6 +33,7 @@ def create_transcript_html(messages):
 
     md_text = "\n".join(md_lines)
     md_text = unidecode(normalize("NFC", md_text))
+    md_text = md_text.replace("\u0095", "*")
     html = markdown(md_text)
     return html
 
