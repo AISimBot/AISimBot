@@ -8,6 +8,8 @@ from fpdf import FPDF
 from fpdf.enums import AccessPermission
 from html2docx import html2docx
 from pathlib import Path
+from unicodedata import normalize
+from unidecode import unidecode
 
 
 def create_transcript_html(messages):
@@ -30,6 +32,7 @@ def create_transcript_html(messages):
         md_lines.append("")  # blank line -> new paragraph
 
     md_text = "\n".join(md_lines)
+    md_text = unidecode(normalize("NFC", md_text))
     html = markdown(md_text)
     return html
 
@@ -38,8 +41,10 @@ def create_transcript_pdf():
     html = create_transcript_html(st.session_state.messages)
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
-    pdf.add_font("DejaVuSans", fname="assets/fonts/DejaVuSans.ttf")
-    pdf.add_font("DejaVuSans", fname="assets/fonts/DejaVuSans-Bold.ttf", style="B")
+    pdf.add_font("DejaVuSans", fname="assets/fonts/DejaVuSans.ttf", uni=True)
+    pdf.add_font(
+        "DejaVuSans", fname="assets/fonts/DejaVuSans-Bold.ttf", style="B", uni=True
+    )
     pdf.set_font("DejaVuSans", size=16)
     pdf.add_page()
     pdf.set_encryption(owner_password="drkim@32", permissions=AccessPermission.none())

@@ -6,3 +6,4 @@ git+https://github.com/py-pdf/fpdf2.git
 mistletoe
 html2docx
 streamlit-browser-engine
+unidecode
