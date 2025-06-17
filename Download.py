@@ -71,17 +71,16 @@ st.title("Download | " + settings["title"])
 # Inject CSS for custom styles
 local_css("style.css")
 
-st.markdown(settings["agreement"])
+#st.markdown(settings["agreement"])
 
-if st.checkbox("I agree to participate in the research."):
-    create_transcript_document()
-    push_session_log()
+#if st.checkbox("I agree to participate in the research."):
+#    create_transcript_document()
+#    push_session_log()
 
-document = create_transcript_pdf()
 st.download_button(
     label="Download Transcript",
     icon=":material/download:",
-    data=document,
+    data=create_transcript_pdf(),
     file_name="Transcript.pdf",
     mime="application/pdf",
 )

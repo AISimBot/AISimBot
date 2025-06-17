@@ -29,13 +29,15 @@ This AI-powered simulation helps you practice advanced communication skills for 
 
 ## Scenario
 
-I’ll be Jordan, a 17-year-old, non-binary student visiting your outpatient clinic for a physical exam needed for school sports participation. You’ll act as the nurse, administering the CRAFFT tool and providing brief counseling and referral to treatment if necessary.
+Jordan, a 17-year-old, non-binary student is visiting your outpatient clinic for a physical exam needed for school sports participation. You’ll act as the nurse, administering the CRAFFT tool and providing brief counseling and referral to treatment if necessary.
 
 ## Instructions
 
-- When we’re finished talking, click the **‘End Session’** button, and I’ll provide you with expert feedback on your therapeutic communication style and use of the CRAFFT tool.
-- Be sure to click the **‘Download Transcript’** button to get a copy of our conversation, as you’ll need it to complete the assignment in Canvas.
-- When you’re ready to begin, enter your password and click **‘Login’** to test your microphone and speaker.
+* Before getting started, make sure you have the CRAFFT tool available. You’ll need to reference this during the session. 
+* When you're finished talking to Jordan, click the ’Next’ button.
+* Dr. Casey, a virtual debriefer, will begin a personalized debriefing session with you. When you’re finished, click the ’Next’ button. 
+* Be sure to click the ‘Download Transcript’ button to get a copy of conversation with Jordan and Dr. Casey, as you’ll need it to complete the assignment in Canvas!
+* Now that you know what to expect, enter the password and click ‘Login’ to test your microphone and speaker and begin.
 '''
 
 warning = "This simulation might evoke strong emotions or may be distressing for individuals with personal experiences related to substance use or addiction. If you feel overwhelmed by the content, please discontinue the simulation and reach out to your course faculty, or schedule an appointment with [Northeastern University Health & Counseling Services](https://uhcs.northeastern.edu/). If you or someone you know is struggling with substance use or addiction, support is available."
