@@ -45,6 +45,9 @@ def init_session():
     log.info(
         f"Session Start: {time.time()-st.session_state.start_time:.2f} seconds, {get_session()}"
     )
+    if st.session_state.get("allow_text_chat"):
+        st.session_state.text_chat_enabled = True
+        settings["allow_text_chat"] = True
 
 
 def setup_sidebar():

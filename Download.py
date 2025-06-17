@@ -71,9 +71,9 @@ st.title("Download | " + settings["title"])
 # Inject CSS for custom styles
 local_css("style.css")
 
-#st.markdown(settings["agreement"])
+# st.markdown(settings["agreement"])
 
-#if st.checkbox("I agree to participate in the research."):
+# if st.checkbox("I agree to participate in the research."):
 #    create_transcript_document()
 #    push_session_log()
 

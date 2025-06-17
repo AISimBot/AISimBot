@@ -4,8 +4,10 @@ from Settings import settings
 
 
 def check_password():
-    if hmac.compare_digest(st.session_state.password, st.secrets["password"]):
+    if st.session_state.password in st.secrets["passwords"]:
         st.session_state.role = "student"
+        if "Chat" in st.session_state.password:
+            st.session_state.allow_text_chat = True
     elif hmac.compare_digest(st.session_state.password, st.secrets["admin_password"]):
         st.session_state.role = "admin"
     else:
@@ -23,7 +25,7 @@ st.set_page_config(
 )
 st.title("Login | " + settings["title"])
 
-if "password" in st.secrets:
+if "passwords" in st.secrets:
     st.sidebar.header("Access Code")
     with st.sidebar.container(border=True):
         with st.form("Credentials"):
