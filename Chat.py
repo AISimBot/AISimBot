@@ -45,9 +45,8 @@ def init_session():
     log.info(
         f"Session Start: {time.time()-st.session_state.start_time:.2f} seconds, {get_session()}"
     )
-    if st.session_state.get("allow_text_chat"):
+    if st.session_state.allow_text_chat:
         st.session_state.text_chat_enabled = True
-        settings["allow_text_chat"] = True
 
 
 def setup_sidebar():
@@ -65,7 +64,7 @@ def setup_sidebar():
     con2 = container.container(border=True)
     con3 = container.container()
     con4 = container.empty()
-    if settings["allow_text_chat"]:
+    if st.session_state.allow_text_chat:
         con2.toggle(
             ":material/keyboard: Enable Text Chat",
             value=st.session_state.text_chat_enabled,
@@ -176,7 +175,7 @@ if st.session_state.audio:
     autoplay_audio(st.session_state.audio, container4)
     st.session_state.audio = None
 
-if settings["allow_text_chat"]:
+if st.session_state.allow_text_chat:
     col1, col2 = st.columns([0.3, 0.7])
 else:
     col1, col2 = st.columns([0.7, 0.3])
@@ -192,7 +191,7 @@ with col1.container(height=600, border=False):
 with col2.container(height=600, border=True):
     chatbox = st.container(border=True)
 
-    if not settings["allow_text_chat"]:
+    if not st.session_state.allow_text_chat:
         if st.session_state.stage == 1:
             st.markdown(
                 "Click 'Next' Button in the Left Panel to move onto a debriefing session."
@@ -202,7 +201,7 @@ with col2.container(height=600, border=True):
                 "Click **Next** to download the transcript or click **Start Over** in the left panel."
             )
 
-    if settings["allow_text_chat"] and not st.session_state.text_chat_enabled:
+    if st.session_state.allow_text_chat and not st.session_state.text_chat_enabled:
         st.markdown(
             "If you experience issues with voice chat, click **Enable Text Chat** in the left panel."
         )
