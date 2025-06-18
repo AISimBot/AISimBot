@@ -14,7 +14,7 @@ def main():
     )
     if "role" not in st.session_state:
         pg = st.navigation([login_page, test_page], position="hidden")
-    elif st.session_state.role == "student":
+    elif st.session_state.role == "student" or st.session_state.role == "tester":
         pg = st.navigation([test_page, chat_page, download_page], position="hidden")
     elif st.session_state.role == "admin":
         pg = st.navigation([test_page, chat_page, download_page, admin_page])
