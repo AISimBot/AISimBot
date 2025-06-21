@@ -12,7 +12,7 @@ from unicodedata import normalize
 from unidecode import unidecode
 
 
-def create_transcript_html(messages):
+def create_transcript_markdown(messages):
     md_lines = ["# Conversation Transcript", ""]
     debrief = False
     for msg in messages[1:]:
@@ -33,7 +33,12 @@ def create_transcript_html(messages):
 
     md_text = "\n".join(md_lines)
     md_text = unidecode(normalize("NFC", md_text))
-    html = markdown(md_text)
+    return md_text
+
+
+def create_transcript_html(messages):
+    md = create_transcript_markdown(messages)
+    html = markdown(md)
     return html
 
 
