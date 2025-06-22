@@ -19,7 +19,9 @@ def main():
     elif st.session_state.role == "admin":
         pg = st.navigation([test_page, chat_page, download_page, admin_page])
     pg.run()
-    if "password" in st.secrets:
+    if st.session_state.get("role"):
+        st.sidebar.header("Technical Support")
+        st.sidebar.markdown(f":gray-background[{settings["support_message"]}]")
         st.sidebar.header("Content Warning")
         st.sidebar.markdown(f":material/warning: :orange[{settings["warning"]}]")
 

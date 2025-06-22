@@ -10,6 +10,7 @@ title = "AI SimBot"
 timezone = "UTC"
 allow_text_chat = false
 error_message = "😞 Oops! An unexpected error occurred. Please try again. If the error persists, please contact the administrator."
+support_message = "If you experience any technical difficulties, please contact the administrator at <support email address>."
 user_name = "Nurse"
 user_avatar = "assets/images/User.png"
 assistant_name = "Jordan"
