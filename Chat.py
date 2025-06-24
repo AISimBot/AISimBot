@@ -224,7 +224,7 @@ with col2.container(height=600, border=True):
         )
 
         with st.spinner(
-            "📋 Reviewing your interaction and compiling insights for debriefing… Please wait."
+            "📋 Reviewing your interaction and compiling insights for debriefing… Please wait and stay on this page. This may take up to a few minutes. Thank you for your patience."
         ):
             process_user_query(chatbox)
     elif st.session_state.text_chat_enabled:
@@ -273,7 +273,7 @@ if st.session_state.stage == 1:
 elif st.session_state.stage == 2:
     if container3.button("Start Over", icon=":material/restart_alt:"):
         del st.session_state["text_chat_enabled"]
-        st.session_state.messages = [st.session_state.messages[0]]
+        del st.session_state["messages"]
         st.rerun()
     if container3.button(
         "Next",
