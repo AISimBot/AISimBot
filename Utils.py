@@ -69,20 +69,28 @@ def get_uuid():
 
 def elapsed(start):
     duration = time.time() - start
-    duration_td = timedelta(seconds=duration)
-    days = duration_td.days
-    hours, remainder = divmod(duration_td.seconds, 3600)
-    minutes, seconds = divmod(remainder, 60)
-    dur_str = ""
+    td = timedelta(seconds=duration)
+
+    days = td.days
+    hours, rem = divmod(td.seconds, 3600)
+    minutes, seconds = divmod(rem, 60)
+    microseconds = td.microseconds
+
+    parts = []
     if days:
-        dur_str = f"{days} days "
+        parts.append(f"{days} day{'s' if days != 1 else ''}")
     if hours:
-        dur_str += f"{hours} hours "
+        parts.append(f"{hours} hour{'s' if hours != 1 else ''}")
     if minutes:
-        dur_str += f"{minutes} minutes "
-    if seconds:
-        dur_str += f"{seconds} seconds"
-    return dur_str
+        parts.append(f"{minutes} minute{'s' if minutes != 1 else ''}")
+
+    if seconds or microseconds:
+        if microseconds:
+            parts.append(f"{seconds + microseconds / 1_000_000:.3f} seconds")
+        else:
+            parts.append(f"{seconds} seconds")
+
+    return " ".join(parts) or "0 seconds"
 
 
 def autoplay_audio(audio_data, container=None, controls=False):
