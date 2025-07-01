@@ -50,6 +50,7 @@ def text_to_speech(text, voice, instructions):
         latency = ", ".join([f"{k}: {v}" for k, v in st.session_state.latency.items()])
         del st.session_state.latency
         log.debug(f"{latency}")
+        st.session_state.messages[-1]["latency"] = latency
         return response.content
     except Exception as e:
         log.exception("")

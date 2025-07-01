@@ -20,10 +20,10 @@ def main():
         pg = st.navigation([test_page, chat_page, download_page, admin_page])
     pg.run()
     if st.session_state.get("role"):
-        st.sidebar.header("Technical Support")
+        st.sidebar.header(":material/sos: Technical Support")
         st.sidebar.markdown(f":gray-background[{settings["support_message"]}]")
-        st.sidebar.header("Content Warning")
-        st.sidebar.markdown(f":material/warning: :orange[{settings["warning"]}]")
+        st.sidebar.header(":material/warning: Content Warning")
+        st.sidebar.markdown(f":orange[{settings["warning"]}]")
 
 
 if __name__ == "__main__":

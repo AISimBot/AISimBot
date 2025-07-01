@@ -194,16 +194,16 @@ with col2.container(height=600, border=True):
     if not st.session_state.allow_text_chat:
         if st.session_state.stage == 1:
             st.markdown(
-                "Click 'Next' Button in the Left Panel to move onto a debriefing session."
+                "When you have completed the CRAFFT screening with Jordan, Click the **Next** Button in the Left Panel to move onto a debriefing session."
             )
         elif st.session_state.stage == 2:
             st.markdown(
-                "Click **Next** to download the transcript or click **Start Over** in the left panel."
+                "When you finish the debriefiing with Dr. Casey, click the **Next** button to download the transcript or click the **Start Over** button in the left panel."
             )
 
     if st.session_state.allow_text_chat and not st.session_state.text_chat_enabled:
         st.markdown(
-            "If you experience issues with voice chat, click **Enable Text Chat** in the left panel."
+            "If you experience issues with voice chat, click the **Enable Text Chat** button in the left panel."
         )
 
     if len(st.session_state.messages) == 1:
@@ -224,19 +224,19 @@ with col2.container(height=600, border=True):
         )
 
         with st.spinner(
-            "📋 Reviewing your interaction and compiling insights for debriefing… Please wait."
+            "📋 Reviewing your interaction and compiling insights for debriefing… Please wait and stay on this page. This may take up to a few minutes. Thank you for your patience."
         ):
             process_user_query(chatbox)
     elif st.session_state.text_chat_enabled:
         if st.session_state.stage == 1:
             user_query = input_placeholder.chat_input(
-                "Click 'Next' in the Left Panel to move onto a debriefing session.",
+                "When you have completed the CRAFFT screening with Jordan, click the 'Next' button in the left panel to move onto a debriefing session.",
                 disabled=not st.session_state.text_chat_enabled,
                 key="chat_input_stage1",
             )
         elif st.session_state.stage == 2:
             user_query = input_placeholder.chat_input(
-                "Click 'Next' to download the transcript or click 'Start Over' in the left panel.",
+                "When you finish the debriefiing with Dr. Casey, click the 'Next' button to download the transcript or click the 'Start Over' in the left panel.",
                 disabled=not st.session_state.text_chat_enabled,
                 key="chat_input_stage1",
             )
@@ -273,7 +273,7 @@ if st.session_state.stage == 1:
 elif st.session_state.stage == 2:
     if container3.button("Start Over", icon=":material/restart_alt:"):
         del st.session_state["text_chat_enabled"]
-        st.session_state.messages = [st.session_state.messages[0]]
+        del st.session_state["messages"]
         st.rerun()
     if container3.button(
         "Next",
