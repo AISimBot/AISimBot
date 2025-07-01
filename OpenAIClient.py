@@ -3,6 +3,8 @@ from openai import OpenAI
 import io
 from Logger import log
 from Settings import settings
+from Utils import elapsed
+from time import time
 
 
 @st.cache_resource
@@ -11,6 +13,9 @@ def get_client():
 
 
 def speech_to_text(audio):
+    start = time()
+    if not st.session_state.get("latency"):
+        st.session_state.latency = {"start": start}
     try:
         id = audio["id"]
         log.debug(f"STT: {id}")
@@ -23,12 +28,14 @@ def speech_to_text(audio):
             file=audio_bio,
         )
         st.session_state.processed_audio = id
+        st.session_state.latency["stt"] = elapsed(start)
         return transcript
     except Exception as e:
         log.exception("")
 
 
 def text_to_speech(text, voice, instructions):
+    start = time()
     try:
         log.debug(f"TTS: {voice}, {instructions}\n{text}")
         response = get_client().audio.speech.create(
@@ -37,6 +44,12 @@ def text_to_speech(text, voice, instructions):
             input=text,
             instructions=instructions,
         )
+        st.session_state.latency["tts"] = elapsed(start)
+        st.session_state.latency["total"] = elapsed(st.session_state.latency["start"])
+        del st.session_state.latency["start"]
+        latency = ", ".join([f"{k}: {v}" for k, v in st.session_state.latency.items()])
+        del st.session_state.latency
+        log.debug(f"{latency}")
         return response.content
     except Exception as e:
         log.exception("")
@@ -48,6 +61,9 @@ def get_response(
     model=settings["parameters"]["model"],
     temperature=settings["parameters"]["temperature"],
 ):
+    start = time()
+    if not st.session_state.get("latency"):
+        st.session_state.latency = {"start": start}
     try:
         log.debug(f"Sending text to {model}: {messages[-1]['content']}")
         if model.startswith("o"):
@@ -71,6 +87,7 @@ def get_response(
             response.usage.completion_tokens_details.reasoning_tokens,
         ]
         log.debug(f"Usage: {tokens}")
+        st.session_state.latency["text"] = elapsed(start)
         return completion_text
     except Exception as e:
         log.exception("")
