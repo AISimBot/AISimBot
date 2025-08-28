@@ -69,7 +69,7 @@ else:
             stop_prompt="📤 Stop",
             just_once=True,
             use_container_width=True,
-            format="wav",
+            format="aac",
             key="recorder",
         ):
             autoplay_audio(audio["bytes"], player_container, controls=True)
