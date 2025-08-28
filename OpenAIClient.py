@@ -21,7 +21,7 @@ def speech_to_text(audio):
         id = audio["id"]
         log.debug(f"STT: {id}")
         audio_bio = io.BytesIO(audio["bytes"])
-        audio_bio.name = "audio.m4a"
+        audio_bio.name = "audio.webm"
         transcript = get_client().audio.transcriptions.create(
             model="gpt-4o-transcribe",
             language="en",

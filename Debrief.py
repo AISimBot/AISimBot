@@ -141,4 +141,4 @@ if len(st.session_state.messages) > 2 and container3.button(
 if container3.button("Start Over", icon=":material/restart_alt:"):
     del st.session_state["text_chat_enabled"]
     del st.session_state["messages"]
-    st.rerun()
+    st.switch_page("Chat.py")

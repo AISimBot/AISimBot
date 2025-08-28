@@ -35,7 +35,7 @@ def handle_audio_input(container):
             stop_prompt="📤 Stop",
             just_once=True,
             use_container_width=True,
-            format="aac",
+            format="webm",
             key="recorder",
         ):
             return speech_to_text(audio)
