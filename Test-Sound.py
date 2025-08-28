@@ -21,10 +21,12 @@ if "role" not in st.session_state:
 setup_session_log()
 # Inject CSS for custom styles
 local_css("style.css")
-st.session_state.browser = get_browser()
-log.debug(st.session_state.browser)
-if "Safari" in st.session_state.browser:
-    version = re.search(r"\d+\.\d+", st.session_state.browser)[0]
+browser = get_browser()
+st.session_state.client_info = {}
+st.session_state.client_info["browser"] = browser
+log.debug(browser)
+if "Safari" in browser:
+    version = re.search(r"\d+\.\d+", browser)[0]
     version = float(version)
     if version >= 18.4:
         st.error(
@@ -64,12 +66,13 @@ else:
             st.rerun()
 
         player_container = st.empty()
+        format = "aac" if "Safari" in browser else "webm"
         if audio := mic_recorder(
             start_prompt="🎙 Record",
             stop_prompt="📤 Stop",
             just_once=True,
             use_container_width=True,
-            format="webm",
+            format=format,
             key="recorder",
         ):
             autoplay_audio(audio["bytes"], player_container, controls=True)

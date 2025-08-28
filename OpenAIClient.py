@@ -21,7 +21,9 @@ def speech_to_text(audio):
         id = audio["id"]
         log.debug(f"STT: {id}")
         audio_bio = io.BytesIO(audio["bytes"])
-        audio_bio.name = "audio.webm"
+        browser = st.session_state.client_info["browser"]
+        ext = ".m4a" if "Safari" in browser else ".webm"
+        audio_bio.name = f"audio{ext}"
         transcript = get_client().audio.transcriptions.create(
             model="gpt-4o-transcribe",
             language="en",

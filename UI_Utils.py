@@ -29,13 +29,15 @@ def show_messages(chatbox):
 
 
 def handle_audio_input(container):
+    browser = st.session_state.client_info["browser"]
+    format = "aac" if "Safari" in browser else "webm"
     with container:
         if audio := mic_recorder(
             start_prompt="🎙 Record",
             stop_prompt="📤 Stop",
             just_once=True,
             use_container_width=True,
-            format="webm",
+            format=format,
             key="recorder",
         ):
             return speech_to_text(audio)
