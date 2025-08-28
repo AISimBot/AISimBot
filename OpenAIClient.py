@@ -5,6 +5,7 @@ from Logger import log
 from Settings import settings
 from Utils import elapsed
 from time import time
+from Session import update_active_users
 
 
 @st.cache_resource
@@ -20,7 +21,7 @@ def speech_to_text(audio):
         id = audio["id"]
         log.debug(f"STT: {id}")
         audio_bio = io.BytesIO(audio["bytes"])
-        audio_bio.name = "audio.wav"
+        audio_bio.name = "audio.m4a"
         transcript = get_client().audio.transcriptions.create(
             model="gpt-4o-transcribe",
             language="en",
@@ -59,16 +60,15 @@ def text_to_speech(text, voice, instructions):
 # Send prompt to OpenAI and get response
 def get_response(
     messages,
-    model=settings["parameters"]["model"],
-    temperature=settings["parameters"]["temperature"],
+    model,
+    temperature=None,
 ):
     start = time()
     if not st.session_state.get("latency"):
         st.session_state.latency = {"start": start}
     try:
+        update_active_users()
         log.debug(f"Sending text to {model}: {messages[-1]['content']}")
-        if model.startswith("o"):
-            temperature = None
         if temperature:
             response = get_client().chat.completions.create(
                 model=model,
