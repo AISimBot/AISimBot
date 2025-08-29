@@ -33,7 +33,7 @@ def generate_Feedback():
         "content": st.session_state.prompts["prompt3"],
     }
     response = "Use the following feedback for debriefing.\n" + response
-    st.session_state.messages.append({"role": "system", "content": response})
+    st.session_state.messages[-1] = {"role": "system", "content": response}
     st.session_state.feedback_generated = True
 
 
