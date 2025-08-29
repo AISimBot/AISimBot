@@ -13,6 +13,16 @@ else:
 
 # Session Initialization
 def generate_Feedback():
+    st.session_state.messages[0] = {
+        "role": "system",
+        "content": st.session_state.prompts["prompt2"],
+    }
+    st.session_state.messages.append(
+        {
+            "role": "system",
+            "content": "Carefully analyze the conversation above between patient and nurse and provide feedback on their performance as a nurse.",
+        }
+    )
     response = get_response(
         st.session_state.messages,
         model=settings["parameters"]["feedback_model"],
