@@ -18,10 +18,7 @@ def generate_Feedback():
         "content": st.session_state.prompts["prompt2"],
     }
     st.session_state.messages.append(
-        {
-            "role": "system",
-            "content": "Carefully analyze the conversation above between patient and nurse and provide feedback on their performance as a nurse.",
-        }
+        {"role": "system", "content": st.session_state.prompts["trigger1"]}
     )
     response = get_response(
         st.session_state.messages,
@@ -32,8 +29,10 @@ def generate_Feedback():
         "role": "system",
         "content": st.session_state.prompts["prompt3"],
     }
-    response = "Use the following feedback for debriefing.\n" + response
-    st.session_state.messages[-1] = {"role": "system", "content": response}
+    st.session_state.messages[-1] = {
+        "role": "system",
+        "content": st.session_state.prompts["trigger2"] + response,
+    }
     st.session_state.feedback_generated = True
 
 

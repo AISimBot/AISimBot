@@ -198,6 +198,12 @@ One or more YES answers in Part C suggests a serious problem with nicotine that 
 ```
 '''
 
+#------------
+
+trigger1 = '''
+Carefully analyze the conversation above between patient and nurse and provide feedback on their performance as a nurse.
+'''
+
 #----------
 
 prompt3 = '''
@@ -399,4 +405,10 @@ When you sense that the session has concluded, ask the student if they have any 
 After addressing any questions, thank them for their participation and instruct them to click "Next" to download the transcript and upload it to Canvas.
 
 Lastly, remember to ask only and exactly **one** question per response throughout the entire session.
+'''
+
+#----------
+
+trigger2 = '''
+Use the following feedback for debriefing:
 '''
