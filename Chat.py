@@ -91,7 +91,7 @@ with col2.container(height=600, border=True):
             "If you experience issues with voice chat, click the **Enable Text Chat** button in the left panel."
         )
 
-    chatbox = st.container(border=True)
+    chatbox = st.container(border=True, key="chatbox")
 
     if len(st.session_state.messages) == 1:
         with st.spinner("🧑‍⚕️ Preparing Jordan for the interview… Please wait."):

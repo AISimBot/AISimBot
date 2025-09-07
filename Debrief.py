@@ -94,7 +94,7 @@ with col2.container(height=600, border=True):
         st.markdown(
             "If you experience issues with voice chat, click the **Enable Text Chat** button in the left panel."
         )
-    
+
     chatbox = st.container(border=True)
 
     if not st.session_state.get("feedback_generated", False):

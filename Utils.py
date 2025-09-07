@@ -9,6 +9,7 @@ import subprocess
 from Logger import log
 import tomllib
 from browser_detection import browser_detection_engine
+import streamlit.components.v1 as components
 
 
 def get_browser():
@@ -110,14 +111,20 @@ def autoplay_audio(audio_data, container=None, controls=False):
 
 
 @st.cache_data(show_spinner=False)
-def _load_css(file_name: str) -> str:
+def _read_file(file_name: str) -> str:
     with open(file_name, encoding="utf-8") as f:
         return f.read()
 
 
 def local_css(file_name: str):
-    css = _load_css(file_name)
+    css = _read_file(file_name)
     st.html(f"<style>{css}</style>")
+
+
+def run_js(file_name: str):
+    js = _read_file(file_name)
+    # st.markdown(js, unsafe_allow_html=True)
+    components.html(js, width=0, height=0)
 
 
 @st.cache_data
