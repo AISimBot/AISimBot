@@ -77,17 +77,13 @@ if st.session_state.audio:
     autoplay_audio(st.session_state.audio, container4)
     st.session_state.audio = None
 
-if st.session_state.allow_text_chat:
-    col1, col2 = st.columns([0.3, 0.7])
-else:
-    col1, col2 = st.columns([0.7, 0.3])
+col1, col2 = st.columns([0.3, 0.7])
 
 with col1.container(height=600, border=False):
     img = settings["assistant_feedback"]
     st.image(img)
 
 with col2.container(height=600, border=True):
-    chatbox = st.container(border=True)
 
     if not st.session_state.allow_text_chat:
         st.markdown(
@@ -98,6 +94,8 @@ with col2.container(height=600, border=True):
         st.markdown(
             "If you experience issues with voice chat, click the **Enable Text Chat** button in the left panel."
         )
+    
+    chatbox = st.container(border=True)
 
     if not st.session_state.get("feedback_generated", False):
         with st.spinner(
@@ -112,8 +110,7 @@ with col2.container(height=600, border=True):
                 instruction=settings["parameters"]["feedback_voice_instruction"],
             )
 
-    if st.session_state.text_chat_enabled:
-        show_messages(chatbox)
+    show_messages(chatbox)
 
     user_query = ""
     input_placeholder = st.empty()

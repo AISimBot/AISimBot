@@ -74,16 +74,12 @@ if st.session_state.audio:
     autoplay_audio(st.session_state.audio, container4)
     st.session_state.audio = None
 
-if st.session_state.allow_text_chat:
-    col1, col2 = st.columns([0.3, 0.7])
-else:
-    col1, col2 = st.columns([0.7, 0.3])
+col1, col2 = st.columns([0.3, 0.7])
 
 with col1.container(height=600, border=False):
     st.image(settings["assistant_interview"])
 
 with col2.container(height=600, border=True):
-    chatbox = st.container(border=True)
 
     if not st.session_state.allow_text_chat:
         st.markdown(
@@ -95,6 +91,8 @@ with col2.container(height=600, border=True):
             "If you experience issues with voice chat, click the **Enable Text Chat** button in the left panel."
         )
 
+    chatbox = st.container(border=True)
+
     if len(st.session_state.messages) == 1:
         with st.spinner("🧑‍⚕️ Preparing Jordan for the interview… Please wait."):
             process_user_query(
@@ -105,8 +103,7 @@ with col2.container(height=600, border=True):
                 instruction=settings["parameters"]["voice_instruction"],
             )
 
-    if st.session_state.text_chat_enabled:
-        show_messages(chatbox)
+    show_messages(chatbox)
 
     user_query = ""
     input_placeholder = st.empty()
