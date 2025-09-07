@@ -95,7 +95,7 @@ with col2.container(height=600, border=True):
             "If you experience issues with voice chat, click the **Enable Text Chat** button in the left panel."
         )
 
-    chatbox = st.container(border=True)
+    chatbox = st.container(border=True, key="chatbox")
 
     if not st.session_state.get("feedback_generated", False):
         with st.spinner(
