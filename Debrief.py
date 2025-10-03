@@ -8,7 +8,7 @@ from UI_Utils import show_messages, handle_audio_input, process_user_query
 if settings["parameters"]["model"].startswith("claude"):
     from AnthropicClient import get_response
 else:
-    from OpenAIClient import get_response
+    from OpenAIClient import get_response, stream_response
 
 
 # Session Initialization
@@ -20,11 +20,18 @@ def generate_Feedback():
     st.session_state.messages.append(
         {"role": "system", "content": st.session_state.prompts["trigger1"]}
     )
-    response = get_response(
+    response = stream_response(
         st.session_state.messages,
         model=settings["parameters"]["feedback_model"],
-        temperature=None,
+        reasoning={"effort":"medium", "summary":"auto"},
     )
+    with st.empty():
+        try:
+            while True:
+                s = next(response)
+                st.markdown(s.strip().split("\n")[0])
+        except StopIteration as e:
+            response = e.value
     st.session_state.messages[0] = {
         "role": "system",
         "content": st.session_state.prompts["prompt3"],
@@ -105,7 +112,6 @@ with col2.container(height=600, border=True):
             process_user_query(
                 chatbox,
                 model=settings["parameters"]["model"],
-                temperature=settings["parameters"]["feedback_temperature"],
                 voice=settings["parameters"]["feedback_voice"],
                 instruction=settings["parameters"]["feedback_voice_instruction"],
             )
@@ -131,7 +137,6 @@ with col2.container(height=600, border=True):
         process_user_query(
             chatbox,
             model=settings["parameters"]["model"],
-            temperature=settings["parameters"]["feedback_temperature"],
             voice=settings["parameters"]["feedback_voice"],
             instruction=settings["parameters"]["feedback_voice_instruction"],
         )

@@ -1,5 +1,6 @@
 import streamlit as st
 from openai import OpenAI
+from openai.types.responses import ResponseTextDeltaEvent, ResponseReasoningSummaryTextDeltaEvent, ResponseReasoningSummaryTextDoneEvent, ResponseTextDoneEvent, ResponseReasoningSummaryPartDoneEvent
 import io
 from Logger import log
 from Settings import settings
@@ -52,7 +53,6 @@ def text_to_speech(text, voice, instructions):
         latency = ", ".join([f"{k}: {v}" for k, v in st.session_state.latency.items()])
         del st.session_state.latency
         log.debug(f"{latency}")
-        st.session_state.messages[-1]["latency"] = latency
         return response.content
     except Exception as e:
         log.exception("")
@@ -62,7 +62,7 @@ def text_to_speech(text, voice, instructions):
 def get_response(
     messages,
     model,
-    temperature=None,
+    reasoning={"effort":"minimal", "summary":"auto"},
 ):
     start = time()
     if not st.session_state.get("latency"):
@@ -70,23 +70,19 @@ def get_response(
     try:
         update_active_users()
         log.debug(f"Sending text to {model}: {messages[-1]['content']}")
-        if temperature:
-            response = get_client().chat.completions.create(
-                model=model,
-                messages=messages,
-                temperature=temperature,
-            )
-        else:
-            response = get_client().chat.completions.create(
-                model=model,
-                messages=messages,
-            )
-        completion_text = response.choices[0].message.content.strip()
+        response = get_client().responses.create(
+            model=model,
+            input=messages,
+            reasoning=reasoning,
+            max_output_tokens=10000,
+            store=False,
+        )
+        completion_text = response.output_text.strip()
         tokens = [
-            response.usage.prompt_tokens,
-            response.usage.prompt_tokens_details.cached_tokens,
-            response.usage.completion_tokens,
-            response.usage.completion_tokens_details.reasoning_tokens,
+            response.usage.input_tokens,
+            response.usage.input_tokens_details.cached_tokens,
+            response.usage.output_tokens,
+            response.usage.output_tokens_details.reasoning_tokens,
         ]
         log.debug(f"Usage: {tokens}")
         st.session_state.latency["text"] = elapsed(start)
@@ -95,40 +91,50 @@ def get_response(
         log.exception("")
 
 
+
 def stream_response(
     messages,
-    model=settings["parameters"]["model"],
-    temperature=settings["parameters"]["temperature"],
+    model,
+    reasoning={"effort":"minimal", "summary":"auto"},
 ):
+    start = time()
+    if not st.session_state.get("latency"):
+        st.session_state.latency = {"start": start}
     try:
+        update_active_users()
         log.debug(f"Sending text to {model}: {messages[-1]['content']}")
-        if model.startswith("o"):
-            temperature = None
-        if temperature:
-            stream = get_client().chat.completions.create(
-                model=model,
-                messages=messages,
-                temperature=temperature,
-                stream=True,
-                stream_options={"include_usage": True},
-            )
-        else:
-            stream = get_client().chat.completions.create(
-                model=model,
-                messages=messages,
-                stream=True,
-                stream_options={"include_usage": True},
-            )
-
-        for chunk in stream:
-            if chunk.choices and chunk.choices[0].delta.content:
-                yield chunk.choices[0].delta.content
+        response = get_client().responses.create(
+            model=model,
+            input=messages,
+            reasoning=reasoning,
+            max_output_tokens=10000,
+            store=False,
+            stream=True,
+        )
+        content = ""
+        summary = ""
+        for event in response:
+            if isinstance(event, ResponseReasoningSummaryTextDeltaEvent):
+                summary += event.delta
+            elif isinstance(event, ResponseTextDeltaEvent):
+                content += event.delta
+            elif isinstance(event, ResponseReasoningSummaryTextDoneEvent):
+                yield summary.strip()
+                summary = ""
+            else:
+                pass
+        completion_text = content.strip()
+        usage = event.response.usage
         tokens = [
-            chunk.usage.prompt_tokens,
-            chunk.usage.prompt_tokens_details.cached_tokens,
-            chunk.usage.completion_tokens,
-            chunk.usage.completion_tokens_details.reasoning_tokens,
+            usage.input_tokens,
+            usage.input_tokens_details.cached_tokens,
+            usage.output_tokens,
+            usage.output_tokens_details.reasoning_tokens,
         ]
         log.debug(f"Usage: {tokens}")
+        st.session_state.latency["text"] = elapsed(start)
+        return completion_text
     except Exception as e:
         log.exception("")
+
+

@@ -98,7 +98,6 @@ with col2.container(height=600, border=True):
             process_user_query(
                 chatbox,
                 model=settings["parameters"]["model"],
-                temperature=settings["parameters"]["temperature"],
                 voice=settings["parameters"]["voice"],
                 instruction=settings["parameters"]["voice_instruction"],
             )
@@ -124,7 +123,6 @@ with col2.container(height=600, border=True):
         process_user_query(
             chatbox,
             model=settings["parameters"]["model"],
-            temperature=settings["parameters"]["temperature"],
             voice=settings["parameters"]["voice"],
             instruction=settings["parameters"]["voice_instruction"],
         )
