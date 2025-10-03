@@ -3,7 +3,6 @@ from streamlit_mic_recorder import mic_recorder
 from Settings import settings
 from OpenAIClient import speech_to_text, text_to_speech
 from Session import log_session
-from Utils import run_js
 
 if settings["parameters"]["model"].startswith("claude"):
     from AnthropicClient import get_response
@@ -27,7 +26,6 @@ def show_messages(chatbox):
         )
         with chatbox.chat_message(name, avatar=avatar):
             st.markdown(message["content"])
-    run_js("scrol.js")
 
 
 def handle_audio_input(container):
@@ -53,7 +51,6 @@ def process_user_query(chatbox, model,  voice, instruction):
             avatar=settings["user_avatar"],
         ):
             st.markdown(message["content"])
-    run_js("scrol.js")
     response = get_response(
         st.session_state.messages,
         model=model,
