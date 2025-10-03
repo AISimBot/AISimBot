@@ -21,26 +21,25 @@ assistant_interview = "assets/images/Jordan.jpg"
 assistant_feedback = "assets/images/Debriefer.jpg"
 
 #--------------------
-# Intro message will be displayed before users start chatting.
+# The following intro message will be displayed on the login page.
 
 intro = '''
-## Welcome to Dr. Kim’s AI SimBot.
+## Welcome to Dr. Kim’s AI SimBot
 
-This AI-powered simulation helps you practice advanced communication skills for screening substance use in adolescent patients. You can use this tool anytime, anywhere, to engage in realistic scenarios that prepare you for real-world clinical settings. My goal is to enhance your learning experience and build your confidence and competence in nursing practice. Let's get started!
+This AI-powered simulation helps you practice advanced communication skills for adolescent substance use screening, providing brief counseling, and planning follow-up care. You can use this tool anytime, anywhere, to engage in realistic scenarios that prepare you for real-world clinical settings. My goal is to enhance your learning experience and build your confidence and competence in nursing practice. Let’s get started!
 
 ## Scenario
 
-Jordan, a 17-year-old, non-binary student is visiting your outpatient clinic for a physical exam needed for school sports participation. You’ll act as the nurse, administering the CRAFFT tool and providing brief counseling and referral to treatment if necessary.
+Jordan, a 17-year-old non-binary student, is visiting your outpatient clinic for a physical exam needed for school sports participation. Before meeting with you, Jordan completed the CRAFFT screening tool on a clinic iPad. You’ll act as the nurse, reviewing Jordan’s CRAFFT results, identifying their risk level, and using the 5 R’s Brief Counseling framework (Review, Recommend, Riding/Driving, Response, Reinforce). You’ll also schedule a follow-up visit and wrap up the encounter.
 
 ## Instructions
 
-* Before you begin, print the CRAFFT tool or download it to your phone; you will need to reference it during the session.
-* After you finish speaking, the AI may take up to 30 seconds to respond, depending on server load. Please stay on the page and wait patiently for your turn.
-* When you have completed the CRAFFT screening with Jordan, Click the **Next** Button to move onto a debriefing session.
-* When you finish your personalized debriefiing with Dr. Casey, click the **Next** button to complete a short survey and download the transcript.
-* After submitting your answers, be sure to click the **Download Transcript** button, as you’ll need it to complete the assignment in Canvas!
-* The full session would take about one hour.
-* Now that you know what to expect, enter the password and click ‘Login’ to test your microphone and speaker and begin.
+* Before you begin, review the CRAFFT 2.1 Provider Manual and keep it available as a reference during your encounter with Jordan.
+* After you finish speaking, the AI may take up to 30 seconds to respond depending on server load. Please stay on the page and wait patiently.
+* When you have completed your counseling and follow-up plan with Jordan, click the **Next** button to move on to a debriefing session with Dr. Casey.
+* When you finish your personalized debrief with Dr. Casey, click **Next** to complete a short survey and download the transcript.
+* Be sure to download your transcript before leaving the site; you’ll need it to complete your assignment in Canvas.
+* The full session will take about one hour.
 '''
 
 warning = "This simulation might evoke strong emotions or may be distressing for individuals with personal experiences related to substance use or addiction. If you feel overwhelmed by the content, please discontinue the simulation and reach out to your course faculty, or schedule an appointment with [Northeastern University Health & Counseling Services](https://uhcs.northeastern.edu/). If you or someone you know is struggling with substance use or addiction, support is available."
