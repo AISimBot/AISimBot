@@ -22,10 +22,13 @@ def create_transcript_markdown(messages):
             else settings["assistant_name"]
         )
         if msg["role"] == "system":
-            if not debrief:
-                md_lines.append(f"---\n\n# Debrief\n")
+            md_lines.append(f"---\n\n# Feedback\n")
             debrief = True
             speaker = "Instructor"
+            md_lines.append(f"**{speaker}:** {msg['content']}")
+            md_lines.append("")  # blank line -> new paragraph
+            md_lines.append(f"---\n\n# Debrief\n")
+            continue
         if debrief and msg["role"] == "assistant":
             speaker = "Instructor"
         md_lines.append(f"**{speaker}:** {msg['content']}")
