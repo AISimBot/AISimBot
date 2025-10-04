@@ -110,6 +110,8 @@ def load_audio(file, controls=False):
 
 
 def autoplay_audio(audio_data, container=None, controls=False):
+    if isinstance(audio_data, str):
+        audio_data = _load_file(audio_data)
     b64 = base64.b64encode(audio_data).decode("utf-8")
     if controls:
         html_str = '<audio id="audio_player" autoplay controls>'
@@ -120,7 +122,7 @@ def autoplay_audio(audio_data, container=None, controls=False):
     </audio>
     """
     if container == None:
-        container = st.empty()
+        container = st.spinner()
     with container:
         st.html(html_str)
 
@@ -132,7 +134,7 @@ def _load_file(file):
 
 
 @st.cache_data(show_spinner=False)
-def _read_file(file_name: str) -> str:
+def _read_file(file_name):
     with open(file_name, encoding="utf-8") as f:
         return f.read()
 
@@ -148,6 +150,5 @@ def run_js(file_name: str):
     components.html(js, width=0, height=0)
 
 
-@st.cache_data
 def get_prompt():
     return tomllib.load(open("prompts.toml", "rb"))

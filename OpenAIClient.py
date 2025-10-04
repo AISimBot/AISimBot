@@ -5,7 +5,9 @@ from openai.types.responses import (
     ResponseReasoningSummaryTextDeltaEvent,
     ResponseReasoningSummaryTextDoneEvent,
     ResponseTextDoneEvent,
-    ResponseReasoningSummaryPartDoneEvent,
+    ResponseOutputItemDoneEvent,
+    ResponseReasoningItem,
+    ResponseOutputMessage,
 )
 import io
 from Logger import log
@@ -126,6 +128,10 @@ def stream_response(
             elif isinstance(event, ResponseReasoningSummaryTextDoneEvent):
                 yield summary.strip()
                 summary = ""
+            elif isinstance(event, ResponseOutputItemDoneEvent) and isinstance(event.item, ResponseReasoningItem):
+                yield "Finalizing the feedback"
+            elif isinstance(event, ResponseOutputItemDoneEvent) and isinstance(event.item, ResponseOutputMessage):
+                yield "Preparing the debriefer"
             else:
                 pass
         completion_text = content.strip()

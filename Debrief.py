@@ -1,7 +1,7 @@
 import streamlit as st
 from Settings import settings
 from Logger import log
-from Utils import elapsed, autoplay_audio, local_css, run_js
+from Utils import elapsed, load_audio, autoplay_audio, local_css, run_js
 from Session import get_session
 from UI_Utils import show_messages, handle_audio_input, process_user_query
 
