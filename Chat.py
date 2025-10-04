@@ -2,7 +2,7 @@ import streamlit as st
 from Settings import settings
 import time
 from Logger import log
-from Utils import load_audio, autoplay_audio, local_css, get_prompt, run_js
+from Utils import autoplay_audio, local_css, get_prompt, run_js
 from Session import get_session
 from UI_Utils import show_messages, handle_audio_input, process_user_query
 import warnings
@@ -71,8 +71,6 @@ run_js("scrol.js")
 if "text_chat_enabled" not in st.session_state:
     init_session()
 container1, container3, container4 = setup_sidebar()
-load_audio("assets/audio/Send.mp3")
-load_audio("assets/audio/Receive.mp3")
 if st.session_state.audio:
     autoplay_audio(st.session_state.audio, container4)
     st.session_state.audio = None
@@ -137,7 +135,3 @@ if len(st.session_state.messages) > 2 and container3.button(
 ):
     st.switch_page("Debrief.py")
 
-if container3.button("Start Over", icon=":material/restart_alt:"):
-    del st.session_state["text_chat_enabled"]
-    del st.session_state["messages"]
-    st.rerun()

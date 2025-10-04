@@ -94,24 +94,7 @@ def elapsed(start):
     return " ".join(parts) or "0 seconds"
 
 
-@st.cache_data(show_spinner=False)
-def load_audio(file, controls=False):
-    b64 = base64.b64encode(_load_file(file)).decode("utf-8")
-    id = file[file.rindex("/") + 1 : file.rindex(".")]
-    if controls:
-        html_str = f'<audio id="{id}" controls>'
-    else:
-        html_str = f'<audio id="{id}">'
-    html_str += f"""
-    <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-    </audio>
-    """
-    st.html(html_str)
-
-
 def autoplay_audio(audio_data, container=None, controls=False):
-    if isinstance(audio_data, str):
-        audio_data = _load_file(audio_data)
     b64 = base64.b64encode(audio_data).decode("utf-8")
     if controls:
         html_str = '<audio id="audio_player" autoplay controls>'
@@ -125,12 +108,6 @@ def autoplay_audio(audio_data, container=None, controls=False):
         container = st.spinner()
     with container:
         st.html(html_str)
-
-
-@st.cache_data(show_spinner=False)
-def _load_file(file):
-    with open(file, "rb") as f:
-        return f.read()
 
 
 @st.cache_data(show_spinner=False)

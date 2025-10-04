@@ -1,7 +1,7 @@
 import streamlit as st
 from Settings import settings
 from Logger import log
-from Utils import elapsed, load_audio, autoplay_audio, local_css, run_js
+from Utils import elapsed, autoplay_audio, local_css, run_js
 from Session import get_session
 from UI_Utils import show_messages, handle_audio_input, process_user_query
 
@@ -81,8 +81,6 @@ if "role" not in st.session_state:
 local_css("style.css")
 run_js("scrol.js")
 container1, container3, container4 = setup_sidebar()
-load_audio("assets/audio/Send.mp3")
-load_audio("assets/audio/Receive.mp3")
 if st.session_state.audio:
     autoplay_audio(st.session_state.audio, container4)
     st.session_state.audio = None
@@ -97,7 +95,7 @@ with col2.container(height=600, border=True):
 
     if not st.session_state.allow_text_chat:
         st.markdown(
-            "When you finish the debriefiing with Dr. Casey, click the **Next** button to download the transcript or click the **Start Over** button in the left panel."
+            "When you finish the debriefiing with Dr. Casey, click the **Next** button in the left panel to download the transcript."
         )
 
     if st.session_state.allow_text_chat and not st.session_state.text_chat_enabled:
@@ -152,7 +150,3 @@ if len(st.session_state.messages) > 2 and container3.button(
     log.info(f"Session end: {elapsed(st.session_state.start_time)} {get_session()}")
     st.switch_page("Download.py")
 
-if container3.button("Start Over", icon=":material/restart_alt:"):
-    del st.session_state["text_chat_enabled"]
-    del st.session_state["messages"]
-    st.switch_page("Chat.py")
