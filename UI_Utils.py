@@ -42,7 +42,7 @@ def handle_audio_input(container):
             return speech_to_text(audio)
 
 
-def process_user_query(chatbox, model,  voice, instruction):
+def process_user_query(chatbox, model, voice, instruction):
     message = st.session_state.messages[-1]
     # Display the user's query
     if message["role"] == "user":

@@ -94,9 +94,10 @@ def elapsed(start):
     return " ".join(parts) or "0 seconds"
 
 
+@st.cache_data(show_spinner=False)
 def load_audio(file, controls=False):
     b64 = base64.b64encode(_load_file(file)).decode("utf-8")
-    id = file[file.rindex("/")+1:file.rindex(".")]
+    id = file[file.rindex("/") + 1 : file.rindex(".")]
     if controls:
         html_str = f'<audio id="{id}" controls>'
     else:
@@ -106,7 +107,6 @@ def load_audio(file, controls=False):
     </audio>
     """
     st.html(html_str)
-
 
 
 def autoplay_audio(audio_data, container=None, controls=False):
@@ -126,7 +126,7 @@ def autoplay_audio(audio_data, container=None, controls=False):
 
 
 @st.cache_data(show_spinner=False)
-def _load_file(file) :
+def _load_file(file):
     with open(file, "rb") as f:
         return f.read()
 
@@ -137,6 +137,7 @@ def _read_file(file_name: str) -> str:
         return f.read()
 
 
+@st.cache_data(show_spinner=False)
 def local_css(file_name: str):
     css = _read_file(file_name)
     st.html(f"<style>{css}</style>")

@@ -23,7 +23,7 @@ def generate_Feedback():
     response = stream_response(
         st.session_state.messages,
         model=settings["parameters"]["feedback_model"],
-        reasoning={"effort":"medium", "summary":"auto"},
+        reasoning={"effort": "medium", "summary": "auto"},
     )
     with st.empty():
         try:

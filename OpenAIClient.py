@@ -1,6 +1,12 @@
 import streamlit as st
 from openai import OpenAI
-from openai.types.responses import ResponseTextDeltaEvent, ResponseReasoningSummaryTextDeltaEvent, ResponseReasoningSummaryTextDoneEvent, ResponseTextDoneEvent, ResponseReasoningSummaryPartDoneEvent
+from openai.types.responses import (
+    ResponseTextDeltaEvent,
+    ResponseReasoningSummaryTextDeltaEvent,
+    ResponseReasoningSummaryTextDoneEvent,
+    ResponseTextDoneEvent,
+    ResponseReasoningSummaryPartDoneEvent,
+)
 import io
 from Logger import log
 from Settings import settings
@@ -62,7 +68,7 @@ def text_to_speech(text, voice, instructions):
 def get_response(
     messages,
     model,
-    reasoning={"effort":"minimal", "summary":"auto"},
+    reasoning={"effort": "minimal", "summary": "auto"},
 ):
     start = time()
     if not st.session_state.get("latency"):
@@ -91,11 +97,10 @@ def get_response(
         log.exception("")
 
 
-
 def stream_response(
     messages,
     model,
-    reasoning={"effort":"minimal", "summary":"auto"},
+    reasoning={"effort": "minimal", "summary": "auto"},
 ):
     start = time()
     if not st.session_state.get("latency"):
@@ -136,5 +141,3 @@ def stream_response(
         return completion_text
     except Exception as e:
         log.exception("")
-
-
