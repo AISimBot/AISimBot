@@ -137,7 +137,6 @@ def _read_file(file_name: str) -> str:
         return f.read()
 
 
-@st.cache_data(show_spinner=False)
 def local_css(file_name: str):
     css = _read_file(file_name)
     st.html(f"<style>{css}</style>")
