@@ -81,6 +81,8 @@ if "role" not in st.session_state:
 local_css("style.css")
 run_js("scrol.js")
 container1, container3, container4 = setup_sidebar()
+load_audio("assets/audio/Send.mp3")
+load_audio("assets/audio/Receive.mp3")
 if st.session_state.audio:
     autoplay_audio(st.session_state.audio, container4)
     st.session_state.audio = None
