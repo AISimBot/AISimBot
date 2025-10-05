@@ -134,4 +134,3 @@ if len(st.session_state.messages) > 2 and container3.button(
     icon=":material/navigate_next:",
 ):
     st.switch_page("Debrief.py")
-

@@ -38,7 +38,7 @@ def speech_to_text(audio):
             file=audio_bio,
         )
         st.session_state.processed_audio = id
-        st.session_state.latency.append(("stt", time()-start))
+        st.session_state.latency.append(("stt", time() - start))
         return transcript
     except Exception as e:
         log.exception("")
@@ -54,7 +54,7 @@ def text_to_speech(text, voice, instructions):
             input=text,
             instructions=instructions,
         )
-        st.session_state.latency.append(("tts", time()-start))
+        st.session_state.latency.append(("tts", time() - start))
         total = sum([l[1] for l in st.session_state.latency])
         st.session_state.latency.append(("total", total))
         latency = [f"{l[0]}: {l[1]:.2f}" for l in st.session_state.latency]
@@ -93,7 +93,7 @@ def get_response(
             response.usage.output_tokens_details.reasoning_tokens,
         ]
         log.debug(f"Usage: {tokens}")
-        st.session_state.latency.append(("text", time()-start))
+        st.session_state.latency.append(("text", time() - start))
         return completion_text
     except Exception as e:
         log.exception("")
@@ -128,9 +128,13 @@ def stream_response(
             elif isinstance(event, ResponseReasoningSummaryTextDoneEvent):
                 yield summary.strip()
                 summary = ""
-            elif isinstance(event, ResponseOutputItemDoneEvent) and isinstance(event.item, ResponseReasoningItem):
+            elif isinstance(event, ResponseOutputItemDoneEvent) and isinstance(
+                event.item, ResponseReasoningItem
+            ):
                 yield "Finalizing the feedback"
-            elif isinstance(event, ResponseOutputItemDoneEvent) and isinstance(event.item, ResponseOutputMessage):
+            elif isinstance(event, ResponseOutputItemDoneEvent) and isinstance(
+                event.item, ResponseOutputMessage
+            ):
                 yield "Preparing the debriefer"
             else:
                 pass
@@ -143,7 +147,7 @@ def stream_response(
             usage.output_tokens_details.reasoning_tokens,
         ]
         log.debug(f"Usage: {tokens}")
-        st.session_state.latency.append(("text_stream", time()-start))
+        st.session_state.latency.append(("text_stream", time() - start))
         return completion_text
     except Exception as e:
         log.exception("")

@@ -21,7 +21,7 @@ def create_transcript_markdown(messages):
             if msg["role"] == "user"
             else settings["assistant_name"]
         )
-        content = msg['content']
+        content = msg["content"]
         if msg["role"] == "system":
             debrief = True
             md_lines.append(f"---\n\n# Feedback\n")

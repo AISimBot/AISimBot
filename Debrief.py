@@ -149,4 +149,3 @@ if len(st.session_state.messages) > 2 and container3.button(
 ):
     log.info(f"Session end: {elapsed(st.session_state.start_time)} {get_session()}")
     st.switch_page("Download.py")
-
