@@ -12,7 +12,6 @@ from openai.types.responses import (
 import io
 from Logger import log
 from Settings import settings
-from Utils import elapsed
 from time import time
 from Session import update_active_users
 
@@ -25,7 +24,7 @@ def get_client():
 def speech_to_text(audio):
     start = time()
     if not st.session_state.get("latency"):
-        st.session_state.latency = {"start": start}
+        st.session_state.latency = []
     try:
         id = audio["id"]
         log.debug(f"STT: {id}")
@@ -39,7 +38,7 @@ def speech_to_text(audio):
             file=audio_bio,
         )
         st.session_state.processed_audio = id
-        st.session_state.latency["stt"] = elapsed(start)
+        st.session_state.latency.append(("stt", time()-start))
         return transcript
     except Exception as e:
         log.exception("")
@@ -55,12 +54,13 @@ def text_to_speech(text, voice, instructions):
             input=text,
             instructions=instructions,
         )
-        st.session_state.latency["tts"] = elapsed(start)
-        st.session_state.latency["total"] = elapsed(st.session_state.latency["start"])
-        del st.session_state.latency["start"]
-        latency = ", ".join([f"{k}: {v}" for k, v in st.session_state.latency.items()])
-        del st.session_state.latency
+        st.session_state.latency.append(("tts", time()-start))
+        total = sum([l[1] for l in st.session_state.latency])
+        st.session_state.latency.append(("total", total))
+        latency = [f"{l[0]}: {l[1]:.2f}" for l in st.session_state.latency]
+        latency = ", ".join(latency)
         log.debug(f"{latency}")
+        del st.session_state.latency
         return response.content
     except Exception as e:
         log.exception("")
@@ -74,7 +74,7 @@ def get_response(
 ):
     start = time()
     if not st.session_state.get("latency"):
-        st.session_state.latency = {"start": start}
+        st.session_state.latency = []
     try:
         update_active_users()
         log.debug(f"Sending text to {model}: {messages[-1]['content']}")
@@ -93,7 +93,7 @@ def get_response(
             response.usage.output_tokens_details.reasoning_tokens,
         ]
         log.debug(f"Usage: {tokens}")
-        st.session_state.latency["text"] = elapsed(start)
+        st.session_state.latency.append(("text", time()-start))
         return completion_text
     except Exception as e:
         log.exception("")
@@ -106,7 +106,7 @@ def stream_response(
 ):
     start = time()
     if not st.session_state.get("latency"):
-        st.session_state.latency = {"start": start}
+        st.session_state.latency = []
     try:
         update_active_users()
         log.debug(f"Sending text to {model}: {messages[-1]['content']}")
@@ -143,7 +143,7 @@ def stream_response(
             usage.output_tokens_details.reasoning_tokens,
         ]
         log.debug(f"Usage: {tokens}")
-        st.session_state.latency["text"] = elapsed(start)
+        st.session_state.latency.append(("text_stream", time()-start))
         return completion_text
     except Exception as e:
         log.exception("")
