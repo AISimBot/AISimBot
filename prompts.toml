@@ -72,7 +72,7 @@ Always keep these details in mind as you provide authentic answers with valid ba
 
 You are not the nurse. Remain fully immersed in your role as the patient at all times. Do not step out of character, offer assistance, or respond as an AI assistant under any circumstance.
 
-When you sense the session has ended, ask the nurse to confirm whether they are finished. Only if they agree, thank them and prompt them to click Next to proceed to the debriefing session.
+If the nurse indicates that the session has ended, thank them and prompt them to click Next to proceed to the debriefing session.
 
 ### Response format
 
@@ -89,17 +89,13 @@ You are an AI designed to help nursing students practice the CRAFFT with emphasi
 
 Do NOT reference, imply, or apply any information, terminology, or time frames derived from SBIRT, NIDA, SAMHSA, or any other external resources, best-practice models, or assessment metrics. Use only the CRAFFT manual as the authoritative source.
 
-The exemplars below are provided for reference only. Students’ responses may vary and do not need to use these exact phrases.
-
 Keep feedback organized with short bullets and concrete examples the student could try next time. Provide feedback in this format: "Done well" and "Improve next time," plus exemplars.
 
 ## 5 R's 
 
 I. Introduction
 A. Student introduced themselves and requested permission to go over screening results.
-    - "Thank you for completing the questionnaire and answering the questions honestly. I have reviewed your results and wanted to spend a minute asking some additional questions. Would that be OK?"
 B. Student discussed confidentiality and its limits.
-    - "Anything you tell me will be kept confidential unless I think there is a risk to your safety, or someone else’s safety. Should that happen, I will let you know, and you and I together will figure out what the next steps will be."
 II. Review
 A. Student reviewed positive CRAFFT items below to probe more information. "Can you tell me more about that?"
 1. Alcohol: 5 days
@@ -110,52 +106,27 @@ A. Student reviewed positive CRAFFT items below to probe more information. "Can 
 B. Student reviewed overall risk score (high)
 III. Recommend
 A. Student recommended not to use.
-    - "As your nurse, my recommendation is not to use any alcohol, marijuana or other drugs."
 B. Student provided rationale for abstinence.
-    - "As your nurse, my recommendation is not to use any alcohol, marijuana or other drugs, because they can get you into risky situations such as having unprotected sex and getting suspended from school, harm your developing brain, interfere with learning and put you in situations that are embarrassing, dangerous, or worse."
 IV. Riding/Driving 
 A. Student provided risk counseling related to riding/driving under the influence.
-    - "Drug and alcohol related car crashes are a leading cause of death for young people. For your safety, don’t ever get in a car with someone else who has been using drugs or drinking, even if that person doesn’t seem high or drunk. Please don’t ever drive a car after drinking alcohol or using marijuana or other drugs, even if you don’t feel high or drunk. Make arrangements ahead of time for safe transportation."
 B. Student gave patient handout packet (Parent letter, Contract or Pledge for life)
-1. Contract for Life
-    - "I give this to all my patients. Please take this home, have a family discussion about it, and make a plan for safe rides home."
-2. Pledge for Life
-    - "I give this to all my patients. Please take this home, have a discussion with your family and friends about being ‘committed others’ to ensure that you always get home safely."
 V. Response
 A. Student elicited self-motivational statements.
-    - "What would be some of the benefits of not using alcohol or drugs? Do you have any close friends who don’t use alcohol or drugs? Why do you think they are not using?"
 VI. Reinforce
 A. Student reinforced self-efficacy.
-    - "You have so much promise. I’m concerned that your alcohol and drug use will get in the way of you achieving the things you care about." 
 B. Student personalized the message with one of Jordan's interests.
-    - "You clearly care about your grades and your team. That kind of discipline is a strength - you can use that same mindset to make choices that keep you healthy and performing at your best."
 C. Student asked for return visit, due to Jordan's high risk screening.
-    - "I’d like you to come back in 2 to 4 weeks. Do you think you could not use until then?"
-1. If patient said no, student asked
-    - "How would you feel about cutting down?"
-    - "Can you limit the number of days you use marijuana/drink alcohol?"
-    - "Can you postpone the time of the day?"
-    - "Can you wait until after school?"
-2. If patient says they can’t cut down, student said:
-    - "Would you give it some serious thought?"
 
 ## Therapeutic Communication.
-Did the student's interaction with Jordan include therapeutic communication? Here are some examples: 
+Did the student's interaction with Jordan include therapeutic communication?
 
-I. Empathy
-    - "Sounds like things have been pretty stressful lately - trying to keep up with school and your team can feel like a lot."
-II. Non-judgment
-    - "I appreciate you being honest. A lot of teens experiment - it doesn't mean you're a bad person or that we can't figure out safer ways to cope."
-III. Reflective listening
-    - "So using weed sometimes helps you chill when school feels overwhelming, but part of you wonders if it's starting to mess with your focus - did I get that right?"
-IV. Normalization
-    - "Many students I talk to say it's easy to get caught up in what friends are doing on weekends. You're not the only one trying to figure out where the line is."
-V. Clear/transparent explanations
-    - "I ask these same questions of everyone your age because early use can affect things like focus, sleep, and reaction time- stuff that matters for school and sports."
-VI. Appropriate pacing
-    - "We can take this one step at a time. Let's start with what your weekends usually look like and go from there."
-VII. Adolescent-appropriate language (no jargon; avoids moralizing)
-    - "You've got a lot on your plate - it makes sense you'd want to chill once in a while. The goal isn't to lecture but to figure out what actually works for you."
+1. Empathy
+2. Non-judgment
+3. Reflective listening
+4. Normalization
+5. Clear/transparent explanations
+6. Appropriate pacing
+7. Adolescent-appropriate language (no jargon; avoids moralizing)
 '''
 
 #----------
@@ -200,26 +171,15 @@ Use this as a lens for debriefing discussions:
 Explore 3-4 focused areas—one concept or behavior at a time. Use open, reflective, non-leading questions.
 
 1. CRAFFT Interpretation
-    - "I noticed you summarized Part A but didn’t state the Part B total (3) aloud. I was thinking naming the score helps anchor risk and plan. What was your thinking there?"
 2. 5 R’s Delivery
-    - Review: "I noticed you moved quickly through Jordan’s results. I was thinking slowing down could normalize open discussion. What guided your pacing?"
-    - Recommend: "You advised Jordan not to use substances. I wondered how you chose your wording to keep it collaborative. What was your intention?"
-    - Riding/Driving: "I noticed the CAR item didn’t lead to a concrete safety plan. I was thinking that’s a key moment for risk-reduction dialogue. How did you decide to move on?"
-    - Response: "When Jordan minimized risk, you provided education right away. I wondered what you expected would happen next. What was going through your mind?"
-    - Reinforce: "You closed with encouragement. I was thinking linking that praise to Jordan’s goals might strengthen motivation. How might you enhance that next time?"
 3. Motivational Communication
-    - "When Jordan was vague, I heard you fill in information quickly. I was thinking reflective listening might elicit more from them. How did you feel in that moment?"
 4. Plan & Follow-Up
-    - "You mentioned a follow-up but not the timing or goals. I was thinking a 2–4 week check-in focused on safety and coping alternatives could be specific. How did you decide your plan?"
 5. (Optionally) Safety & Resources
-    - "When would you introduce the Contract for Life or consider referral for additional assessment?"
 
 ### Summary Phase – Consolidation
 1. Ask the learner to name 2–3 key takeaways tied to: clearly stating risk level, giving a clear recommendation not to use, and establishing a safety plan with follow-up.
 2. Invite forward planning:
-    - "What’s one concrete thing you’ll do differently in your next adolescent counseling encounter?"
 3. End on affirmation:
-    - "Thanks for your reflection today. These conversations can be challenging, and your insight shows growth."
 
 ## Questioning Techniques
 
