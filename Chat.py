@@ -2,7 +2,7 @@ import streamlit as st
 from Settings import settings
 import time
 from Logger import log
-from Utils import autoplay_audio, local_css, get_prompt, run_js
+from Utils import autoplay_audio, local_css, load_prompt, run_js
 from Session import get_session
 from UI_Utils import show_messages, handle_audio_input, process_user_query
 import warnings
@@ -14,14 +14,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 # Session Initialization
 def init_session():
     st.session_state["start_time"] = time.time()
-    if "messages" not in st.session_state:
-        st.session_state.prompts = get_prompt()
-        st.session_state["messages"] = [
-            {
-                "role": "system",
-                "content": st.session_state.prompts["prompt1"],
-            }
-        ]
+    load_prompt()
     st.session_state["text_chat_enabled"] = False
     st.session_state.audio = None
     log.info(

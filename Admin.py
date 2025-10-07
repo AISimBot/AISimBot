@@ -3,8 +3,11 @@ from Session import get_active_user_count, push_session_log
 from Settings import settings
 from Logger import log
 import json
-from Utils import get_prompt
-import codecs
+from Utils import load_prompt
+from pathlib import Path
+
+def save_prompt(prompt):
+    Path("prompts.toml").open("wb").write(prompt)
 
 st.set_page_config(
     page_title="Admin | " + settings["title"],
@@ -20,22 +23,21 @@ if st.sidebar.button(f"🟢 Active Users: {get_active_user_count()}"):
     st.rerun()
 
 if "messages" not in st.session_state:
-    st.session_state["messages"] = [
-        {"role": "system", "content": get_prompt()["prompt1"]}
-    ]
+    load_prompt()
 
 st.sidebar.download_button(
     label="Download Prompt",
-    data=st.session_state.messages[0]["content"].encode("utf-8"),
-    file_name="prompt.txt",
+    data=open("prompts.toml", "rb").read(),
+    file_name="prompts.toml",
     mime="text/plain",
 )
 
-prompt_file = st.sidebar.file_uploader("Load Prompt", type="txt")
+prompt_file = st.sidebar.file_uploader("Load Prompt", type="toml")
 if prompt_file:
     try:
-        prompt = prompt_file.getvalue().decode("utf-8")
-        st.session_state.messages[0]["content"] = prompt
+        prompt = prompt_file.getvalue()
+        save_prompt(prompt)
+        load_prompt()
     except Exception as e:
         log.exception(f"{e}")
 
@@ -53,14 +55,15 @@ if chat_file:
     except Exception as e:
         log.exception(f"{e}")
 
-
 if st.sidebar.button("Reset Chat"):
     st.session_state.messages = [st.session_state.messages[0]]
 
 with st.form("Prompt"):
-    prompt = st.text_area("Temporary Prompt", st.session_state.messages[0]["content"])
-    if st.form_submit_button("Temporarily Change"):
-        st.session_state.messages[0]["content"] = prompt
+    prompt_text = Path("prompts.toml").open("r", encoding="utf-8").read()
+    prompt = st.text_area("Temporary Prompt", prompt_text)
+    if st.form_submit_button("Save"):
+        save_prompt(prompt.encode("utf-8"))
+        load_prompt()
         st.switch_page("Chat.py")
 
     if (
@@ -68,9 +71,7 @@ with st.form("Prompt"):
         and "GITHUB_REPOSITORY" in st.secrets
         and st.form_submit_button("Commit")
     ):
-        st.session_state.messages[0]["content"] = prompt
-        codecs.open("prompt.txt", "w", "utf-8").write(
-            st.session_state.messages[0]["content"]
-        )
+        save_prompt(prompt)
+        load_prompt()
         push_session_log()
         st.switch_page("Chat.py")
