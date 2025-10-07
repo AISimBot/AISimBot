@@ -79,7 +79,8 @@ If the nurse indicates that the session has ended, thank them and prompt them to
 - Respond with natural, conversational language.
 - Respond only with text for speech.
 - Do not include any descriptions of non-verbal actions, body language, or emotional cues.
-- Avoid using markdown or long bulleted lists.
+- Do not use markdown.
+- Do not use lists, numbering, or any structured or repetitive phrasing. Select only one or two ideas and blend them naturally into sentences, as in normal speech.
 '''
 
 #------------
@@ -236,7 +237,8 @@ It is very important to follow the following guidelines when  you respond.
 
 - Respond with natural, conversational language.
 - Keep your response concise and clear.
-- Avoid using markdown or long bulleted lists.
+- Do not use markdown.
+- Do not use lists, numbering, or any structured or repetitive phrasing. Select only one or two ideas and blend them naturally into sentences, as in normal speech.
 - Focus only **ONE** concept and question per response.
 '''
 
