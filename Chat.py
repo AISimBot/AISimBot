@@ -126,4 +126,5 @@ if len(st.session_state.messages) > 2 and container3.button(
     "Next",
     icon=":material/navigate_next:",
 ):
+    st.session_state.feedback_generated = False
     st.switch_page("Debrief.py")
