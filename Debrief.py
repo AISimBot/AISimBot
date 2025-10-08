@@ -115,6 +115,7 @@ with col2.container(height=600, border=True):
                 model=settings["parameters"]["model"],
                 voice=settings["parameters"]["feedback_voice"],
                 instruction=settings["parameters"]["feedback_voice_instruction"],
+                reasoning={"effort": "low", "summary": "auto"},
             )
 
     show_messages(chatbox)

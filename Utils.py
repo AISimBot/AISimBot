@@ -135,5 +135,6 @@ def load_prompt():
         ]
     else:
         st.session_state["messages"][0] = {
-            "role": "system", "content": st.session_state.prompts["prompt1"]
+            "role": "system",
+            "content": st.session_state.prompts["prompt1"],
         }

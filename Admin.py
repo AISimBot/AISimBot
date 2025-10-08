@@ -6,8 +6,10 @@ import json
 from Utils import load_prompt
 from pathlib import Path
 
+
 def save_prompt(prompt):
     Path("prompts.toml").open("wb").write(prompt)
+
 
 st.set_page_config(
     page_title="Admin | " + settings["title"],
@@ -24,6 +26,12 @@ if st.sidebar.button(f"🟢 Active Users: {get_active_user_count()}"):
 
 if "messages" not in st.session_state:
     load_prompt()
+
+if st.sidebar.checkbox("Display Reasoning"):
+    if st.session_state.get("display_reasoning", False):
+        st.session_state.display_reasoning = True
+    else:
+        st.session_state.display_reasoning = not st.session_state.display_reasoning
 
 st.sidebar.download_button(
     label="Download Prompt",

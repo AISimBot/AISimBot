@@ -103,6 +103,8 @@ def get_response(
         ]
         log.debug(f"Usage: {tokens}")
         st.session_state.latency.append(("text", time() - start))
+        if st.session_state.get("display_reasoning", False):
+            completion_text = reasoning + "\n---\n" + completion_text
         return completion_text
     except Exception as e:
         log.exception("")
@@ -141,10 +143,10 @@ def stream_response(
             elif isinstance(event, ResponseCompletedEvent):
                 yield "Preparing the debriefer"
                 content = event.response.output_text
-                reasoning = "\n\n".join([part for part in reasoning])
             else:
                 pass
         completion_text = content.strip()
+        reasoning = "\n\n".join(reasoning).strip()
         usage = event.response.usage
         tokens = [
             usage.input_tokens,
@@ -154,6 +156,8 @@ def stream_response(
         ]
         log.debug(f"Usage: {tokens}")
         st.session_state.latency.append(("text_stream", time() - start))
-        return completion_text
+        if st.session_state.get("display_reasoning", False):
+            completion_text = reasoning + "\n---\n" + completion_text
+        return completion_text, reasoning
     except Exception as e:
         log.exception("")
