@@ -51,7 +51,7 @@ def text_to_speech(text, voice, instructions):
     start = time()
     try:
         if st.session_state.get("display_reasoning", False):
-            text = text.split("</details>")[-1]
+            text = re.sub(r"<details>.*?</details>", "", text, flags=re.DOTALL)
         log.debug(f"TTS: {voice}, {instructions}\n{text}")
         response = get_client().audio.speech.create(
             model="gpt-4o-mini-tts",
@@ -80,7 +80,7 @@ def get_response(
     start = time()
     if st.session_state.get("display_reasoning", False):
         for msg in messages:
-            msg["content"] = re.sub(r"<details>.*?</details>", "", msg["content"])
+            msg["content"] = re.sub(r"<details>.*?</details>", "", msg["content"], flags=re.DOTALL)
     if not st.session_state.get("latency"):
         st.session_state.latency = []
     try:
@@ -124,7 +124,7 @@ def stream_response(
     start = time()
     if st.session_state.get("display_reasoning", False):
         for msg in messages:
-            msg["content"] = re.sub(r"<details>.*?</details>", "", msg["content"])
+            msg["content"] = re.sub(r"<details>.*?</details>", "", msg["content"], flags=re.DOTALL)
     if not st.session_state.get("latency"):
         st.session_state.latency = []
     try:
