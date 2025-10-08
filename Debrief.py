@@ -23,7 +23,10 @@ def generate_Feedback():
     response = stream_response(
         st.session_state.messages,
         model=settings["parameters"]["feedback_model"],
-        reasoning={"effort": settings["parameters"]["feedback_reasoning_effort"], "summary": "auto"},
+        reasoning={
+            "effort": settings["parameters"]["feedback_reasoning_effort"],
+            "summary": "auto",
+        },
     )
     with st.empty():
         try:
@@ -55,10 +58,15 @@ def setup_sidebar():
     con2 = container.container(border=True)
     con3 = container.container()
     con4 = container.empty()
+
+    def toggle_text_chat():
+        st.session_state.text_chat_enabled = not st.session_state.text_chat_enabled
+
     if st.session_state.allow_text_chat:
         con2.toggle(
             ":material/keyboard: Enable Text Chat",
-            key="text_chat_enabled",
+            value=st.session_state.text_chat_enabled,
+            on_change=toggle_text_chat,
         )
     return con1, con3, con4
 
@@ -111,7 +119,10 @@ with col2.container(height=600, border=True):
                 model=settings["parameters"]["model"],
                 voice=settings["parameters"]["feedback_voice"],
                 instruction=settings["parameters"]["feedback_voice_instruction"],
-                reasoning={"effort": settings["parameters"]["debrief_reasoning_effort"], "summary": "auto"},
+                reasoning={
+                    "effort": settings["parameters"]["debrief_reasoning_effort"],
+                    "summary": "auto",
+                },
             )
 
     show_messages(chatbox)
@@ -137,7 +148,10 @@ with col2.container(height=600, border=True):
             model=settings["parameters"]["model"],
             voice=settings["parameters"]["feedback_voice"],
             instruction=settings["parameters"]["feedback_voice_instruction"],
-            reasoning={"effort": settings["parameters"]["debrief_reasoning_effort"], "summary": "auto"},
+            reasoning={
+                "effort": settings["parameters"]["debrief_reasoning_effort"],
+                "summary": "auto",
+            },
         )
 
 # Handle end session

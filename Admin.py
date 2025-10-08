@@ -31,22 +31,28 @@ efforts = ["minimal", "low", "medium", "high"]
 feedback_reasoning_effort = st.sidebar.selectbox(
     "Reasoning Effort for Feedback",
     efforts,
-    index = efforts.index(settings["parameters"]["feedback_reasoning_effort"]),
+    index=efforts.index(settings["parameters"]["feedback_reasoning_effort"]),
 )
 settings["parameters"]["feedback_reasoning_effort"] = feedback_reasoning_effort
 
 debrief_reasoning_effort = st.sidebar.selectbox(
     "Reasoning Effort for Debrief",
     efforts,
-    index = efforts.index(settings["parameters"]["debrief_reasoning_effort"]),
+    index=efforts.index(settings["parameters"]["debrief_reasoning_effort"]),
 )
 settings["parameters"]["debrief_reasoning_effort"] = debrief_reasoning_effort
 
+
 def toggle_display_reasoning():
-        st.session_state.display_reasoning = not st.session_state.display_reasoning
+    st.session_state.display_reasoning = not st.session_state.display_reasoning
+
 
 st.session_state.setdefault("display_reasoning", False)
-st.sidebar.toggle("Display Reasoning", value=st.session_state.display_reasoning, on_change=toggle_display_reasoning)
+st.sidebar.toggle(
+    "Display Reasoning",
+    value=st.session_state.display_reasoning,
+    on_change=toggle_display_reasoning,
+)
 
 st.sidebar.download_button(
     label="Download Prompt",

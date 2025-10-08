@@ -18,6 +18,7 @@ from time import time
 from Session import update_active_users
 import re
 
+
 @st.cache_resource
 def get_client():
     return OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
@@ -79,7 +80,7 @@ def get_response(
     start = time()
     if st.session_state.get("display_reasoning", False):
         for msg in messages:
-            msg["content"] =re.sub(r"<details>.*?</details>", "", msg["content"])
+            msg["content"] = re.sub(r"<details>.*?</details>", "", msg["content"])
     if not st.session_state.get("latency"):
         st.session_state.latency = []
     try:
