@@ -16,7 +16,7 @@ from Logger import log
 from Settings import settings
 from time import time
 from Session import update_active_users
-
+import re
 
 @st.cache_resource
 def get_client():
@@ -108,7 +108,7 @@ def get_response(
         ]
         log.debug(f"Usage: {tokens}")
         st.session_state.latency.append(("text", time() - start))
-        if st.session_state.get("display_reasoning", False):
+        if reasoning and st.session_state.get("display_reasoning", False):
             completion_text = f"<details><summary><strong>Reasoning</strong></summary>{reasoning}</details>{completion_text}"
         return completion_text
     except Exception as e:
@@ -164,7 +164,7 @@ def stream_response(
         ]
         log.debug(f"Usage: {tokens}")
         st.session_state.latency.append(("text_stream", time() - start))
-        if st.session_state.get("display_reasoning", False):
+        if reasoning and st.session_state.get("display_reasoning", False):
             completion_text = f"<details><summary><strong>Reasoning</strong></summary>{reasoning}</details>{completion_text}"
         return completion_text
     except Exception as e:

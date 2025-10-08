@@ -25,7 +25,7 @@ def show_messages(chatbox):
             else settings["assistant_avatar"]
         )
         with chatbox.chat_message(name, avatar=avatar):
-            st.markdown(message["content"])
+            st.markdown(message["content"], unsafe_allow_html=True)
 
 
 def handle_audio_input(container):
@@ -56,7 +56,7 @@ def process_user_query(
             settings["user_name"],
             avatar=settings["user_avatar"],
         ):
-            st.markdown(message["content"])
+            st.markdown(message["content"], unsafe_allow_html=True)
     response = get_response(
         st.session_state.messages,
         model=model,
