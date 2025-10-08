@@ -42,8 +42,11 @@ debrief_reasoning_effort = st.sidebar.selectbox(
 )
 settings["parameters"]["debrief_reasoning_effort"] = debrief_reasoning_effort
 
+def toggle_display_reasoning():
+        st.session_state.display_reasoning = not st.session_state.display_reasoning
+
 st.session_state.setdefault("display_reasoning", False)
-st.sidebar.toggle("Display Reasoning", key="display_reasoning")
+st.sidebar.toggle("Display Reasoning", value=st.session_state.display_reasoning, on_change=toggle_display_reasoning)
 
 st.sidebar.download_button(
     label="Download Prompt",
