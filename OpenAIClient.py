@@ -1,13 +1,15 @@
 import streamlit as st
 from openai import OpenAI
 from openai.types.responses import (
-    ResponseTextDeltaEvent,
     ResponseReasoningSummaryTextDeltaEvent,
     ResponseReasoningSummaryTextDoneEvent,
+    ResponseReasoningSummaryPartDoneEvent,
+    ResponseTextDeltaEvent,
     ResponseTextDoneEvent,
     ResponseOutputItemDoneEvent,
     ResponseReasoningItem,
     ResponseOutputMessage,
+    ResponseCompletedEvent,
 )
 import io
 from Logger import log
@@ -86,6 +88,13 @@ def get_response(
             store=False,
         )
         completion_text = response.output_text.strip()
+        reasoning = []
+        for output in response.output:
+            if isinstance(output, ResponseReasoningItem):
+                for r in output.summary:
+                    reasoning.append(r.text)
+
+        reasoning = "\n\n".join(reasoning).strip()
         tokens = [
             response.usage.input_tokens,
             response.usage.input_tokens_details.cached_tokens,
@@ -119,23 +128,20 @@ def stream_response(
             stream=True,
         )
         content = ""
-        summary = ""
+        reasoning = []
         for event in response:
-            if isinstance(event, ResponseReasoningSummaryTextDeltaEvent):
-                summary += event.delta
-            elif isinstance(event, ResponseTextDeltaEvent):
-                content += event.delta
-            elif isinstance(event, ResponseReasoningSummaryTextDoneEvent):
-                yield summary.strip()
-                summary = ""
+            if isinstance(event, ResponseReasoningSummaryTextDoneEvent):
+                part = event.text.strip()
+                yield part
+                reasoning.append(part)
             elif isinstance(event, ResponseOutputItemDoneEvent) and isinstance(
                 event.item, ResponseReasoningItem
             ):
                 yield "Finalizing the feedback"
-            elif isinstance(event, ResponseOutputItemDoneEvent) and isinstance(
-                event.item, ResponseOutputMessage
-            ):
+            elif isinstance(event, ResponseCompletedEvent):
                 yield "Preparing the debriefer"
+                content = event.response.output_text
+                reasoning = "\n\n".join([part for part in reasoning])
             else:
                 pass
         completion_text = content.strip()
