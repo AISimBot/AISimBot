@@ -50,9 +50,6 @@ def setup_sidebar():
         for key, val in settings["sidebar"].items():
             st.subheader(f"{key.replace("_", " ")}: {val}")
 
-    def toggle_text_chat():
-        st.session_state.text_chat_enabled = not st.session_state.text_chat_enabled
-
     container = st.sidebar.container(border=True)
     con1 = container.container()
     con2 = container.container(border=True)
@@ -61,8 +58,7 @@ def setup_sidebar():
     if st.session_state.allow_text_chat:
         con2.toggle(
             ":material/keyboard: Enable Text Chat",
-            value=st.session_state.text_chat_enabled,
-            on_change=toggle_text_chat,
+            key="text_chat_enabled",
         )
     return con1, con3, con4
 
