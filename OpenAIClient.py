@@ -49,6 +49,8 @@ def speech_to_text(audio):
 def text_to_speech(text, voice, instructions):
     start = time()
     try:
+        if st.session_state.get("display_reasoning", False):
+            text = text.split("\n---\n")[-1]
         log.debug(f"TTS: {voice}, {instructions}\n{text}")
         response = get_client().audio.speech.create(
             model="gpt-4o-mini-tts",
@@ -72,7 +74,7 @@ def text_to_speech(text, voice, instructions):
 def get_response(
     messages,
     model,
-    reasoning={"effort": "minimal", "summary": "auto"},
+    reasoning={"effort": "minimal", "summary": "detailed"},
 ):
     start = time()
     if not st.session_state.get("latency"):
@@ -113,7 +115,7 @@ def get_response(
 def stream_response(
     messages,
     model,
-    reasoning={"effort": "minimal", "summary": "auto"},
+    reasoning={"effort": "minimal", "summary": "detailed"},
 ):
     start = time()
     if not st.session_state.get("latency"):
@@ -158,6 +160,6 @@ def stream_response(
         st.session_state.latency.append(("text_stream", time() - start))
         if st.session_state.get("display_reasoning", False):
             completion_text = reasoning + "\n---\n" + completion_text
-        return completion_text, reasoning
+        return completion_text
     except Exception as e:
         log.exception("")

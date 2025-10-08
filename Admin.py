@@ -27,11 +27,26 @@ if st.sidebar.button(f"🟢 Active Users: {get_active_user_count()}"):
 if "messages" not in st.session_state:
     load_prompt()
 
+efforts = ["minimal", "low", "medium", "high"]
+feedback_reasoning_effort = st.sidebar.selectbox(
+    "Reasoning Effort for Feedback",
+    efforts,
+    index = efforts.index(settings["parameters"]["feedback_reasoning_effort"]),
+)
+settings["parameters"]["feedback_reasoning_effort"] = feedback_reasoning_effort
+
+debrief_reasoning_effort = st.sidebar.selectbox(
+    "Reasoning Effort for Debrief",
+    efforts,
+    index = efforts.index(settings["parameters"]["debrief_reasoning_effort"]),
+)
+settings["parameters"]["debrief_reasoning_effort"] = debrief_reasoning_effort
+
 if st.sidebar.checkbox("Display Reasoning"):
     if st.session_state.get("display_reasoning", False):
-        st.session_state.display_reasoning = True
-    else:
         st.session_state.display_reasoning = not st.session_state.display_reasoning
+    else:
+        st.session_state.display_reasoning = True
 
 st.sidebar.download_button(
     label="Download Prompt",

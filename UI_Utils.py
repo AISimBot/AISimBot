@@ -47,7 +47,7 @@ def process_user_query(
     model,
     voice,
     instruction,
-    reasoning={"effort": "minimal", "summary": "auto"},
+    reasoning={"effort": "minimal", "summary": "detailed"},
 ):
     message = st.session_state.messages[-1]
     # Display the user's query

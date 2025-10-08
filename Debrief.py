@@ -23,7 +23,7 @@ def generate_Feedback():
     response = stream_response(
         st.session_state.messages,
         model=settings["parameters"]["feedback_model"],
-        reasoning={"effort": "medium", "summary": "auto"},
+        reasoning={"effort": settings["parameters"]["feedback_reasoning_effort"], "summary": "auto"},
     )
     with st.empty():
         try:
@@ -115,7 +115,7 @@ with col2.container(height=600, border=True):
                 model=settings["parameters"]["model"],
                 voice=settings["parameters"]["feedback_voice"],
                 instruction=settings["parameters"]["feedback_voice_instruction"],
-                reasoning={"effort": "low", "summary": "auto"},
+                reasoning={"effort": settings["parameters"]["debrief_reasoning_effort"], "summary": "auto"},
             )
 
     show_messages(chatbox)
@@ -141,6 +141,7 @@ with col2.container(height=600, border=True):
             model=settings["parameters"]["model"],
             voice=settings["parameters"]["feedback_voice"],
             instruction=settings["parameters"]["feedback_voice_instruction"],
+            reasoning={"effort": settings["parameters"]["debrief_reasoning_effort"], "summary": "auto"},
         )
 
 # Handle end session

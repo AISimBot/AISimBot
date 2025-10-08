@@ -82,6 +82,8 @@ voice = "nova"
 voice_instruction = "a 17-year-old, non-binary student who plays  sports. Tone: reserved, withdrawn."
 model = "gpt-5"
 feedback_model = "gpt-5"
+feedback_reasoning_effort = "medium"
+debrief_reasoning_effort = "minimal"
 feedback_voice = "shimmer"
 feedback_voice_instruction = '''
 Voice Affect: encouraging, assuring, and calm.
