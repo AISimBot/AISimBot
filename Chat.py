@@ -1,9 +1,6 @@
 import streamlit as st
 from Settings import settings
-import time
-from Logger import log
-from Utils import autoplay_audio, local_css, load_prompt, run_js
-from Session import get_session
+from Utils import autoplay_audio, local_css, run_js
 from UI_Utils import init_session, show_messages, handle_audio_input, process_user_query
 import warnings
 
