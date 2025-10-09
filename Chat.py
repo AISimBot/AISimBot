@@ -4,24 +4,11 @@ import time
 from Logger import log
 from Utils import autoplay_audio, local_css, load_prompt, run_js
 from Session import get_session
-from UI_Utils import show_messages, handle_audio_input, process_user_query
+from UI_Utils import init_session, show_messages, handle_audio_input, process_user_query
 import warnings
 
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-
-# Session Initialization
-def init_session():
-    st.session_state["start_time"] = time.time()
-    load_prompt()
-    st.session_state.audio = None
-    log.info(
-        f"Session Start: {time.time()-st.session_state.start_time:.2f} seconds, {get_session()}"
-    )
-    st.session_state.setdefault("text_chat_enabled", False)
-    if st.session_state.allow_text_chat:
-        st.session_state.text_chat_enabled = True
 
 
 def setup_sidebar():

@@ -93,7 +93,6 @@ with st.form("Prompt"):
     if st.form_submit_button("Save"):
         save_prompt(prompt.encode("utf-8"))
         load_prompt()
-        st.switch_page("Chat.py")
 
     if (
         "GITHUB_TOKEN" in st.secrets
@@ -103,4 +102,3 @@ with st.form("Prompt"):
         save_prompt(prompt)
         load_prompt()
         push_session_log()
-        st.switch_page("Chat.py")

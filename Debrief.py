@@ -3,7 +3,7 @@ from Settings import settings
 from Logger import log
 from Utils import elapsed, autoplay_audio, local_css, run_js
 from Session import get_session
-from UI_Utils import show_messages, handle_audio_input, process_user_query
+from UI_Utils import init_session, show_messages, handle_audio_input, process_user_query
 
 if settings["parameters"]["model"].startswith("claude"):
     from AnthropicClient import get_response
@@ -84,6 +84,9 @@ if "role" not in st.session_state:
 # Inject CSS for custom styles
 local_css("style.css")
 run_js("scrol.js")
+if "text_chat_enabled" not in st.session_state:
+    init_session()
+
 container1, container3, container4 = setup_sidebar()
 if st.session_state.audio:
     autoplay_audio(st.session_state.audio, container4)
