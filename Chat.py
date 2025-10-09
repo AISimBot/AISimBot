@@ -17,19 +17,9 @@ def setup_sidebar():
 
     container = st.sidebar.container(border=True)
     con1 = container.container()
-    con2 = container.container(border=True)
     con3 = container.container()
     con4 = container.empty()
 
-    def toggle_text_chat():
-        st.session_state.text_chat_enabled = not st.session_state.text_chat_enabled
-
-    if st.session_state.allow_text_chat:
-        con2.toggle(
-            ":material/keyboard: Enable Text Chat",
-            value=st.session_state.text_chat_enabled,
-            on_change=toggle_text_chat,
-        )
     return con1, con3, con4
 
 
@@ -60,14 +50,9 @@ with col1.container(height=600, border=False):
 
 with col2.container(height=600, border=True):
 
-    if not st.session_state.allow_text_chat:
+    if not st.session_state.text_chat_enabled:
         st.markdown(
             "When you have completed the CRAFFT screening with Jordan, Click the **Next** Button in the Left Panel to move onto a debriefing session."
-        )
-
-    if st.session_state.allow_text_chat and not st.session_state.text_chat_enabled:
-        st.markdown(
-            "If you experience issues with voice chat, click the **Enable Text Chat** button in the left panel."
         )
 
     chatbox = st.container(border=True, key="chatbox")
@@ -88,8 +73,6 @@ with col2.container(height=600, border=True):
     if st.session_state.text_chat_enabled:
         user_query = input_placeholder.chat_input(
             "When you have completed the CRAFFT screening with Jordan, click the 'Next' button in the left panel to move onto a debriefing session.",
-            disabled=not st.session_state.text_chat_enabled,
-            key="chat_input_stage1",
         )
 
     if transcript := handle_audio_input(container1):
