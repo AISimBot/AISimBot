@@ -1,7 +1,8 @@
 import streamlit as st
 from io import BytesIO
 from Session import get_session, push_session_log
-from Utils import local_css
+from Utils import elapsed, local_css
+from Logger import log
 from Settings import settings
 from mistletoe import markdown
 from fpdf import FPDF
@@ -87,10 +88,11 @@ local_css("style.css")
 #    create_transcript_document()
 #    push_session_log()
 
-st.download_button(
+if st.download_button(
     label="Download Transcript",
     icon=":material/download:",
     data=create_transcript_pdf(),
     file_name="Transcript.pdf",
     mime="application/pdf",
-)
+):
+    log.info(f"Session end: {elapsed(st.session_state.start_time)} {get_session()}")

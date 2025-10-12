@@ -1,8 +1,6 @@
 import streamlit as st
 from Settings import settings
-from Logger import log
-from Utils import elapsed, autoplay_audio, local_css, run_js
-from Session import get_session
+from Utils import autoplay_audio, local_css, run_js
 from UI_Utils import init_session, show_messages, handle_audio_input, process_user_query
 
 if settings["parameters"]["model"].startswith("claude"):
@@ -145,5 +143,4 @@ if len(st.session_state.messages) > 2 and container3.button(
     "Next",
     icon=":material/navigate_next:",
 ):
-    log.info(f"Session end: {elapsed(st.session_state.start_time)} {get_session()}")
     st.switch_page("Download.py")
