@@ -72,7 +72,7 @@ if "role" not in st.session_state:
 # Inject CSS for custom styles
 local_css("style.css")
 run_js("scrol.js")
-if "text_chat_enabled" not in st.session_state:
+if "start_time" not in st.session_state:
     init_session()
 
 container1, container3, container4 = setup_sidebar()
@@ -88,7 +88,7 @@ with col1.container(height=600, border=False):
 
 with col2.container(height=600, border=True):
 
-    if not st.session_state.text_chat_enabled:
+    if not st.session_state.allow_text_chat:
         st.markdown(
             "When you finish the debriefiing with Dr. Casey, click the **Next** button in the left panel to download the transcript."
         )
@@ -115,7 +115,7 @@ with col2.container(height=600, border=True):
 
     user_query = ""
     input_placeholder = st.empty()
-    if st.session_state.text_chat_enabled:
+    if st.session_state.allow_text_chat:
         user_query = input_placeholder.chat_input(
             "When you finish the debriefiing with Dr. Casey, click the 'Next' button to download the transcript or click the 'Start Over' in the left panel.",
         )
