@@ -19,7 +19,6 @@ def setup_sidebar():
     con1 = container.container()
     con3 = container.container()
     con4 = container.empty()
-
     return con1, con3, con4
 
 

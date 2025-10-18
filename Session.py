@@ -5,7 +5,6 @@ import time
 import os
 import json
 import codecs
-from Utils import run_command
 
 
 def should_log_session():
@@ -24,13 +23,13 @@ def setup_session_log():
     if "GITHUB_TOKEN" in st.secrets and "GITHUB_REPOSITORY" in st.secrets:
         repo = st.secrets["GITHUB_REPOSITORY"]
         token = st.secrets["GITHUB_TOKEN"]
+        from Utils import run_command
         run_command("git config --global user.name Streamlit")
         run_command("git config --global user.email streamlit@localhost")
         run_command(f"git remote set-url origin https://{token}@github.com/{repo}.git")
 
 
 def log_session():
-    update_active_users()
     if should_log_session():
         file = f"sessions/{get_session()}.json"
         json.dump(st.session_state.messages, codecs.open(file, "w", "utf-8"), indent=4)
@@ -38,6 +37,7 @@ def log_session():
 
 def push_session_log():
     if should_log_session():
+        from Utils import run_command
         run_command("git add sessions")
         run_command("git commit -a -m 'session log'")
         run_command("git push origin")
@@ -56,6 +56,7 @@ def get_active_users():
     return {}
 
 
+@st.fragment(run_every=60)
 def update_active_users():
     now = time.time()
     active_users = get_active_users()
@@ -63,7 +64,7 @@ def update_active_users():
     active_users[id] = now
 
 
-def get_active_user_count(timeout=300):
+def get_active_user_count(timeout=60):
     active_users = get_active_users()
     now = time.time()
     for user_id, last_active in list(active_users.items()):

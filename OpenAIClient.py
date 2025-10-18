@@ -15,7 +15,6 @@ import io
 from Logger import log
 from Settings import settings
 from time import time
-from Session import update_active_users
 import re
 
 
@@ -86,7 +85,6 @@ def get_response(
     if not st.session_state.get("latency"):
         st.session_state.latency = []
     try:
-        update_active_users()
         log.debug(f"Sending text to {model}: {messages[-1]['content']}")
         response = get_client().responses.create(
             model=model,
@@ -132,7 +130,6 @@ def stream_response(
     if not st.session_state.get("latency"):
         st.session_state.latency = []
     try:
-        update_active_users()
         log.debug(f"Sending text to {model}: {messages[-1]['content']}")
         response = get_client().responses.create(
             model=model,
