@@ -1,6 +1,6 @@
 import streamlit as st
 from io import BytesIO
-from Session import get_session, push_session_log
+from Session import get_session, get_active_users, push_session_log
 from Utils import elapsed, local_css
 from Logger import log
 from Settings import settings
@@ -96,3 +96,5 @@ if st.download_button(
     mime="application/pdf",
 ):
     log.info(f"Session end: {elapsed(st.session_state.start_time)} {get_session()}")
+    active_users = get_active_users()
+    del active_users[get_session()]

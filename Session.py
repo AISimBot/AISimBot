@@ -5,6 +5,7 @@ import time
 import os
 import json
 import codecs
+from Utils import run_command
 
 
 def should_log_session():
@@ -23,7 +24,6 @@ def setup_session_log():
     if "GITHUB_TOKEN" in st.secrets and "GITHUB_REPOSITORY" in st.secrets:
         repo = st.secrets["GITHUB_REPOSITORY"]
         token = st.secrets["GITHUB_TOKEN"]
-        from Utils import run_command
         run_command("git config --global user.name Streamlit")
         run_command("git config --global user.email streamlit@localhost")
         run_command(f"git remote set-url origin https://{token}@github.com/{repo}.git")
@@ -37,7 +37,6 @@ def log_session():
 
 def push_session_log():
     if should_log_session():
-        from Utils import run_command
         run_command("git add sessions")
         run_command("git commit -a -m 'session log'")
         run_command("git push origin")

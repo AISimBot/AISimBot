@@ -2,6 +2,7 @@ import streamlit as st
 from Settings import settings
 from Utils import autoplay_audio, local_css, run_js
 from UI_Utils import init_session, show_messages, handle_audio_input, process_user_query
+from Session import update_active_users
 import warnings
 
 
@@ -32,6 +33,7 @@ st.title("Chat | " + settings["title"])
 if "role" not in st.session_state:
     st.switch_page("Login.py")
 
+update_active_users()
 # Inject CSS for custom styles
 local_css("style.css")
 run_js("scrol.js")

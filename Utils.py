@@ -10,7 +10,6 @@ from Logger import log
 import tomllib
 from browser_detection import browser_detection_engine
 import streamlit.components.v1 as components
-from Session import update_active_users
 
 
 def get_browser():
@@ -118,7 +117,6 @@ def _read_file(file_name):
 
 
 def local_css(file_name: str):
-    update_active_users()
     css = _read_file(file_name)
     st.html(f"<style>{css}</style>")
 
