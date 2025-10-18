@@ -15,9 +15,9 @@ else:
 
 
 # Session Initialization
-def init_session():
+def init_session(prompt="prompt1"):
     st.session_state["start_time"] = time.time()
-    load_prompt()
+    load_prompt(prompt)
     st.session_state.audio = None
     log.info(
         f"Session Start: {time.time()-st.session_state.start_time:.2f} seconds, {get_session()}"

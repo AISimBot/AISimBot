@@ -127,14 +127,14 @@ def run_js(file_name: str):
     components.html(js, width=0, height=0)
 
 
-def load_prompt():
+def load_prompt(prompt="prompt1"):
     st.session_state.prompts = tomllib.load(open("prompts.toml", "rb"))
     if "messages" not in st.session_state:
         st.session_state["messages"] = [
-            {"role": "system", "content": st.session_state.prompts["prompt1"]}
+            {"role": "system", "content": st.session_state.prompts[prompt]}
         ]
     else:
         st.session_state["messages"][0] = {
             "role": "system",
-            "content": st.session_state.prompts["prompt1"],
+            "content": st.session_state.prompts[prompt],
         }

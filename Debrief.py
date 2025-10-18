@@ -41,7 +41,6 @@ def generate_Feedback():
         "role": "system",
         "content": st.session_state.prompts["trigger2"] + response,
     }
-    st.session_state.feedback_generated = True
 
 
 def setup_sidebar():
@@ -73,7 +72,10 @@ if "role" not in st.session_state:
 local_css("style.css")
 run_js("scrol.js")
 if "start_time" not in st.session_state:
-    init_session()
+    if st.session_state.messages[0]["content"] == st.session_state.prompts["prompt1"]:
+        init_session()
+    else:
+        init_session("prompt3")
 
 container1, container3, container4 = setup_sidebar()
 if st.session_state.audio:
@@ -95,7 +97,7 @@ with col2.container(height=600, border=True):
 
     chatbox = st.container(border=True, key="chatbox")
 
-    if not st.session_state.get("feedback_generated", False):
+    if st.session_state.messages[0]["content"] == st.session_state.prompts["prompt1"]:
         with st.spinner(
             "📋 Reviewing your interaction and compiling insights for debriefing… Please wait and stay on this page. This may take up to a few minutes. Thank you for your patience."
         ):
