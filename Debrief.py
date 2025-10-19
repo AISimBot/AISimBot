@@ -120,7 +120,7 @@ with col2.container(height=600, border=True):
     input_placeholder = st.empty()
     if st.session_state.allow_text_chat:
         user_query = input_placeholder.chat_input(
-            "When you finish the debriefiing with Dr. Casey, click the 'Next' button to download the transcript or click the 'Start Over' in the left panel.",
+            "When you finish the debriefiing with Dr. Casey, click the 'Next' button to download the transcript.",
         )
 
     if transcript := handle_audio_input(container1):
