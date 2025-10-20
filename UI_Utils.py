@@ -2,7 +2,7 @@ import streamlit as st
 from streamlit_mic_recorder import mic_recorder
 from Settings import settings
 from OpenAIClient import speech_to_text, text_to_speech
-from Session import get_session, log_session
+from Session import log_session
 import time
 import json
 from Utils import load_prompt
@@ -20,7 +20,7 @@ def init_session(prompt="prompt1"):
     load_prompt(prompt)
     st.session_state.audio = None
     log.info(
-        f"Session Start: {time.time()-st.session_state.start_time:.2f} seconds, {get_session()}"
+        f"Session Start: {time.time()-st.session_state.start_time:.2f} seconds, {st.session_state.id}"
     )
 
 

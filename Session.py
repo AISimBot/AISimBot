@@ -31,7 +31,7 @@ def setup_session_log():
 
 def log_session():
     if should_log_session():
-        file = f"sessions/{get_session()}.json"
+        file = f"sessions/{st.session_state.id}.json"
         json.dump(st.session_state.messages, codecs.open(file, "w", "utf-8"), indent=4)
 
 
@@ -47,6 +47,7 @@ def get_session():
     ctx = get_script_run_ctx()
     session_id = ctx.session_id
     session_info = runtime._instance.get_client(session_id)
+    st.session_state.id = session_id
     return session_id
 
 
@@ -59,8 +60,7 @@ def get_active_users():
 def update_active_users():
     now = time.time()
     active_users = get_active_users()
-    id = get_session()
-    active_users[id] = now
+    active_users[st.session_state.id] = now
 
 
 def get_active_user_count(timeout=60):
