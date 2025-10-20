@@ -3,6 +3,8 @@ from streamlit.runtime import get_instance
 from streamlit.runtime.scriptrunner import get_script_run_ctx
 import time
 import os
+import shutil
+from pathlib import Path
 import json
 import codecs
 from Utils import run_command
@@ -48,6 +50,7 @@ def get_session():
     session_id = ctx.session_id
     session_info = runtime._instance.get_client(session_id)
     st.session_state.id = session_id
+    Path(f"static/{session_id}").mkdir(parents=True, exist_ok=True)
     return session_id
 
 
@@ -63,11 +66,21 @@ def update_active_users():
     active_users[st.session_state.id] = now
 
 
+def clean_audio_cache():
+    try:
+        active_users = get_active_users().keys()
+        for p in Path("static").glob("*"):
+            if p.is_dir() and p.as_posix().replace("static/", "") not in active_users:
+                shutil.rmtree(p)
+    except:
+        pass
+
+
 def get_active_user_count(timeout=60):
     active_users = get_active_users()
     now = time.time()
     for user_id, last_active in list(active_users.items()):
         if now - last_active > timeout:
             del active_users[user_id]
-
+    clean_audio_cache()
     return len(get_active_users())

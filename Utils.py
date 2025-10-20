@@ -1,4 +1,5 @@
 import streamlit as st
+from pathlib import Path
 import uuid
 import time
 from datetime import datetime, timedelta
@@ -95,21 +96,32 @@ def elapsed(start):
 
 
 def autoplay_audio(audio_data, container=None, controls=False):
-    b64 = base64.b64encode(audio_data).decode("utf-8")
+    if isinstance(audio_data, str):
+        src = f"/app/{audio_data}"
+    elif isinstance(audio_data, bytes):
+        b64 = base64.b64encode(audio_data).decode("utf-8")
+        src = f"data:audio/mp3;base64,{b64}"
+
     if controls:
         html_str = '<audio id="audio_player" autoplay controls>'
     else:
         html_str = '<audio id="audio_player" autoplay>'
     html_str += f"""
-    <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+    <source src="{src}" type="audio/mp3">
     </audio>
     """
     if container == None:
         container = st.spinner()
     with container:
         st.html(html_str)
-
-
+    if st.session_state.get("last_audio", False):
+        Path(st.session_state.last_audio).unlink(missing_ok=True)
+    if isinstance(audio_data, str):
+        st.session_state.last_audio = audio_data
+    else:
+        st.session_state.last_audio = None
+        
+        
 @st.cache_data(show_spinner=False)
 def _read_file(file_name):
     with open(file_name, encoding="utf-8") as f:
