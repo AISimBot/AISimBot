@@ -54,12 +54,13 @@ def text_to_speech(text, voice, instructions):
         if st.session_state.get("display_reasoning", False):
             text = re.sub(r"<details>.*?</details>", "", text, flags=re.DOTALL)
         log.debug(f"TTS: {voice}, {instructions}\n{text}")
-        file = f"static/{st.session_state.id}/{uuid4().hex}.mp3"
+        file = f"static/{st.session_state.id}/{uuid4().hex}.opus"
         with get_client().audio.speech.with_streaming_response.create(
             model="gpt-4o-mini-tts",
             voice=voice,
             input=text,
             instructions=instructions,
+            response_format="opus",
         ) as response:
             p = Path(file)
             response.stream_to_file(p)

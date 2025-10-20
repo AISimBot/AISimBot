@@ -98,16 +98,18 @@ def elapsed(start):
 def autoplay_audio(audio_data, container=None, controls=False):
     if isinstance(audio_data, str):
         src = f"/app/{audio_data}"
+        type = "audio/ogg; codecs=opus"
     elif isinstance(audio_data, bytes):
         b64 = base64.b64encode(audio_data).decode("utf-8")
         src = f"data:audio/mp3;base64,{b64}"
+        type = "audio/mp3"
 
     if controls:
         html_str = '<audio id="audio_player" autoplay controls>'
     else:
         html_str = '<audio id="audio_player" autoplay>'
     html_str += f"""
-    <source src="{src}" type="audio/mp3">
+    <source src="{src}" type="{type}">
     </audio>
     """
     if container == None:
