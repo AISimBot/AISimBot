@@ -33,12 +33,12 @@ st.title("Chat | " + settings["title"])
 if "role" not in st.session_state:
     st.switch_page("Login.py")
 
-update_active_users()
 # Inject CSS for custom styles
 local_css("style.css")
 run_js("scrol.js")
 if "start_time" not in st.session_state:
     init_session()
+update_active_users()
 container1, container3, container4 = setup_sidebar()
 if st.session_state.audio:
     autoplay_audio(st.session_state.audio, container4)
