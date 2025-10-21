@@ -75,7 +75,7 @@ def clean_audio_cache():
         pass
 
 
-def get_active_user_count(timeout=60):
+def get_active_user_count(timeout=180):
     active_users = get_active_users()
     now = time.time()
     for user_id, last_active in list(active_users.items()):
