@@ -63,6 +63,7 @@ def text_to_speech(text, voice, instructions):
             response_format="opus",
         ) as response:
             p = Path(file)
+            p.parent.mkdir(parents=True, exist_ok=True)
             response.stream_to_file(p)
         st.session_state.latency.append(("tts", time() - start))
         total = sum([l[1] for l in st.session_state.latency])

@@ -50,7 +50,6 @@ def get_session():
     session_id = ctx.session_id
     session_info = runtime._instance.get_client(session_id)
     st.session_state.id = session_id
-    Path(f"static/{session_id}").mkdir(parents=True, exist_ok=True)
     return session_id
 
 
