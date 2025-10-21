@@ -24,15 +24,6 @@ local_css("style.css")
 browser = get_browser()
 st.session_state.client_info = {}
 st.session_state.client_info["browser"] = browser
-log.debug(browser)
-if "Safari" in browser:
-    version = re.search(r"\d+\.\d+", browser)[0]
-    version = float(version)
-    if version >= 18.4:
-        st.error(
-            "Safari 18.4, 18.5 is not supported. Please use [Google Chrome](https://www.google.com/chrome/) on your laptop or desktop.",
-            icon=":material/stop:",
-        )
 
 if st.secrets.get("testing") and st.session_state.role == "student":
     with st.container(border=True):
