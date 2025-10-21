@@ -36,7 +36,7 @@ else:
     1. Ensure you are in a quiet room with minimal background noise.
     2. Click **🎙 Record** in the left panel.
     3. If prompted, allow your browser to access your microphone.
-    4. **Mac**: Chrome may default to use your iPhone’s microphone. When prompted to allow microphone access, select your Mac’s built-in microphone instead.
+    4. **Chrome on Mac** may default to using your iPhone’s microphone. When prompted to allow microphone access, choose your Mac’s built-in microphone from the dropdown menu before clicking allow.
     5. When the button changes to **📤 Stop**, begin speaking.
     6. Click **📤 Stop** when you're finished.
     7. Ensure you can clearly hear your recording.
