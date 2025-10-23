@@ -8,6 +8,7 @@ from pathlib import Path
 import json
 import codecs
 from Utils import run_command
+from Logger import log
 
 
 def should_log_session():
@@ -75,11 +76,17 @@ def clean_audio_cache():
         pass
 
 
+def remove_session(id):
+    active_users = get_active_users()
+    del active_users[id]
+    log.info(f"Session removed: {id}")
+
+
 def get_active_user_count(timeout=90):
     active_users = get_active_users()
     now = time.time()
     for user_id, last_active in list(active_users.items()):
         if now - last_active > timeout:
-            del active_users[user_id]
+            remove_session(user_id)
     clean_audio_cache()
     return len(get_active_users())
