@@ -23,7 +23,8 @@
     if (!root || root === W.__chatAutoscrollRoot) return;
     try { W.__chatAutoscrollMsgObs?.disconnect(); } catch (_) {}
     W.__chatAutoscrollRoot = root;
-
+    root.setAttribute('inert', '');
+    root.style.userSelect = 'none'; // optional: prevent text copying
     let pending = false;
     const msgObs = new MutationObserver((mutations) => {
       for (const m of mutations) {
