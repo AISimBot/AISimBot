@@ -41,7 +41,7 @@ def show_messages(chatbox):
         )
         with chatbox.chat_message(name, avatar=avatar):
             st.markdown(message["content"], unsafe_allow_html=True)
-    if st.session_state.role is not "student":
+    if st.session_state.role != "student":
         st.markdown(st.session_state.last_latency)
 
 
