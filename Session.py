@@ -77,9 +77,12 @@ def clean_audio_cache():
 
 
 def remove_session(id):
-    active_users = get_active_users()
-    del active_users[id]
-    log.info(f"Session removed: {id}")
+    try:
+        active_users = get_active_users()
+        del active_users[id]
+        log.info(f"Session removed: {id}")
+    except Exception as e:
+        log.info(f"{e}: Cannot remove session {id}")
 
 
 def get_active_user_count(timeout=180):
