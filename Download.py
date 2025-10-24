@@ -95,5 +95,7 @@ if st.download_button(
     file_name="Transcript.pdf",
     mime="application/pdf",
 ):
-    log.info(f"Session end: {elapsed(st.session_state.start_time)}, {st.session_state.id}")
+    log.info(
+        f"Session end: {elapsed(st.session_state.start_time)}, {st.session_state.id}"
+    )
     remove_session(st.session_state.id)

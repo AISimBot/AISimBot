@@ -122,8 +122,8 @@ def autoplay_audio(audio_data, container=None, controls=False):
         st.session_state.last_audio = audio_data
     else:
         st.session_state.last_audio = None
-        
-        
+
+
 @st.cache_data(show_spinner=False)
 def _read_file(file_name):
     with open(file_name, encoding="utf-8") as f:
