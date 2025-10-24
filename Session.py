@@ -82,7 +82,7 @@ def remove_session(id):
     log.info(f"Session removed: {id}")
 
 
-def get_active_user_count(timeout=90):
+def get_active_user_count(timeout=180):
     active_users = get_active_users()
     now = time.time()
     for user_id, last_active in list(active_users.items()):
