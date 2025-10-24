@@ -2,7 +2,7 @@ import streamlit as st
 from Settings import settings
 from Utils import autoplay_audio, local_css, run_js
 from UI_Utils import init_session, show_messages, handle_audio_input, process_user_query
-from Session import update_active_users
+from Session import ping
 
 if settings["parameters"]["model"].startswith("claude"):
     from AnthropicClient import get_response
@@ -76,7 +76,7 @@ if "start_time" not in st.session_state:
         init_session()
     else:
         init_session("prompt3")
-update_active_users()
+ping()
 container1, container3, container4 = setup_sidebar()
 if st.session_state.audio:
     autoplay_audio(st.session_state.audio, container4)

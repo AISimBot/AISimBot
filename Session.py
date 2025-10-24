@@ -59,11 +59,15 @@ def get_active_users():
     return {}
 
 
-@st.fragment(run_every=60)
 def update_active_users():
     now = time.time()
     active_users = get_active_users()
     active_users[st.session_state.id] = now
+
+
+@st.fragment(run_every=60)
+def ping():
+    update_active_users()
 
 
 def clean_audio_cache():

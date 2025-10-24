@@ -1,6 +1,7 @@
 import streamlit as st
 from pathlib import Path
 from uuid import uuid4
+from Session import update_active_users
 from openai import OpenAI
 from openai.types.responses import (
     ResponseReasoningSummaryTextDeltaEvent,
@@ -86,6 +87,7 @@ def get_response(
     reasoning={"effort": "minimal", "summary": "detailed"},
 ):
     start = time()
+    update_active_users()
     if st.session_state.get("display_reasoning", False):
         for msg in messages:
             msg["content"] = re.sub(
@@ -131,6 +133,7 @@ def stream_response(
     reasoning={"effort": "minimal", "summary": "detailed"},
 ):
     start = time()
+    update_active_users()
     if st.session_state.get("display_reasoning", False):
         for msg in messages:
             msg["content"] = re.sub(
