@@ -68,8 +68,10 @@ def text_to_speech(text, voice, instructions):
         st.session_state.latency.append(("tts", time() - start))
         total = sum([l[1] for l in st.session_state.latency])
         st.session_state.latency.append(("total", total))
-        latency = [f"{l[0]}: {l[1]:.2f}" for l in st.session_state.latency]
+        latency = [f"{l[0]} {l[1]:.2f}" for l in st.session_state.latency]
         latency = ", ".join(latency)
+        latency = f"Latency: {latency}"
+        st.session_state.last_latency = latency
         log.debug(f"{latency}")
         del st.session_state.latency
         return file

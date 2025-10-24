@@ -41,7 +41,8 @@ def show_messages(chatbox):
         )
         with chatbox.chat_message(name, avatar=avatar):
             st.markdown(message["content"], unsafe_allow_html=True)
-
+    if st.session_state.role is not "student":
+        st.markdown(st.session_state.last_latency)
 
 def handle_audio_input(container):
     format = "aac" if "Safari" in st.session_state.client_info["browser"] else "webm"
