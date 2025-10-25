@@ -3,8 +3,6 @@ from streamlit.runtime import get_instance
 from streamlit.runtime.scriptrunner import get_script_run_ctx
 import time
 import os
-import shutil
-from pathlib import Path
 import json
 import codecs
 from Utils import run_command
@@ -70,16 +68,6 @@ def ping():
     update_active_users()
 
 
-def clean_audio_cache():
-    try:
-        active_users = get_active_users().keys()
-        for p in Path("static").glob("*"):
-            if p.is_dir() and p.as_posix().replace("static/", "") not in active_users:
-                shutil.rmtree(p)
-    except:
-        pass
-
-
 def remove_session(id):
     try:
         active_users = get_active_users()
@@ -95,5 +83,4 @@ def get_active_user_count(timeout=180):
     for user_id, last_active in list(active_users.items()):
         if now - last_active > timeout:
             remove_session(user_id)
-    clean_audio_cache()
     return len(get_active_users())

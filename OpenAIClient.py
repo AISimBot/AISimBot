@@ -1,6 +1,4 @@
 import streamlit as st
-from pathlib import Path
-from uuid import uuid4
 from Session import update_active_users
 from openai import OpenAI
 from openai.types.responses import (
@@ -55,17 +53,13 @@ def text_to_speech(text, voice, instructions):
         if st.session_state.get("display_reasoning", False):
             text = re.sub(r"<details>.*?</details>", "", text, flags=re.DOTALL)
         log.debug(f"TTS: {voice}, {instructions}\n{text}")
-        file = f"static/{st.session_state.id}/{uuid4().hex}.opus"
-        with get_client().audio.speech.with_streaming_response.create(
+        response = get_client().audio.speech.create(
             model="gpt-4o-mini-tts",
             voice=voice,
             input=text,
             instructions=instructions,
             response_format="opus",
-        ) as response:
-            p = Path(file)
-            p.parent.mkdir(parents=True, exist_ok=True)
-            response.stream_to_file(p)
+        )
         st.session_state.latency.append(("tts", time() - start))
         total = sum([l[1] for l in st.session_state.latency])
         st.session_state.latency.append(("total", total))
@@ -75,7 +69,7 @@ def text_to_speech(text, voice, instructions):
         st.session_state.last_latency = latency
         log.debug(f"{latency}")
         del st.session_state.latency
-        return file
+        return response.content
     except Exception as e:
         log.exception("")
 

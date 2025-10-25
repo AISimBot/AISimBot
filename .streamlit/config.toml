@@ -1,6 +1,3 @@
-[server]
-enableStaticServing = true
-
 [theme]
 base="light" # "light" or "dark"
 primaryColor = "#3498db" # "DodgerBlue"

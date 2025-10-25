@@ -56,8 +56,6 @@ else:
             f"🟢 Active Users: {get_active_user_count()}"
         ):
             st.rerun()
-        else:
-            get_active_user_count()
 
         player_container = st.empty()
         format = "aac" if "Safari" in browser else "webm"
