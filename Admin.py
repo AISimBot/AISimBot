@@ -27,7 +27,7 @@ if st.sidebar.button(f"🟢 Active Users: {get_active_user_count()}"):
 if "messages" not in st.session_state:
     load_prompt()
 
-efforts = ["minimal", "low", "medium", "high"]
+efforts = ["none", "low", "medium", "high"]
 feedback_reasoning_effort = st.sidebar.selectbox(
     "Reasoning Effort for Feedback",
     efforts,

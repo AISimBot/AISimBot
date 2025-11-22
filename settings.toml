@@ -80,10 +80,10 @@ Visit_Reason = "Routine physical exam required for school sports participation."
 # Previews of the voices are available: https://www.openai.fm/
 voice = "nova"
 voice_instruction = "a 17-year-old, non-binary student who plays  sports. Tone: reserved, withdrawn."
-model = "gpt-5"
-feedback_model = "gpt-5"
+model = "gpt-5.1"
+feedback_model = "gpt-5.1"
 feedback_reasoning_effort = "medium"
-debrief_reasoning_effort = "minimal"
+debrief_reasoning_effort = "none"
 feedback_voice = "shimmer"
 feedback_voice_instruction = '''
 Voice Affect: encouraging, assuring, and calm.

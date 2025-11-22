@@ -78,7 +78,7 @@ def text_to_speech(text, voice, instructions):
 def get_response(
     messages,
     model,
-    reasoning={"effort": "minimal", "summary": "detailed"},
+    reasoning={"effort": "none", "summary": "detailed"},
 ):
     start = time()
     update_active_users()
@@ -95,6 +95,7 @@ def get_response(
             model=model,
             input=messages,
             reasoning=reasoning,
+            text={"verbosity":"low"},
             max_output_tokens=10000,
             store=False,
         )
@@ -124,7 +125,7 @@ def get_response(
 def stream_response(
     messages,
     model,
-    reasoning={"effort": "minimal", "summary": "detailed"},
+    reasoning={"effort": "none", "summary": "detailed"},
 ):
     start = time()
     update_active_users()
@@ -141,6 +142,7 @@ def stream_response(
             model=model,
             input=messages,
             reasoning=reasoning,
+            text={"verbosity":"low"},
             max_output_tokens=10000,
             store=False,
             stream=True,
