@@ -34,7 +34,7 @@ st.sidebar.header("Access Code")
 with st.sidebar.container(border=True):
     with st.form("Credentials"):
         st.text_input("Access Code", type="password", key="password")
-        if st.form_submit_button("Login"):
+        if submitted := st.form_submit_button("Login"):
             if check_password():
                 st.switch_page("Test-Sound.py")
             else:
