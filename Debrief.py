@@ -24,7 +24,7 @@ def generate_Feedback():
         model=settings["parameters"]["feedback_model"],
         reasoning={
             "effort": settings["parameters"]["feedback_reasoning_effort"],
-            "summary": "auto",
+            "summary": "concise",
         },
     )
     with st.empty():
