@@ -154,3 +154,4 @@ The AI SimBot’s versatility makes it valuable for:
 
 * Yash Pankhania
 * Tiffany Kim
+* Chi Kim
