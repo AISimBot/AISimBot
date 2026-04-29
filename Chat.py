@@ -1,9 +1,10 @@
 import streamlit as st
 from Settings import settings
-from Utils import autoplay_audio, local_css, run_js
+from Utils import autoplay_audio, elapsed, local_css, run_js
 from UI_Utils import init_session, show_messages, handle_audio_input, process_user_query
 from Session import ping
 import warnings
+import time
 
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -38,6 +39,8 @@ local_css("style.css")
 run_js("scrol.js")
 if "start_time" not in st.session_state:
     init_session()
+if "patient_interview_start_time" not in st.session_state:
+    st.session_state["patient_interview_start_time"] = st.session_state.start_time
 ping()
 container1, container3, container4 = setup_sidebar()
 if st.session_state.audio:
@@ -95,5 +98,9 @@ if len(st.session_state.messages) > 2 and container3.button(
     "Next",
     icon=":material/navigate_next:",
 ):
+    st.session_state["patient_interview_end_time"] = time.time()
+    st.session_state["patient_interview_elapsed_time"] = elapsed(
+        st.session_state.patient_interview_start_time
+    )
     st.session_state.feedback_generated = False
     st.switch_page("Debrief.py")

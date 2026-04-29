@@ -1,8 +1,9 @@
 import streamlit as st
 from Settings import settings
-from Utils import autoplay_audio, local_css, run_js
+from Utils import autoplay_audio, elapsed, local_css, run_js
 from UI_Utils import init_session, show_messages, handle_audio_input, process_user_query
 from Session import ping
+import time
 
 if settings["parameters"]["model"].startswith("claude"):
     from AnthropicClient import get_response
@@ -76,6 +77,8 @@ if "start_time" not in st.session_state:
         init_session()
     else:
         init_session("prompt3")
+if "debrief_start_time" not in st.session_state:
+    st.session_state["debrief_start_time"] = time.time()
 ping()
 container1, container3, container4 = setup_sidebar()
 if st.session_state.audio:
@@ -145,4 +148,8 @@ if len(st.session_state.messages) > 2 and container3.button(
     "Next",
     icon=":material/navigate_next:",
 ):
+    st.session_state["debrief_end_time"] = time.time()
+    st.session_state["debrief_elapsed_time"] = elapsed(
+        st.session_state.debrief_start_time
+    )
     st.switch_page("Download.py")

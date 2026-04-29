@@ -1,6 +1,6 @@
 import logging
-import pytz
-from datetime import datetime
+from datetime import datetime, timezone as dt_timezone
+from zoneinfo import ZoneInfo
 import streamlit as st
 from Settings import settings
 
@@ -10,13 +10,13 @@ class TimeZoneFormatter(logging.Formatter):
 
     def __init__(self, fmt=None, style=None, datefmt=None, timezone="UTC"):
         super().__init__(fmt, datefmt, style=style)
-        self.timezone = pytz.timezone(timezone)
+        self.timezone = ZoneInfo(timezone)
 
     def converter(self, timestamp):
         # Convert timestamp to datetime object in UTC
-        dt = datetime.utcfromtimestamp(timestamp)
+        dt = datetime.fromtimestamp(timestamp, tz=dt_timezone.utc)
         # Convert UTC datetime to the specified time zone
-        return pytz.utc.localize(dt).astimezone(self.timezone)
+        return dt.astimezone(self.timezone)
 
     def formatTime(self, record, datefmt=None):
         dt = self.converter(record.created)
@@ -25,12 +25,15 @@ class TimeZoneFormatter(logging.Formatter):
         return dt.isoformat()
 
 
-def get_logger(timezone="UTC"):
+def get_logger(timezone=None):
     """
     Create a custom logger with timestamps in the specified time zone.
     :param timezone: str, time zone name (e.g., 'US/Eastern')
     :return: logging.Logger
     """
+    if timezone is None:
+        timezone = settings["timezone"] if "timezone" in settings else "UTC"
+
     log = logging.getLogger(__name__)
     if not log.hasHandlers():  # Avoid adding handlers multiple times
         if "log_level" in st.secrets and st.secrets["log_level"] == "debug":
@@ -59,8 +62,5 @@ def get_logger(timezone="UTC"):
 
 
 if "logger" not in st.session_state:
-    if "timezone" in settings:
-        st.session_state.logger = get_logger(settings["timezone"])
-    else:
-        st.session_state.logger = get_logger()
+    st.session_state.logger = get_logger()
 log = st.session_state.logger

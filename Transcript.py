@@ -5,13 +5,51 @@ from mistletoe import markdown
 from fpdf import FPDF
 from fpdf.enums import AccessPermission
 from html2docx import html2docx
+from pathlib import Path
 from unicodedata import normalize
 from unidecode import unidecode
-import pytz
+from zoneinfo import ZoneInfo
 from datetime import datetime
 
+
+def _format_timestamp(timestamp):
+    if not timestamp:
+        return "Not recorded"
+    tz = ZoneInfo(settings.get("timezone", "UTC"))
+    return datetime.fromtimestamp(timestamp, tz).strftime("%Y-%m-%d %H:%M:%S")
+
+
+def _phase_timing_line(label, start_key, end_key, elapsed_key):
+    start = st.session_state.get(start_key)
+    end = st.session_state.get(end_key)
+    elapsed = st.session_state.get(elapsed_key, "Not recorded")
+    return (
+        f"{label}: Start: {_format_timestamp(start)}, "
+        f"End: {_format_timestamp(end)}, Elapsed: {elapsed}"
+    )
+
+
 def create_transcript_markdown(messages):
-    md_lines = ["# Conversation Transcript", ""]
+    md_lines = [
+        "# Conversation Transcript",
+        "",
+        "---",
+        _phase_timing_line(
+            "Patient Interview",
+            "patient_interview_start_time",
+            "patient_interview_end_time",
+            "patient_interview_elapsed_time",
+        ),
+        "",
+        _phase_timing_line(
+            "Debriefing",
+            "debrief_start_time",
+            "debrief_end_time",
+            "debrief_elapsed_time",
+        ),
+        "---",
+        "",
+    ]
     debrief = False
     for msg in messages[1:]:
         speaker = (
