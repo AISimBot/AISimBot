@@ -54,7 +54,7 @@ def text_to_speech(text, voice, instructions):
             text = re.sub(r"<details>.*?</details>", "", text, flags=re.DOTALL)
         log.debug(f"TTS: {voice}, {instructions}\n{text}")
         response = get_client().audio.speech.create(
-            model="gpt-4o-mini-tts",
+            model="gpt-4o-mini-tts-2025-03-20",
             voice=voice,
             input=text,
             instructions=instructions,

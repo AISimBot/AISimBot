@@ -9,7 +9,6 @@ import subprocess
 from Logger import log
 import tomllib
 from browser_detection import browser_detection_engine
-import streamlit.components.v1 as components
 
 
 def get_browser():
@@ -127,7 +126,7 @@ def local_css(file_name: str):
 def run_js(file_name: str):
     js = _read_file(file_name)
     # st.markdown(js, unsafe_allow_html=True)
-    components.html(js, width=0, height=0)
+    st.html(js, width=1, unsafe_allow_javascript=True)
 
 
 def load_prompt(prompt="prompt1"):

@@ -7,7 +7,7 @@
 
 title = "AI SimBot"
 # See all timezones for log: https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568
-timezone = "UTC"
+timezone = "America/New_York"
 allow_text_chat = false
 error_message = "😞 Oops! An unexpected error occurred. Please try again. If the error persists, please contact the administrator."
 support_message = "If you experience any technical difficulties, please contact the administrator at <support email address>."
