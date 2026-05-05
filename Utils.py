@@ -125,7 +125,6 @@ def local_css(file_name: str):
 
 def run_js(file_name: str):
     js = _read_file(file_name)
-    # st.markdown(js, unsafe_allow_html=True)
     st.html(js, width=1, unsafe_allow_javascript=True)
 
 

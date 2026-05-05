@@ -1,7 +1,7 @@
 <script>
 (function () {
-  const W   = window.parent || window;
-  const DOC = W.document;
+  const W   = window;
+  const DOC = document;
 
   try { W.__chatAutoscrollMsgObs?.disconnect(); } catch (_) {}
   try { W.__chatAutoscrollBootObs?.disconnect(); } catch (_) {}
