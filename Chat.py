@@ -65,9 +65,13 @@ with col2.container(height=600, border=True):
         with st.spinner("🧑‍⚕️ Preparing Jordan for the interview… Please wait."):
             process_user_query(
                 chatbox,
-                model=settings["parameters"]["model"],
-                voice=settings["parameters"]["voice"],
-                instruction=settings["parameters"]["voice_instruction"],
+                model=settings["parameters"]["interview_model"],
+                voice=settings["parameters"]["interview_voice"],
+                instruction=settings["parameters"]["interview_voice_instruction"],
+                reasoning={
+                    "effort": settings["parameters"]["debrief_reasoning_effort"],
+                    "summary": "auto",
+                },
             )
 
     show_messages(chatbox)
@@ -88,9 +92,13 @@ with col2.container(height=600, border=True):
         )
         process_user_query(
             chatbox,
-            model=settings["parameters"]["model"],
-            voice=settings["parameters"]["voice"],
-            instruction=settings["parameters"]["voice_instruction"],
+            model=settings["parameters"]["interview_model"],
+            voice=settings["parameters"]["interview_voice"],
+            instruction=settings["parameters"]["interview_voice_instruction"],
+            reasoning={
+                "effort": settings["parameters"]["debrief_reasoning_effort"],
+                "summary": "auto",
+            },
         )
 
 # Handle end session
