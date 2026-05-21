@@ -5,7 +5,7 @@ from UI_Utils import init_session, show_messages, handle_audio_input, process_us
 from Session import ping
 import time
 
-if settings["parameters"]["model"].startswith("claude"):
+if settings["parameters"]["debrief_model"].startswith("claude"):
     from AnthropicClient import get_response
 else:
     from OpenAIClient import get_response, stream_response
@@ -107,9 +107,9 @@ with col2.container(height=600, border=True):
             generate_Feedback()
             process_user_query(
                 chatbox,
-                model=settings["parameters"]["model"],
-                voice=settings["parameters"]["feedback_voice"],
-                instruction=settings["parameters"]["feedback_voice_instruction"],
+                model=settings["parameters"]["debrief_model"],
+                voice=settings["parameters"]["debrief_voice"],
+                instruction=settings["parameters"]["debrief_voice_instruction"],
                 reasoning={
                     "effort": settings["parameters"]["debrief_reasoning_effort"],
                     "summary": "auto",
@@ -134,9 +134,9 @@ with col2.container(height=600, border=True):
         )
         process_user_query(
             chatbox,
-            model=settings["parameters"]["model"],
-            voice=settings["parameters"]["feedback_voice"],
-            instruction=settings["parameters"]["feedback_voice_instruction"],
+            model=settings["parameters"]["debrief_model"],
+            voice=settings["parameters"]["debrief_voice"],
+            instruction=settings["parameters"]["debrief_voice_instruction"],
             reasoning={
                 "effort": settings["parameters"]["debrief_reasoning_effort"],
                 "summary": "auto",
