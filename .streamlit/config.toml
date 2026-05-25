@@ -12,3 +12,6 @@ toolbarMode = "minimal" # "auto", "developer", "viewer", "minimal"
 
 [browser]
 gatherUsageStats = false
+
+[server]
+fileWatcherType = "none"
