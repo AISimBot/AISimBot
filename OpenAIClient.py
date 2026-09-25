@@ -54,7 +54,8 @@ def text_to_speech(text, voice, instructions):
             text = re.sub(r"<details>.*?</details>", "", text, flags=re.DOTALL)
         log.debug(f"TTS: {voice}, {instructions}\n{text}")
         response = get_client().audio.speech.create(
-            model="gpt-4o-mini-tts-2025-03-20",
+            model="gpt-4o-mini-tts",
+            # gpt-4o-mini-tts-2025-03-20
             voice=voice,
             input=text,
             instructions=instructions,
@@ -108,8 +109,10 @@ def get_response(
 
         reasoning = "\n\n".join(reasoning).strip()
         tokens = [
-            response.usage.input_tokens,
+            response.usage.input_tokens
+            - response.usage.input_tokens_details.cached_tokens,
             response.usage.input_tokens_details.cached_tokens,
+            response.usage.input_tokens_details.cache_write_tokens,
             response.usage.output_tokens,
             response.usage.output_tokens_details.reasoning_tokens,
         ]
@@ -167,8 +170,9 @@ def stream_response(
         reasoning = "\n\n".join(reasoning).strip()
         usage = event.response.usage
         tokens = [
-            usage.input_tokens,
+            usage.input_tokens - usage.input_tokens_details.cached_tokens,
             usage.input_tokens_details.cached_tokens,
+            usage.input_tokens_details.cache_write_tokens,
             usage.output_tokens,
             usage.output_tokens_details.reasoning_tokens,
         ]
