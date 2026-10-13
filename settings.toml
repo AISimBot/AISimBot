@@ -76,16 +76,16 @@ Visit_Reason = "Routine physical exam required for school sports participation."
 
 
 [parameters]
-interview_model = "gpt-5.4-mini"
-interview_reasoning_effort = "none"
+interview_model = "gpt-6-luna"
+interview_reasoning_effort = "low"
 # Use one of the followings: alloy, ash, coral, echo, fable, onyx, nova, sage and shimmer.
 # Previews of the voices are available: https://www.openai.fm/
 interview_voice = "nova"
 interview_voice_instruction = "a 17-year-old, non-binary student who plays  sports. Tone: reserved, withdrawn."
-feedback_model = "gpt-5.2"
+feedback_model = "gpt-6-sol"
 feedback_reasoning_effort = "medium"
-debrief_model = "gpt-5.2"
-debrief_reasoning_effort = "none"
+debrief_model = "gpt-6-luna"
+debrief_reasoning_effort = "low"
 debrief_voice = "shimmer"
 debrief_voice_instruction = '''
 Voice Affect: encouraging, assuring, and calm.

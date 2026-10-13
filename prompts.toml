@@ -279,5 +279,5 @@ Carefully analyze the conversation above between patient and nurse and provide f
 #----------
 
 trigger2 = '''
-Use the following feedback for debriefing:
+The following feedback is based on the conversation transcript above between the student and the patient. Use it to conduct the student debriefing.
 '''
