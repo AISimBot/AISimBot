@@ -35,10 +35,10 @@ def speech_to_text(audio):
         ext = ".m4a" if "Safari" in st.session_state.client_info["browser"] else ".webm"
         audio_bio.name = f"audio{ext}"
         transcript = get_client().audio.transcriptions.create(
-            model="gpt-4o-transcribe",
-            language="en",
+            model="gpt-transcribe",
             response_format="text",
             file=audio_bio,
+            languages=["en"],
         )
         st.session_state.processed_audio = id
         st.session_state.latency.append(("stt", time() - start))
@@ -54,7 +54,7 @@ def text_to_speech(text, voice, instructions):
             text = re.sub(r"<details>.*?</details>", "", text, flags=re.DOTALL)
         log.debug(f"TTS: {voice}, {instructions}\n{text}")
         response = get_client().audio.speech.create(
-            model="gpt-4o-mini-tts",
+            model="gpt-4o-mini-tts-2025-03-20",
             # gpt-4o-mini-tts-2025-03-20
             voice=voice,
             input=text,
