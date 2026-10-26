@@ -69,7 +69,7 @@ with col2.container(height=600, border=True):
                 voice=settings["parameters"]["interview_voice"],
                 instruction=settings["parameters"]["interview_voice_instruction"],
                 reasoning={
-                    "effort": settings["parameters"]["debrief_reasoning_effort"],
+                    "effort": settings["parameters"]["interview_reasoning_effort"],
                     "summary": "auto",
                 },
             )
@@ -96,7 +96,7 @@ with col2.container(height=600, border=True):
             voice=settings["parameters"]["interview_voice"],
             instruction=settings["parameters"]["interview_voice_instruction"],
             reasoning={
-                "effort": settings["parameters"]["debrief_reasoning_effort"],
+                "effort": settings["parameters"]["interview_reasoning_effort"],
                 "summary": "auto",
             },
         )

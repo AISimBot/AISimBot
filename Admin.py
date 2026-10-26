@@ -28,6 +28,13 @@ if "messages" not in st.session_state:
     load_prompt()
 
 efforts = ["none", "low", "medium", "high"]
+interview_reasoning_effort = st.sidebar.selectbox(
+    "Reasoning Effort for Interview",
+    efforts,
+    index=efforts.index(settings["parameters"]["interview_reasoning_effort"]),
+)
+settings["parameters"]["interview_reasoning_effort"] = interview_reasoning_effort
+
 feedback_reasoning_effort = st.sidebar.selectbox(
     "Reasoning Effort for Feedback",
     efforts,
