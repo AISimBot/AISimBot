@@ -5,7 +5,7 @@ from OpenAIClient import speech_to_text, text_to_speech
 from Session import get_session, log_session
 import time
 import json
-from Utils import load_prompt
+from Utils import load_prompt, stream_audio
 from Logger import log
 
 if settings["parameters"]["interview_model"].startswith("claude"):
@@ -82,6 +82,11 @@ def process_user_query(
     response = response.strip()
     st.session_state.messages.append({"role": "assistant", "content": response})
     log_session()
-    if audio := text_to_speech(response, voice=voice, instructions=instruction):
-        st.session_state.audio = audio
-        st.rerun()
+    # Show the reply now, because the audio starts playing before the rerun below.
+    with chatbox.chat_message(
+        settings["assistant_name"],
+        avatar=settings["assistant_avatar"],
+    ):
+        st.markdown(response, unsafe_allow_html=True)
+    stream_audio(text_to_speech(response, voice=voice, instructions=instruction))
+    st.rerun()

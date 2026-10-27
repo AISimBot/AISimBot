@@ -1,5 +1,6 @@
 import streamlit as st
 import uuid
+import json
 import time
 from datetime import datetime, timedelta
 import base64
@@ -110,6 +111,34 @@ def autoplay_audio(audio_data, container=None, controls=False):
         container = st.spinner()
     with container:
         st.html(html_str)
+
+
+def stream_audio(chunks):
+    """Play base64 Ogg Opus chunks in the browser as they arrive (see tts-stream.js)."""
+    reply = uuid.uuid4().hex
+    items = []
+    with st.container(key="tts_player"):
+        run_js("tts-stream.js")
+        for chunk in chunks:
+            items.append([reply, len(items), chunk])
+            _push_audio(items[-1:])
+        items.append([reply, len(items), None])
+        _push_audio(items[-1:])
+    # Streamlit drops messages that haven't reached the browser when the next run
+    # starts, so the caller's rerun can cut off the end of the reply.
+    # resend_audio() sends every chunk again in the next run; the player skips the ones it has.
+    st.session_state.audio = items
+    time.sleep(0.3)
+
+
+def resend_audio(items):
+    with st.container(key="tts_resend"):
+        _push_audio(items)
+
+
+def _push_audio(items):
+    js = f"<script>(window.__ttsQueue = window.__ttsQueue || []).push(...{json.dumps(items)}); window.__tts && window.__tts.drain();</script>"
+    st.html(js, width=1, unsafe_allow_javascript=True)
 
 
 @st.cache_data(show_spinner=False)

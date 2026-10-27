@@ -12,7 +12,6 @@ from openai.types.responses import (
     ResponseOutputMessage,
     ResponseCompletedEvent,
 )
-import base64
 import io
 import json
 from Logger import log
@@ -51,13 +50,14 @@ def speech_to_text(audio):
 
 
 def text_to_speech(text, voice, instructions):
+    """Yield the speech as base64 Ogg Opus chunks while it is generated."""
     start = time()
+    first = None
     try:
         if st.session_state.get("display_reasoning", False):
             text = re.sub(r"<details>.*?</details>", "", text, flags=re.DOTALL)
         log.debug(f"TTS: {voice}, {instructions}\n{text}")
-        # SSE returns the same opus file in base64 chunks, and the final event carries usage.
-        audio = b""
+        # SSE returns the opus file in base64 chunks, and the final event carries usage.
         usage = None
         with get_client().audio.speech.with_streaming_response.create(
             model="gpt-4o-mini-tts-2025-03-20",
@@ -73,20 +73,22 @@ def text_to_speech(text, voice, instructions):
                     continue
                 event = json.loads(line[5:])
                 if event.get("type") == "speech.audio.delta":
-                    audio += base64.b64decode(event["audio"])
+                    if first is None:
+                        first = time() - start
+                    yield event["audio"]
                 elif event.get("type") == "speech.audio.done":
                     usage = event.get("usage")
         log.debug(f"TTS usage: {usage}")
         st.session_state.latency.append(("tts", time() - start))
         total = sum([l[1] for l in st.session_state.latency])
         st.session_state.latency.append(("total", total))
+        st.session_state.latency.append(("tts_first", first or 0))
         latency = [f"{l[0]} {l[1]:.2f}" for l in st.session_state.latency]
         latency = ", ".join(latency)
         latency = f"Latency: {latency}"
         st.session_state.last_latency = latency
         log.debug(f"{latency}")
         del st.session_state.latency
-        return audio
     except Exception as e:
         log.exception("")
 

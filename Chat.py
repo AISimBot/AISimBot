@@ -1,6 +1,6 @@
 import streamlit as st
 from Settings import settings
-from Utils import autoplay_audio, elapsed, local_css, run_js
+from Utils import elapsed, local_css, resend_audio, run_js
 from UI_Utils import init_session, show_messages, handle_audio_input, process_user_query
 from Session import ping
 import warnings
@@ -44,7 +44,7 @@ if "patient_interview_start_time" not in st.session_state:
 ping()
 container1, container3, container4 = setup_sidebar()
 if st.session_state.audio:
-    autoplay_audio(st.session_state.audio, container4)
+    resend_audio(st.session_state.audio)
     st.session_state.audio = None
 
 col1, col2 = st.columns([0.3, 0.7])

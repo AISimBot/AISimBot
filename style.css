@@ -1,2 +1,3 @@
 /* css page styling */
 .st-key-chatbox{user-select:none;}
+.st-key-tts_player,.st-key-tts_resend{display:none;}
