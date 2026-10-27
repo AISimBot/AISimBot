@@ -108,16 +108,7 @@ def get_response(
                     reasoning.append(r.text)
 
         reasoning = "\n\n".join(reasoning).strip()
-        tokens = [
-            response.usage.input_tokens
-            - response.usage.input_tokens_details.cached_tokens
-            - (response.usage.input_tokens_details.cache_write_tokens or 0),
-            response.usage.input_tokens_details.cached_tokens,
-            response.usage.input_tokens_details.cache_write_tokens,
-            response.usage.output_tokens,
-            response.usage.output_tokens_details.reasoning_tokens,
-        ]
-        log.debug(f"Usage: {tokens}")
+        log.debug(f"Usage: {response.usage.model_dump()}")
         st.session_state.latency.append(("text", time() - start))
         if reasoning and st.session_state.get("display_reasoning", False):
             completion_text = f"<details><summary><strong>Reasoning</strong></summary>{reasoning}</details>{completion_text}"
@@ -169,17 +160,7 @@ def stream_response(
                 pass
         completion_text = content.strip()
         reasoning = "\n\n".join(reasoning).strip()
-        usage = event.response.usage
-        tokens = [
-            usage.input_tokens
-            - usage.input_tokens_details.cached_tokens
-            - (usage.input_tokens_details.cache_write_tokens or 0),
-            usage.input_tokens_details.cached_tokens,
-            usage.input_tokens_details.cache_write_tokens,
-            usage.output_tokens,
-            usage.output_tokens_details.reasoning_tokens,
-        ]
-        log.debug(f"Usage: {tokens}")
+        log.debug(f"Usage: {event.response.usage.model_dump()}")
         st.session_state.latency.append(("text_stream", time() - start))
         if reasoning and st.session_state.get("display_reasoning", False):
             completion_text = f"<details><summary><strong>Reasoning</strong></summary>{reasoning}</details>{completion_text}"
