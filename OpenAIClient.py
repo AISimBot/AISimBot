@@ -110,7 +110,8 @@ def get_response(
         reasoning = "\n\n".join(reasoning).strip()
         tokens = [
             response.usage.input_tokens
-            - response.usage.input_tokens_details.cached_tokens,
+            - response.usage.input_tokens_details.cached_tokens
+            - (response.usage.input_tokens_details.cache_write_tokens or 0),
             response.usage.input_tokens_details.cached_tokens,
             response.usage.input_tokens_details.cache_write_tokens,
             response.usage.output_tokens,
@@ -170,7 +171,9 @@ def stream_response(
         reasoning = "\n\n".join(reasoning).strip()
         usage = event.response.usage
         tokens = [
-            usage.input_tokens - usage.input_tokens_details.cached_tokens,
+            usage.input_tokens
+            - usage.input_tokens_details.cached_tokens
+            - (usage.input_tokens_details.cache_write_tokens or 0),
             usage.input_tokens_details.cached_tokens,
             usage.input_tokens_details.cache_write_tokens,
             usage.output_tokens,
