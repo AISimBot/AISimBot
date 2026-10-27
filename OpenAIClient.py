@@ -12,7 +12,9 @@ from openai.types.responses import (
     ResponseOutputMessage,
     ResponseCompletedEvent,
 )
+import base64
 import io
+import json
 from Logger import log
 from Settings import settings
 from time import time
@@ -36,13 +38,14 @@ def speech_to_text(audio):
         audio_bio.name = f"audio{ext}"
         transcript = get_client().audio.transcriptions.create(
             model="gpt-transcribe",
-            response_format="text",
+            response_format="json",
             file=audio_bio,
             languages=["en"],
         )
         st.session_state.processed_audio = id
         st.session_state.latency.append(("stt", time() - start))
-        return transcript
+        log.debug(f"STT usage: {transcript.usage.model_dump() if transcript.usage else None}")
+        return transcript.text
     except Exception as e:
         log.exception("")
 
@@ -53,14 +56,27 @@ def text_to_speech(text, voice, instructions):
         if st.session_state.get("display_reasoning", False):
             text = re.sub(r"<details>.*?</details>", "", text, flags=re.DOTALL)
         log.debug(f"TTS: {voice}, {instructions}\n{text}")
-        response = get_client().audio.speech.create(
+        # SSE returns the same opus file in base64 chunks, and the final event carries usage.
+        audio = b""
+        usage = None
+        with get_client().audio.speech.with_streaming_response.create(
             model="gpt-4o-mini-tts-2025-03-20",
             # gpt-4o-mini-tts-2025-03-20
             voice=voice,
             input=text,
             instructions=instructions,
             response_format="opus",
-        )
+            stream_format="sse",
+        ) as response:
+            for line in response.iter_lines():
+                if not line.startswith("data:") or line[5:].strip() == "[DONE]":
+                    continue
+                event = json.loads(line[5:])
+                if event.get("type") == "speech.audio.delta":
+                    audio += base64.b64decode(event["audio"])
+                elif event.get("type") == "speech.audio.done":
+                    usage = event.get("usage")
+        log.debug(f"TTS usage: {usage}")
         st.session_state.latency.append(("tts", time() - start))
         total = sum([l[1] for l in st.session_state.latency])
         st.session_state.latency.append(("total", total))
@@ -70,7 +86,7 @@ def text_to_speech(text, voice, instructions):
         st.session_state.last_latency = latency
         log.debug(f"{latency}")
         del st.session_state.latency
-        return response.content
+        return audio
     except Exception as e:
         log.exception("")
 
