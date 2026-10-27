@@ -91,7 +91,7 @@ def create_transcript_pdf():
     pdf.add_font("DejaVuSans", fname="assets/fonts/DejaVuSans-Bold.ttf", style="B")
     pdf.add_font("DejaVuSans", fname="assets/fonts/DejaVuSans-Oblique.ttf", style="I")
     pdf.add_font("DejaVuSans", fname="assets/fonts/DejaVuSans-BoldOblique.ttf", style="BI")
-    pdf.set_font("DejaVuSans", size=16)
+    pdf.set_font("DejaVuSans", size=12)
     pdf.add_page()
     pdf.set_encryption(owner_password="drkim@32", permissions=AccessPermission.none())
     pdf.write_html(html, ul_bullet_char="\u2022")
