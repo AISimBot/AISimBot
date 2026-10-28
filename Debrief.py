@@ -1,6 +1,6 @@
 import streamlit as st
 from Settings import settings
-from Utils import copy_audio_log_button, elapsed, local_css, resend_audio, run_js
+from Utils import elapsed, local_css, resend_audio, run_js
 from UI_Utils import init_session, show_messages, handle_audio_input, process_user_query
 from Session import ping
 import time
@@ -81,8 +81,6 @@ if "debrief_start_time" not in st.session_state:
     st.session_state["debrief_start_time"] = time.time()
 ping()
 container1, container3, container4 = setup_sidebar()
-if st.session_state.role in ("admin", "tester"):
-    copy_audio_log_button(container4)
 if st.session_state.audio:
     resend_audio(st.session_state.audio)
     st.session_state.audio = None

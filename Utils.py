@@ -146,38 +146,6 @@ def stream_audio(chunks):
     time.sleep(0.3)
 
 
-def copy_audio_log_button(container):
-    """A button that copies the TTS player's event log (window.__ttsLog) to the clipboard."""
-    html = """
-    <button id="tts_copy_log" style="width:100%;padding:0.4rem;border-radius:0.5rem;border:1px solid #ccc;background:white;cursor:pointer">Copy audio log</button>
-    <script>
-    (function () {
-      const b = document.getElementById("tts_copy_log");
-      if (!b || b.dataset.ready) return;
-      b.dataset.ready = "1";
-      b.addEventListener("click", async () => {
-        const text = JSON.stringify(window.__ttsLog || []);
-        try {
-          await navigator.clipboard.writeText(text);
-        } catch (_) {
-          // The clipboard API needs https or localhost, so fall back to a hidden text box.
-          const t = document.createElement("textarea");
-          t.value = text;
-          document.body.appendChild(t);
-          t.select();
-          document.execCommand("copy");
-          t.remove();
-        }
-        b.textContent = `Copied ${(window.__ttsLog || []).length} events`;
-        setTimeout(() => (b.textContent = "Copy audio log"), 2000);
-      });
-    })();
-    </script>
-    """
-    with container:
-        st.html(html, unsafe_allow_javascript=True)
-
-
 def resend_audio(items):
     with st.container(key="tts_resend"):
         _push_audio(items)
