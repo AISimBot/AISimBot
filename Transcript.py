@@ -8,45 +8,51 @@ from html2docx import html2docx
 from pathlib import Path
 from unicodedata import normalize
 from unidecode import unidecode
-from zoneinfo import ZoneInfo
-from datetime import datetime
 
 
-def _format_timestamp(timestamp):
-    if not timestamp:
+def _phase_seconds(phase):
+    start = st.session_state.get(f"{phase}_start_time")
+    end = st.session_state.get(f"{phase}_end_time")
+    return end - start if start and end else None
+
+
+def _format_minutes(seconds):
+    if seconds is None:
         return "Not recorded"
-    tz = ZoneInfo(settings.get("timezone", "UTC"))
-    return datetime.fromtimestamp(timestamp, tz).strftime("%Y-%m-%d %H:%M:%S")
+    hours, minutes = divmod(round(seconds / 60), 60)
+    return f"{hours}h{minutes}m" if hours else f"{minutes}m"
 
 
-def _phase_timing_line(label, start_key, end_key, elapsed_key):
-    start = st.session_state.get(start_key)
-    end = st.session_state.get(end_key)
-    elapsed = st.session_state.get(elapsed_key, "Not recorded")
-    return (
-        f"{label}: Start: {_format_timestamp(start)}, "
-        f"End: {_format_timestamp(end)}, Elapsed: {elapsed}"
-    )
+def _nurse_turns(messages):
+    # The feedback system message separates the interview from the debrief.
+    turns = [0, 0]
+    phase = 0
+    for msg in messages[1:]:
+        if msg["role"] == "system":
+            phase = 1
+        elif msg["role"] == "user":
+            turns[phase] += 1
+    return turns
 
 
 def create_transcript_markdown(messages):
+    interview_turns, debrief_turns = _nurse_turns(messages)
+    interview_seconds = _phase_seconds("patient_interview")
+    debrief_seconds = _phase_seconds("debrief")
+    total_seconds = (
+        interview_seconds + debrief_seconds
+        if interview_seconds and debrief_seconds
+        else None
+    )
     md_lines = [
         "# Conversation Transcript",
         "",
-        "---",
-        _phase_timing_line(
-            "Patient Interview",
-            "patient_interview_start_time",
-            "patient_interview_end_time",
-            "patient_interview_elapsed_time",
-        ),
+        "| Phase | Duration | Turns |",
+        "|---|---|---|",
+        f"| Patient Interview | {_format_minutes(interview_seconds)} | {interview_turns} |",
+        f"| Debriefing | {_format_minutes(debrief_seconds)} | {debrief_turns} |",
+        f"| Total | {_format_minutes(total_seconds)} | {interview_turns + debrief_turns} |",
         "",
-        _phase_timing_line(
-            "Debriefing",
-            "debrief_start_time",
-            "debrief_end_time",
-            "debrief_elapsed_time",
-        ),
         "---",
         "",
     ]
@@ -61,13 +67,13 @@ def create_transcript_markdown(messages):
         if msg["role"] == "system":
             debrief = True
             md_lines.append(f"---\n\n# Feedback\n")
-            speaker = "Instructor"
-            md_lines.append(f"**{speaker}:** {content}")
+            # Drop the debrief model instruction in front of the feedback report.
+            md_lines.append(content.removeprefix(st.session_state.prompts["trigger2"]))
             md_lines.append("")  # blank line -> new paragraph
             md_lines.append(f"---\n\n# Debrief\n")
             continue
         if debrief and msg["role"] == "assistant":
-            speaker = "Instructor"
+            speaker = settings["debrief_name"]
 
         md_lines.append(f"**{speaker}:** {content}")
         md_lines.append("")  # blank line -> new paragraph
@@ -85,6 +91,10 @@ def create_transcript_html(messages):
 
 def create_transcript_pdf():
     html = create_transcript_html(st.session_state.messages)
+    # fpdf draws <hr> at the current y, right against the content above.
+    # <br> moves it clear of text; after a table an empty <p> is enough.
+    html = html.replace("<hr />", "<br><hr />")
+    html = html.replace("</table>\n<br><hr />", "</table>\n<p></p><hr />")
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_font("DejaVuSans", fname="assets/fonts/DejaVuSans.ttf")

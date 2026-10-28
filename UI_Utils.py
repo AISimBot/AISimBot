@@ -25,14 +25,18 @@ def init_session(prompt="prompt1"):
     )
 
 
-def show_messages(chatbox):
-    for message in st.session_state.messages:
+def show_messages(chatbox, debrief_name=None):
+    assistant_name = settings["assistant_name"]
+    for i, message in enumerate(st.session_state.messages):
         if message["role"] == "system":
+            # The feedback system message marks the start of the debrief.
+            if i > 0 and debrief_name:
+                assistant_name = debrief_name
             continue
         name = (
             settings["user_name"]
             if message["role"] == "user"
-            else settings["assistant_name"]
+            else assistant_name
         )
         avatar = (
             settings["user_avatar"]
@@ -65,6 +69,7 @@ def process_user_query(
     voice,
     instruction,
     reasoning={"effort": "none", "summary": "detailed"},
+    assistant_name=settings["assistant_name"],
 ):
     message = st.session_state.messages[-1]
     # Display the user's query
@@ -85,7 +90,7 @@ def process_user_query(
     # Show the reply when its audio starts, because that happens before the rerun below.
     def show_reply():
         with chatbox.chat_message(
-            settings["assistant_name"],
+            assistant_name,
             avatar=settings["assistant_avatar"],
         ):
             st.markdown(response, unsafe_allow_html=True)

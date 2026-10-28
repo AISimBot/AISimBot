@@ -46,7 +46,7 @@ def generate_Feedback():
 
 
 def setup_sidebar():
-    st.sidebar.header("Chat with " + settings["assistant_name"])
+    st.sidebar.header("Chat with " + settings["debrief_name"])
     # Show Profile
     with st.sidebar.container(border=True):
         for key, val in settings["sidebar"].items():
@@ -114,9 +114,10 @@ with col2.container(height=600, border=True):
                     "effort": settings["parameters"]["debrief_reasoning_effort"],
                     "summary": "auto",
                 },
+                assistant_name=settings["debrief_name"],
             )
 
-    show_messages(chatbox)
+    show_messages(chatbox, settings["debrief_name"])
 
     user_query = ""
     input_placeholder = st.empty()
@@ -141,6 +142,7 @@ with col2.container(height=600, border=True):
                 "effort": settings["parameters"]["debrief_reasoning_effort"],
                 "summary": "auto",
             },
+            assistant_name=settings["debrief_name"],
         )
 
 # Handle end session
