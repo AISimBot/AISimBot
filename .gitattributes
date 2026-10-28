@@ -1,0 +1,2 @@
+# Vendored library with embedded WebAssembly in a string; line-ending conversion would corrupt it.
+ogg-opus-decoder.min.js binary

@@ -3,6 +3,8 @@
 // Python sends each base64 Ogg Opus chunk as a tiny script that calls
 // window.__ttsQueue.push([reply, seq, chunk]); a null chunk marks the end.
 // The chunks are decoded with ogg-opus-decoder and scheduled back to back with Web Audio.
+// stream_audio sends the decoder library (ogg-opus-decoder.min.js) once per session;
+// it sets window["ogg-opus-decoder"].
 (function () {
   const W = window;
   W.__ttsQueue = W.__ttsQueue || [];
@@ -21,7 +23,11 @@
   }
   note("load", { ua: navigator.userAgent });
 
-  const ready = import("https://cdn.jsdelivr.net/npm/ogg-opus-decoder@1.7.5/+esm")
+  // Wait for the library, in case its script runs after this one.
+  const ready = new Promise((resolve) => {
+    const check = () => W["ogg-opus-decoder"] ? resolve(W["ogg-opus-decoder"]) : setTimeout(check, 20);
+    check();
+  })
     .then(async (m) => {
       tts.decoder = new m.OggOpusDecoder();
       await tts.decoder.ready;

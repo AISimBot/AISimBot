@@ -118,6 +118,21 @@ def stream_audio(chunks):
     reply = uuid.uuid4().hex
     items = []
     with st.container(key="tts_player"):
+        if not st.session_state.get("tts_decoder_sent"):
+            # 117 KB, so send it once per session; the browser keeps it across reruns.
+            # It has raw control characters that st.html can't pass, so send it as base64.
+            js = _read_base64("ogg-opus-decoder.min.js")
+            st.html(
+                f"""<script>(function () {{
+                const bytes = Uint8Array.from(atob("{js}"), (c) => c.charCodeAt(0));
+                const s = document.createElement("script");
+                s.src = URL.createObjectURL(new Blob([bytes], {{ type: "text/javascript" }}));
+                document.head.appendChild(s);
+                }})();</script>""",
+                width=1,
+                unsafe_allow_javascript=True,
+            )
+            st.session_state.tts_decoder_sent = True
         run_js("tts-stream.js")
         for chunk in chunks:
             items.append([reply, len(items), chunk])
@@ -177,6 +192,12 @@ def _push_audio(items):
 def _read_file(file_name):
     with open(file_name, encoding="utf-8") as f:
         return f.read()
+
+
+@st.cache_data(show_spinner=False)
+def _read_base64(file_name):
+    with open(file_name, "rb") as f:
+        return base64.b64encode(f.read()).decode("ascii")
 
 
 def local_css(file_name: str):
