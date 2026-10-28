@@ -113,8 +113,11 @@ def autoplay_audio(audio_data, container=None, controls=False):
         st.html(html_str)
 
 
-def stream_audio(chunks):
-    """Play base64 Ogg Opus chunks in the browser as they arrive (see tts-stream.js)."""
+def stream_audio(chunks, on_start=None):
+    """Play base64 Ogg Opus chunks in the browser as they arrive (see tts-stream.js).
+
+    on_start runs just before the first chunk is sent, or at the end if there is none.
+    """
     reply = uuid.uuid4().hex
     items = []
     with st.container(key="tts_player"):
@@ -135,8 +138,12 @@ def stream_audio(chunks):
             st.session_state.tts_decoder_sent = True
         run_js("tts-stream.js")
         for chunk in chunks:
+            if on_start and not items:
+                on_start()
             items.append([reply, len(items), chunk])
             _push_audio(items[-1:])
+        if on_start and not items:
+            on_start()
         items.append([reply, len(items), None])
         _push_audio(items[-1:])
     # Streamlit drops messages that haven't reached the browser when the next run

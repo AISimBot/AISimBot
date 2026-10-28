@@ -82,11 +82,16 @@ def process_user_query(
     response = response.strip()
     st.session_state.messages.append({"role": "assistant", "content": response})
     log_session()
-    # Show the reply now, because the audio starts playing before the rerun below.
-    with chatbox.chat_message(
-        settings["assistant_name"],
-        avatar=settings["assistant_avatar"],
-    ):
-        st.markdown(response, unsafe_allow_html=True)
-    stream_audio(text_to_speech(response, voice=voice, instructions=instruction))
+    # Show the reply when its audio starts, because that happens before the rerun below.
+    def show_reply():
+        with chatbox.chat_message(
+            settings["assistant_name"],
+            avatar=settings["assistant_avatar"],
+        ):
+            st.markdown(response, unsafe_allow_html=True)
+
+    stream_audio(
+        text_to_speech(response, voice=voice, instructions=instruction),
+        on_start=show_reply,
+    )
     st.rerun()
