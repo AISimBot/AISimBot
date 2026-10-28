@@ -65,8 +65,8 @@
     const source = ctx.createBufferSource();
     source.buffer = buffer;
     source.connect(ctx.destination);
-    // A short lead on the first chunk, then each chunk starts where the last one ends.
-    const start = Math.max(tts.next, ctx.currentTime + 0.05);
+    // The first chunk starts now, then each chunk starts where the last one ends.
+    const start = Math.max(tts.next, ctx.currentTime);
     source.start(start);
     note("start", { seq: tts.expect - 1, at: +start.toFixed(3), dur: +buffer.duration.toFixed(3), rate: sampleRate });
     source.onended = () => { note("ended", { at: +start.toFixed(3) }); tts.sources = tts.sources.filter((s) => s !== source); };
